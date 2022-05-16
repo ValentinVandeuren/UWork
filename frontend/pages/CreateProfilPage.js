@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image  } from 'rea
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function CreateProfilPage(props) {
 
@@ -10,7 +12,9 @@ export default function CreateProfilPage(props) {
   const [age, setAge] = useState(0);
   const [city, setCity] = useState('');
   const [bio, setBio] = useState('');
-
+  const [emailStorage, setEmailStorage] = useState('');
+  const [tokenStorage, setTokenStorage] = useState('');
+  const [passwordStorage, setPasswordStorage] = useState('');
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -27,11 +31,52 @@ export default function CreateProfilPage(props) {
       setImage(result.uri);
     }
   };
+
   var imageProfile;
   if(!image){
     imageProfile = <Text style={{color:"#B9B9B9", fontSize:100, fontWeight:'100', paddingBottom:8}}>+</Text>
   } else {
     imageProfile = <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius:150 }} />
+  }
+
+  const onSubmitClick = async () => {
+    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3, bio.length >= 5){
+
+      AsyncStorage.getItem("email", function(error, data) {
+        setEmailStorage(data)
+       });
+       AsyncStorage.getItem("token", function(error, data) {
+        setTokenStorage(data)
+       });
+
+       AsyncStorage.getItem("password", function(error, data) {
+        setPasswordStorage(data)
+       });
+
+      let sendProfile = {
+        firstName: firstName,
+        lastName: lastName,
+        avatar: '../assets/logo.png',
+        age: age,
+        city: city,
+        bio: bio,
+        email: emailStorage,
+        password: passwordStorage,
+        token: tokenStorage,
+      }
+      let rawResponse = await fetch('http://172.20.10.5:3000/users/createProfile', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(sendProfile)
+      })
+
+      let response = await rawResponse.json()
+      console.log(response);
+      AsyncStorage.setItem("id", response.id)
+
+      AsyncStorage.removeItem('password')
+      props.navigation.navigate('AddCVPage')
+    }
   }
 
   return (
@@ -68,7 +113,7 @@ export default function CreateProfilPage(props) {
             placeholder="Bio"
             onChangeText={(value) => setBio(value)}
           />
-            <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('AddCVPage'), console.log(image)}}>
+            <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick() }>
               <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Continue</Text>
             </TouchableOpacity>
         </View>
