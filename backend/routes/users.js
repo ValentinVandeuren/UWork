@@ -21,4 +21,21 @@ router.post('/verifyEmail', async function(req, res, next) {
   }
 })
 
+router.post('/createProfile', async function(req, res, next) {
+  var newUser = new usersModel({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    avatar: req.body.avatar,
+    age: req.body.age,
+    city: req.body.city,
+    bio: req.body.bio,
+    email: req.body.email,
+    password: req.body.password,
+    token: req.body.token,
+  })
+
+  saveUser = await newUser.save()
+  res.json({id : saveUser.id})
+})
+
 module.exports = router;
