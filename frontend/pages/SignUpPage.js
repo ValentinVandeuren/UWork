@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SignInPage(props) {
+export default function SignUpPage(props) {
   return (
     <View style={styles.container}>
       <View style={styles.containerTop}>
