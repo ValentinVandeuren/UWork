@@ -1,8 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Ionicons } from '@expo/vector-icons';
 
 export default function SignUpPage(props) {
+  let [email, setEmail] =  useState("");
+  let [password, setPassword] =  useState("");
+  let [errorMessage, setErrorMessage] = useState("");
+  let [isError, setIsError] = useState(false);
+
+  const onSendClick = async() => {
+    if(email.length > 5 && email.match(/\@/i) && email.match(/\./i) && password.length > 8){
+
+      let sendEmail = {email: email}
+      let rawResponse = await fetch('http://172.20.10.2:3000/users/verifyEmail', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(sendEmail)
+      })
+
+      let response = await rawResponse.json()
+      console.log(response);
+
+      if(response.isOk === true){
+        props.navigation.navigate('TokenVerifyPage')
+        setErrorMessage("");
+        setIsError(false);
+        AsyncStorage.setItem("email", email);
+        AsyncStorage.setItem("token", response.token);
+      }else {
+        setErrorMessage("Email already exists")
+      }
+      // props.navigation.navigate('TokenVerifyPage')
+      // setErrorMessage("");
+      // setIsError(false);
+    } else if(!email.match(/\@/i) && !email.match(/\./i)) {
+      setErrorMessage("Email incorrect");
+      setIsError(true);
+    } else if(password.length < 8){
+      setErrorMessage("Password must have 8 characters")
+      setIsError(true)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerTop}>
@@ -23,16 +64,24 @@ export default function SignUpPage(props) {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        onChangeText={(value) => setEmail(value)}
+        value={email}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
+        onChangeText={(value) => setPassword(value)}
+        value={password}
       />
+      <Text style={(isError === true)? styles.errorMessageStyle: {display: 'none'}}>{errorMessage}</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => props.navigation.navigate('TokenVerifyPage')}
+        // onPress={() => props.navigation.navigate('TokenVerifyPage')}
+        onPress={() => onSendClick()}
       >
-        <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Let's go!</Text>
+      <Text
+        style={{color:"#fff", fontSize:20, fontWeight:'500'}}
+      >Let's go!</Text>
       </TouchableOpacity>
       <Text style={styles.lineOr}>──────────   <Text style={styles.textOr}> Or </Text>   ──────────</Text>
       <View style={styles.rowLogo}>
@@ -108,6 +157,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 3.84,
     elevation: 9,
+  },
+  errorMessageStyle:{
+    color: "red",
+    marginTop: 20,
   },
   button: {
     borderRadius:25,

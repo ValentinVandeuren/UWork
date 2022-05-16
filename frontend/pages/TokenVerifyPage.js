@@ -1,8 +1,21 @@
 import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function TokenVerifyPage(props) {
+  let [token, setToken] = useState("");
+  let [errorMessage, setErrorMessage] = useState("");
+  
+  const onTokenClick = () => {
+    AsyncStorage.getItem("token", function(error, data) {
+      if(data === token){
+        props.navigation.navigate('CreateProfilPage')
+      }else {
+        setErrorMessage("Token invalid")
+      }
+     });
+  }
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
@@ -11,10 +24,13 @@ export default function TokenVerifyPage(props) {
       <TextInput
         style={styles.input}
         placeholder="123-ABC"
+        onChangeText={(value) => setToken(value)}
+        value={token}
       />
+      <Text style={(errorMessage.length > 0)? styles.errorMessageStyle: {display: "none"}}>{errorMessage}</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => props.navigation.navigate('TokenVerifyPage')}
+        onPress={() => onTokenClick()}
       >
         <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Let's go!</Text>
       </TouchableOpacity>
@@ -84,5 +100,9 @@ const styles = StyleSheet.create({
     width: 200,
     justifyContent:"center",
     alignItems:'center',
+  },
+  errorMessageStyle:{
+    color: "red",
+    marginTop: 20,
   },
 });
