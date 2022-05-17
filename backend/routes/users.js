@@ -3,6 +3,8 @@ var router = express.Router();
 let usersModel = require('../models/users');
 var uid2 = require('uid2');
 var cloudinary = require('cloudinary').v2;
+var uniqid = require('uniqid');
+var fs = require('fs');
 
 cloudinary.config({
  cloud_name: 'dlwwftewi',
@@ -28,8 +30,6 @@ router.post('/verifyEmail', async function(req, res, next) {
   }
 })
 
-var uniqid = require('uniqid');
-var fs = require('fs');
 
 router.post('/uploalProfilePicture', async function(req, res, next) {
   var pictureName = './tmp/'+uniqid()+'.jpg';
@@ -58,6 +58,21 @@ router.post('/createProfile', async function(req, res, next) {
 
   saveUser = await newUser.save()
   res.json({id : saveUser.id})
+})
+
+router.post('/addTypeJob', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  user.jobType.push({
+    contract: req.body.contract,
+    sector: req.body.sector,
+    city: req.body.city,
+    distance: req.body.distance,
+    regime: req.body.regime,
+  })
+  let userSaved = await user.save();
+
+  res.json("sending");
 })
 
 module.exports = router;
