@@ -17,6 +17,18 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.post('/signin', async function(req, res, next) {
+  let user = await usersModel.findOne({ email: req.body.email });
+
+  if(user && user.password === req.body.password){
+    res.json({firstName: user.firstName, id: user.id, avatar: user.avatar});
+  } else if(!user) {
+    res.json("Email is not exist")
+  }else {
+    res.json("Password is invalid")
+  }
+})
+
 router.post('/verifyEmail', async function(req, res, next) {
   let verify = await usersModel.findOne({ email: req.body.email });
 
@@ -57,7 +69,7 @@ router.post('/createProfile', async function(req, res, next) {
   })
 
   saveUser = await newUser.save()
-  res.json({id : saveUser.id})
+  res.json({id : saveUser.id, firstName: saveUser.firstName, avatar: saveUser.avatar})
 })
 
 router.post('/addTypeJob', async function(req, res, next) {
