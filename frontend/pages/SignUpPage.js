@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   returnButton: {
-    marginLeft: 10,
+    marginLeft: 50,
   },
   logo: {
     marginTop: 50,
