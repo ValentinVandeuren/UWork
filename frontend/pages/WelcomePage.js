@@ -9,7 +9,7 @@ export default function WelcomePage(props) {
         <View style={{alignItems:'center', marginTop:125}}>
           <Text style={{fontSize: 30, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight: '600' }}>Welcome on Uwork 👋🏼</Text>
           <Text style={{fontSize: 25, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight:'500' }}>Who are <Text style={{color:'#7791DE'}}>U</Text>?</Text>
-          <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('CreateProfilPage')}}>
+          <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('AddCVPage')}}>
             <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Company</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('SignUpPage')}}>
