@@ -1,12 +1,67 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from 'react-native'
+import React, {useState, useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons } from '@expo/vector-icons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import IonIcon from 'react-native-vector-icons/Ionicons';
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function AddEducationPage(props) {
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isDatePickerVisibleEnd, setDatePickerVisibilityEnd] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const [userID, setUserID] = useState("");
+  const [school, setSchool] = useState('');
+  const [fieldstudy, setFieldstudy] = useState('');
+  const [degree, setDegree] = useState('');
+  const [description, setDescription] = useState('');
+  const [startDateToBDD, setStartDateToBDD] = useState();
+  const [endDateToBDD, setEndDateToBDD] = useState();
+
+
+
+
+  useEffect(() => {  
+    ( () => {
+      AsyncStorage.getItem("id", function(error, data) {
+        setUserID(data)
+       });
+    })();
+  }, []);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const showDatePickerEnd = () => {
+    setDatePickerVisibilityEnd(true);
+  };
+
+  const onSubmitClick = async () => {
+    let sendEducation = {
+      id: userID,
+      school: school,
+      studyfield: fieldstudy,
+      degree: degree,
+      start: startDateToBDD,
+      end: endDateToBDD,
+      description: description,
+    }
+    let rawResponse = await fetch('http://172.20.10.5:3000/users/addEducation', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendEducation)
+    })
+
+    await rawResponse.json()
+    props.navigation.navigate('AddCVPage')
+  }
+
   return (
   <KeyboardAwareScrollView style={{backgroundColor:"#fff"}}>
     <Ionicons
@@ -20,30 +75,67 @@ export default function AddEducationPage(props) {
       <TextInput
         style={styles.input}
         placeholder="School"
+        onChangeText={(value) => setSchool(value)}
+        value={school}
       />
       <TextInput
         style={styles.input}
         placeholder="Field of study"
+        onChangeText={(value) => setFieldstudy(value)}
+        value={fieldstudy}
       />
       <TextInput
         style={styles.input}
         placeholder="Degree obtained"
+        onChangeText={(value) => setDegree(value)}
+        value={degree}
       />
       <View style={{flexDirection:'row', justifyContent:'space-between', width:"80%"}}>
-      <TextInput
-        style={styles.input3}
-        placeholder="Start"
+
+      <TouchableOpacity style={styles.input3} onPress={showDatePicker}>
+        <Text style={(startDate.length > 0)? styles.inputDateBlack: styles.inputDateGray }>{(startDate.length > 0)? startDate: "Start"}</Text>
+        <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={(date) => {
+          setDatePickerVisibility(false)
+          let day = date.getDate();
+          let month = date.getMonth();
+          let year = date.getFullYear();
+          setStartDate(`${day}/${month}/${year}`);
+          setStartDateToBDD(date)
+        }}
+        onCancel={() => {
+          setDatePickerVisibility(false)
+        }}
       />
-      <TextInput
-        style={styles.input3}
-        placeholder="End"
-      />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.input3} onPress={showDatePickerEnd}>
+        <Text style={(endDate.length > 0)? styles.inputDateBlack: styles.inputDateGray }>{(endDate.length > 0)? endDate: "End"}</Text>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisibleEnd}
+          mode="date"
+          onConfirm={(date2) => {
+            setDatePickerVisibilityEnd(false)
+            let day = date2.getDate();
+            let month = date2.getMonth();
+            let year = date2.getFullYear();
+            setEndDate(`${day}/${month}/${year}`);
+            setEndDateToBDD(date2)
+          }}
+          onCancel={() => {
+            setDatePickerVisibilityEnd(false)
+          }}
+        />
+      </TouchableOpacity>
       </View>
       <TextInput
         style={styles.input2}
         placeholder="Description"
+        onChangeText={(value) => setDescription(value)}
+        value={description}
       />
-        <TouchableOpacity style={styles.button1} onPress={() => props.navigation.navigate('AddCVPage')}>
+        <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick()}>
           <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Save</Text>
         </TouchableOpacity>
     </View>
@@ -176,4 +268,17 @@ returnButton: {
   marginLeft: 10,
   marginTop:100,
 },
+inputDateBlack: {
+  color:"#000",
+  fontSize:20, fontWeight:'500',
+  textAlign:'center',
+  paddingTop:12
+},
+inputDateGray: {
+  color:"#B9B9B9",
+  fontSize:20,
+  fontWeight:'500',
+  textAlign:'center',
+  paddingTop:12
+}
 });
