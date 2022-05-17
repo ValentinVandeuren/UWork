@@ -6,19 +6,19 @@ export default function WelcomePage(props) {
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
-        <View style={{alignItems:'center', marginTop:125}}>
-          <Text style={{fontSize: 30, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight: '600' }}>Welcome on Uwork 👋🏼</Text>
-          <Text style={{fontSize: 25, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight:'500' }}>Who are <Text style={{color:'#7791DE'}}>U</Text>?</Text>
-          <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('AddTypeJobPage')}}>
-            <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Company</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('SignUpPage')}}>
-            <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Employee</Text>
-          </TouchableOpacity>
-          <Text style={{marginBottom:10, fontSize:15, fontWeight:'500'}}>Or</Text>
-          <TouchableOpacity style={styles.button2} onPress={() => {props.navigation.navigate('SignInPage')}}>
-            <Text style={{color:"#7791DE", fontSize:20, fontWeight:'500'}}>Sign-in</Text>
-          </TouchableOpacity>
+      <View style={{alignItems:'center', marginTop:125}}>
+        <Text style={{fontSize: 30, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight: '600' }}>Welcome on Uwork 👋🏼</Text>
+        <Text style={{fontSize: 25, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight:'500' }}>Who are <Text style={{color:'#7791DE'}}>U</Text>?</Text>
+        <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('WellDonePage')}}>
+          <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Company</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('SignUpPage')}}>
+          <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Employee</Text>
+        </TouchableOpacity>
+        <Text style={{marginBottom:10, fontSize:15, fontWeight:'500'}}>Or</Text>
+        <TouchableOpacity style={styles.button2} onPress={() => {props.navigation.navigate('SignInPage')}}>
+          <Text style={{color:"#7791DE", fontSize:20, fontWeight:'500'}}>Sign-in</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
