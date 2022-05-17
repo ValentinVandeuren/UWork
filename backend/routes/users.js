@@ -57,7 +57,7 @@ router.post('/createProfile', async function(req, res, next) {
   })
 
   saveUser = await newUser.save()
-  res.json({id : saveUser.id})
+  res.json({id : saveUser.id, firstName: saveUser.firstName})
 })
 
 router.post('/addTypeJob', async function(req, res, next) {
