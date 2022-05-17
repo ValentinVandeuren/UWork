@@ -75,4 +75,20 @@ router.post('/addTypeJob', async function(req, res, next) {
   res.json("sending");
 })
 
+router.post('/addEducation', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  user.education.push({
+    school: req.body.school,
+    studyfield: req.body.studyfield,
+    degree: req.body.degree,
+    start: req.body.start,
+    end: req.body.end,
+    description: req.body.description,
+  })
+  await user.save();
+
+  res.json("sending");
+})
+
 module.exports = router;
