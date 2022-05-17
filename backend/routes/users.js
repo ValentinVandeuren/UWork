@@ -17,6 +17,18 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.post('/signin', async function(req, res, next) {
+  let user = await usersModel.findOne({ email: req.body.email });
+
+  if(user && user.password === req.body.password){
+    res.json({firstName: user.firstName, id: user.id});
+  } else if(!user) {
+    res.json("Email is not exist")
+  }else {
+    res.json("Password is invalid")
+  }
+})
+
 router.post('/verifyEmail', async function(req, res, next) {
   let verify = await usersModel.findOne({ email: req.body.email });
 
