@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Animated, StyleSheet, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Slider, CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AddTypeJobPage() {
+export default function AddTypeJobPage(props) {
   let [typeContract, setTypeContract] = useState("");
   let [sector, setSector] = useState("");
   let [city, setCity] = useState("");
   let [inputValue, setInputValue] = useState(0);
   let [regime, setRegime] = useState("");
   let [displayMenu, setDisplayMenu] = useState(false);
+  let [userID, setUserID] = useState("");
 
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
+
+  useEffect(() => {  
+    ( () => {
+      AsyncStorage.getItem("id", function(error, data) {
+        setUserID(data)
+       });
+    })();
+  }, []);
 
   const onScrollMenuClick = () => {
     if(displayMenu === false){
@@ -21,6 +31,25 @@ export default function AddTypeJobPage() {
     } else {
       setDisplayMenu(false);
     }
+  }
+
+  const onSubmitClick = async () => {
+    let sendTypeJobProfil = {
+      id: userID,
+      contract: typeContract,
+      sector: sector,
+      city: city,
+      distance: inputValue,
+      regime: regime,
+    }
+    let rawResponse = await fetch('http://172.20.10.2:3000/users/addTypeJob', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendTypeJobProfil)
+    })
+
+    await rawResponse.json()
+    props.navigation.navigate('WellDonePage')
   }
 
   return (
