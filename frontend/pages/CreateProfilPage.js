@@ -18,6 +18,21 @@ export default function CreateProfilPage(props) {
   const [image, setImage] = useState(null);
   const [urlProfilePic, setUrlProfilePic] = useState('');
 
+  useEffect(() => {  
+    ( () => {
+      AsyncStorage.getItem("email", function(error, data) {
+        setEmailStorage(data)
+       });
+       AsyncStorage.getItem("token", function(error, data) {
+        setTokenStorage(data)
+       });
+
+       AsyncStorage.getItem("password", function(error, data) {
+        setPasswordStorage(data)
+       });
+    })();
+  }, []);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -25,8 +40,6 @@ export default function CreateProfilPage(props) {
       aspect: [3, 3],
       quality: 1,
     });
-
-    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -54,36 +67,8 @@ export default function CreateProfilPage(props) {
     imageProfile = <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius:150 }} />
   }
 
-
-  useEffect(() => {  
-    ( () => {
-      AsyncStorage.getItem("email", function(error, data) {
-        setEmailStorage(data)
-       });
-       AsyncStorage.getItem("token", function(error, data) {
-        setTokenStorage(data)
-       });
-
-       AsyncStorage.getItem("password", function(error, data) {
-        setPasswordStorage(data)
-       });
-    })();
-  }, []);
-
-
   const onSubmitClick = async () => {
     if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3, bio.length >= 5){
-
-      // AsyncStorage.getItem("email", function(error, data) {
-      //   setEmailStorage(data)
-      //  });
-      //  AsyncStorage.getItem("token", function(error, data) {
-      //   setTokenStorage(data)
-      //  });
-
-      //  AsyncStorage.getItem("password", function(error, data) {
-      //   setPasswordStorage(data)
-      //  });
 
       let sendProfile = {
         firstName: firstName,
@@ -105,6 +90,8 @@ export default function CreateProfilPage(props) {
       let response = await rawResponse.json()
       console.log(response);
       AsyncStorage.setItem("id", response.id)
+      AsyncStorage.setItem("firstName", response.firstName)
+
 
       AsyncStorage.removeItem('password')
       props.navigation.navigate('AddCVPage')
