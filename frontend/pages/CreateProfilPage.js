@@ -91,7 +91,7 @@ export default function CreateProfilPage(props) {
       console.log(response);
       AsyncStorage.setItem("id", response.id)
       AsyncStorage.setItem("firstName", response.firstName)
-
+      AsyncStorage.setItem("avatar", response.avatar)
 
       AsyncStorage.removeItem('password')
       props.navigation.navigate('AddCVPage')

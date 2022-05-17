@@ -8,7 +8,6 @@ export default function SigninPage(props) {
   let [email, setEmail] =  useState("");
   let [password, setPassword] =  useState("");
   let [errorMessage, setErrorMessage] = useState("");
-  let [isError, setIsError] = useState(false);
 
   const onSendClick = async() => {
     if(email.length > 5 && email.match(/\@/i) && email.match(/\./i) && password.length > 8){
@@ -20,13 +19,14 @@ export default function SigninPage(props) {
         body: JSON.stringify(sendEmail)
       })
 
-      let response = await rawResponse.json()
-
+      let response = await rawResponse.json();
+      
       if(response.id){
         setErrorMessage("");
         AsyncStorage.setItem("email", email);
         AsyncStorage.setItem("id", response.id);
         AsyncStorage.setItem("firstName", response.firstName);
+        AsyncStorage.setItem("avatar", response.avatar);
         props.navigation.navigate('HomePage')
       }else {
         setErrorMessage(response)
