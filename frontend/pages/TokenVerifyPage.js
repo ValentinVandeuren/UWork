@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,11 +16,16 @@ export default function TokenVerifyPage(props) {
       }
      });
   }
+
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 20 : 0
+
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
       <Text style={styles.textDescription}>Verfify your email {"\n"}address.</Text>
       <Text style={styles.textTokenInsert}>Insert your token!</Text>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+      <View style={{alignItems:'center', width:450}}>
       <TextInput
         style={styles.input}
         placeholder="123-ABC"
@@ -34,6 +39,8 @@ export default function TokenVerifyPage(props) {
       >
         <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Let's go!</Text>
       </TouchableOpacity>
+      </View>
+      </KeyboardAvoidingView>
     </View>
   )
 }

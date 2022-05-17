@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image  } from 'react-native'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,6 +16,7 @@ export default function CreateProfilPage(props) {
   const [tokenStorage, setTokenStorage] = useState('');
   const [passwordStorage, setPasswordStorage] = useState('');
   const [image, setImage] = useState(null);
+  const [urlProfilePic, setUrlProfilePic] = useState('');
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -25,10 +26,24 @@ export default function CreateProfilPage(props) {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
+      var data = new FormData();
+               
+      data.append('avatar', {
+          uri: result.uri,
+          type: 'image/jpeg',
+          name: 'user_avatar.jpg',
+       });
+       var rawResponse = await fetch('http://172.20.10.5:3000/users/uploalProfilePicture', {
+           method: 'POST',
+           body: data
+       })
+       var response = await rawResponse.json()
+       console.log(response.resultCloudinary.url);
+       setUrlProfilePic(response.resultCloudinary.url)
     }
   };
 
@@ -39,9 +54,9 @@ export default function CreateProfilPage(props) {
     imageProfile = <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius:150 }} />
   }
 
-  const onSubmitClick = async () => {
-    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3, bio.length >= 5){
 
+  useEffect(() => {  
+    ( () => {
       AsyncStorage.getItem("email", function(error, data) {
         setEmailStorage(data)
        });
@@ -52,11 +67,28 @@ export default function CreateProfilPage(props) {
        AsyncStorage.getItem("password", function(error, data) {
         setPasswordStorage(data)
        });
+    })();
+  }, []);
+
+
+  const onSubmitClick = async () => {
+    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3, bio.length >= 5){
+
+      // AsyncStorage.getItem("email", function(error, data) {
+      //   setEmailStorage(data)
+      //  });
+      //  AsyncStorage.getItem("token", function(error, data) {
+      //   setTokenStorage(data)
+      //  });
+
+      //  AsyncStorage.getItem("password", function(error, data) {
+      //   setPasswordStorage(data)
+      //  });
 
       let sendProfile = {
         firstName: firstName,
         lastName: lastName,
-        avatar: '../assets/logo.png',
+        avatar: urlProfilePic,
         age: age,
         city: city,
         bio: bio,

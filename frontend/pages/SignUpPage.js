@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -45,8 +45,11 @@ export default function SignUpPage(props) {
     }
   }
 
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 20 : 0
+
   return (
     <View style={styles.container}>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
       <View style={styles.containerTop}>
         <Ionicons
           name={'chevron-back-outline'}
@@ -62,28 +65,35 @@ export default function SignUpPage(props) {
       </View>
       <Text style={styles.textDescription}>The dream job platform, {"\n"}on a global scale.</Text>
       <Text style={styles.textSignUp}>Let's sign-up!</Text>
+      <View style={{alignItems:'center'}}>
       <TextInput
         style={styles.input}
         placeholder="Email"
         onChangeText={(value) => setEmail(value)}
         value={email}
+        autoCapitalize = 'none'
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         onChangeText={(value) => setPassword(value)}
         value={password}
+        secureTextEntry={true}
+        autoCapitalize = 'none'
       />
       <Text style={(isError === true)? styles.errorMessageStyle: {display: 'none'}}>{errorMessage}</Text>
+      
       <TouchableOpacity
         style={styles.button}
         // onPress={() => props.navigation.navigate('TokenVerifyPage')}
         onPress={() => onSendClick()}
-      >
+        >
       <Text
         style={{color:"#fff", fontSize:20, fontWeight:'500'}}
-      >Let's go!</Text>
+        >Let's go!</Text>
       </TouchableOpacity>
+        </View>
+        </KeyboardAvoidingView>
       <Text style={styles.lineOr}>──────────   <Text style={styles.textOr}> Or </Text>   ──────────</Text>
       <View style={styles.rowLogo}>
         <Image
@@ -116,8 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: 150,
     width: "100%",
-    // backgroundColor: "red",
-    marginTop: 60
+    marginTop: 60,
   },
   returnButton: {
     marginLeft: 10,
@@ -139,6 +148,7 @@ const styles = StyleSheet.create({
     color: "#7791DE",
     fontSize: 25,
     fontWeight: "500",
+    textAlign: 'center'
   },
   input: {
     marginTop: 20,
@@ -146,10 +156,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     backgroundColor: "#FFF",
     borderRadius: 30,
-    width: "80%",
+    width: "70%",
     height: 50,
     textAlign: "center",
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
