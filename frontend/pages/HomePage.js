@@ -89,18 +89,18 @@ export default function HomePage(props) {
               style={styles.avatar}
             />
           </TouchableOpacity>
-          <Ionicons
-            name={'calendar'}
-            size={35} color={'#B9B9B9'}
-            style={styles.returnButton}
-            onPress={() => props.navigation.navigate('HomePage')}
-          />
-          <Ionicons
-            name={'paper-plane'}
-            size={35} color={'#B9B9B9'}
-            style={styles.chatIcon}
-            onPress={() => props.navigation.navigate('HomePage')}
-          />
+          <TouchableOpacity>
+            <Image
+              source={require('../assets/button/calendar-gray.png')}
+              style={styles.navbarButton}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={require('../assets/button/send-gray.png')}
+              style={styles.navbarButtonChat}
+            />
+          </TouchableOpacity>
         </View>
         <Text style={styles.title}>Would U like to do this job?</Text>
         {annonceList.map((annonce,i) => (
@@ -208,6 +208,15 @@ const styles = StyleSheet.create({
     width: 50,
     borderRadius: 30,
     marginLeft: 30,
+  },
+  navbarButton: {
+    height: 40,
+    width: 40,
+  },
+  navbarButtonChat: {
+    height: 40,
+    width: 40,
+    marginRight: 30,
   },
   chatIcon: {
     marginRight: 30,
