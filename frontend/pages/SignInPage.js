@@ -13,7 +13,7 @@ export default function SigninPage(props) {
     if(email.length > 5 && email.match(/\@/i) && email.match(/\./i) && password.length > 8){
 
       let sendEmail = {email: email, password: password}
-      let rawResponse = await fetch('http://172.20.10.5:3000/users/signin', {
+      let rawResponse = await fetch('http://172.20.10.2:3000/users/signin', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendEmail)
@@ -111,10 +111,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   containerTop: {
-    // flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     height: 150,
@@ -126,6 +124,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: 50,
+    marginRight: 50,
     width: 143,
     height: 100,
   },

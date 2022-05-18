@@ -32,9 +32,6 @@ export default function SignUpPage(props) {
       }else {
         setErrorMessage("Email already exists")
       }
-      // props.navigation.navigate('TokenVerifyPage')
-      // setErrorMessage("");
-      // setIsError(false);
     } else if(!email.match(/\@/i) && !email.match(/\./i)) {
       setErrorMessage("Email incorrect");
       setIsError(true);
@@ -117,10 +114,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   containerTop: {
-    // flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     height: 150,
@@ -132,6 +127,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: 50,
+    marginRight: 50,
     width: 143,
     height: 100,
   },

@@ -1,15 +1,24 @@
-import { View, StyleSheet, Image, Text, Button, TouchableOpacity } from 'react-native'
-import React from 'react'
-
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Image, Text, Button, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WelcomePage(props) {
+
+  useEffect(() => {  
+    ( () => {
+      AsyncStorage.getItem("id", function(error, data) {
+        if(data) props.navigation.navigate('HomePage')
+       });
+    })();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}/>
         <View style={{alignItems:'center', marginTop:125}}>
           <Text style={{fontSize: 30, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight: '600' }}>Welcome on Uwork 👋🏼</Text>
           <Text style={{fontSize: 25, textAlign:'center', paddingBottom: 30, color:"#000", fontWeight:'500' }}>Who are <Text style={{color:'#7791DE'}}>U</Text>?</Text>
-          <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('AddCVPage')}}>
+          <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('WelcomePage')}}>
             <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Company</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('SignUpPage')}}>
