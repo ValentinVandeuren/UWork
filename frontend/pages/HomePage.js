@@ -55,6 +55,11 @@ export default function HomePage(props) {
     setPageLoaded(true)
   }, []);
 
+  const onProfilClick = () => {
+    AsyncStorage.clear()
+    props.navigation.navigate('WelcomePage')
+  }
+
   const refuseAnnonce = () => {
     setAnnonceList((card) => card.filter((_, index) => index !== 0))
   }
@@ -78,11 +83,12 @@ export default function HomePage(props) {
     return (
       <View style={styles.container}>
         <View style={styles.navBar}>
-          <Image
-            source={{uri: avatar}}
-            style={styles.avatar}
-            onPress={() => props.navigation.navigate('HomePage')}
-          />
+          <TouchableOpacity onPress={() => onProfilClick()}>
+            <Image
+              source={{uri: avatar}}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
           <Ionicons
             name={'calendar'}
             size={35} color={'#B9B9B9'}
