@@ -23,6 +23,10 @@ let languageSchema = mongoose.Schema({
     description: String,
 });
 
+let oldAnnonceJobSchema = mongoose.Schema({
+    id: String,
+})
+
 let usersSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -33,6 +37,7 @@ let usersSchema = mongoose.Schema({
     email: String,
     password: String,
     token: String,
+    oldAnnonceJob: [oldAnnonceJobSchema],
     education: [educationSchema],
     language: [languageSchema],
     jobType: [jobTypeSchema]

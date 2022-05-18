@@ -32,7 +32,6 @@ router.post('/signin', async function(req, res, next) {
 router.post('/verifyEmail', async function(req, res, next) {
   let verify = await usersModel.findOne({ email: req.body.email });
 
-  console.log(verify);
   if(verify){
     res.json(verify.email);
   }else {
@@ -42,6 +41,11 @@ router.post('/verifyEmail', async function(req, res, next) {
   }
 })
 
+router.post('/oldAnnonceList', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.userId})
+
+  res.json(user.oldAnnonceJob)
+})
 
 router.post('/uploalProfilePicture', async function(req, res, next) {
   var pictureName = './tmp/'+uniqid()+'.jpg';
