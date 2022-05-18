@@ -17,6 +17,7 @@ export default function CreateProfilPage(props) {
   const [passwordStorage, setPasswordStorage] = useState('');
   const [image, setImage] = useState(null);
   const [urlProfilePic, setUrlProfilePic] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {  
     ( () => {
@@ -64,7 +65,7 @@ export default function CreateProfilPage(props) {
   if(!image){
     imageProfile = <Text style={{color:"#B9B9B9", fontSize:100, fontWeight:'100', paddingBottom:8}}>+</Text>
   } else {
-    imageProfile = <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius:150 }} />
+    imageProfile = <Image source={{ uri: image }} style={{ width: 152, height: 152, borderRadius:150 }} />
   }
 
   const onSubmitClick = async () => {
@@ -95,6 +96,8 @@ export default function CreateProfilPage(props) {
 
       AsyncStorage.removeItem('password')
       props.navigation.navigate('AddCVPage')
+    } else {
+      setErrorMessage("Please fill in all the fields")
     }
   }
 
@@ -105,6 +108,7 @@ export default function CreateProfilPage(props) {
           <TouchableOpacity style={styles.buttonAddPicture} onPress={pickImage}>
             {imageProfile}
           </TouchableOpacity>
+          <Text style={(errorMessage.length > 0)? styles.errorMessageStyle: {display: 'none'}}>{errorMessage}</Text>
           <TextInput
             style={styles.input}
             placeholder="First Name"
@@ -222,5 +226,9 @@ const styles = StyleSheet.create({
     alignItems:'center',
     backgroundColor:'#fff',
     marginTop: 100,
+  },
+  errorMessageStyle:{
+    color: "red",
+    marginBottom: 20,
   },
 });

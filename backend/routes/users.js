@@ -107,4 +107,27 @@ router.post('/addEducation', async function(req, res, next) {
   res.json("sending");
 })
 
+router.post('/addLanguage', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  user.language.push({
+    name: req.body.name,
+    level: req.body.level,
+    description: req.body.description,
+  })
+  await user.save();
+
+  res.json("sending");
+})
+
+router.post('/displayLanguage', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+  res.json(user.language);
+})
+
+router.post('/displayEducation', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+  res.json(user.education);
+})
+
 module.exports = router;

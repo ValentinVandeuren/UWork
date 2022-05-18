@@ -1,100 +1,180 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from "@react-navigation/native";
 
 
 export default function AddCVPage(props) {
 
   const [firstName, setFirstName] = useState('');
+  const [listEducation, setListEducation] = useState([]);
+  const [listLanguage, setListLanguage] = useState([]);
+  const [listExperience, setListExperience] = useState([]);
+  const [listLicence, setListLicence] = useState([]);
+  const [listSkills, setListSkills] = useState([]);
 
+  
+  const isFocused = useIsFocused();
+  
   useEffect(() => {  
-    ( () => {
       AsyncStorage.getItem("firstName", function(error, data) {
         setFirstName(data)
        });
-    })();
-  }, []);
-
+       AsyncStorage.getItem("id", function(error, data) {
+        if(isFocused){ 
+          const getLanguages = async () => {
+            console.log(data);
+            let sendID = {id: data}
+            let rawResponse = await fetch('http://172.20.10.5:3000/users/displayLanguage', {
+              method: 'POST',
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(sendID)
+            })
+            let response = await rawResponse.json()
+            setListLanguage(response)
+          }
+          const getEducation = async () => {
+            console.log(data);
+            let sendID = {id: data}
+            let rawResponse = await fetch('http://172.20.10.5:3000/users/displayEducation', {
+              method: 'POST',
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(sendID)
+            })
+            let response = await rawResponse.json()
+            setListEducation(response)
+          }
+          getLanguages()
+          getEducation()
+      }
+       });
+  }, [isFocused]);
+  
   return (
-    <View style={styles.container}>
+  <View style={styles.container}>
       <Text style={styles.title}>Nice to meet <Text style={{color:'#7791DE'}}>U</Text>, {"\n"}{firstName} 👋🏼</Text>
-      <Text style={{fontSize: 30, textAlign:'center', color:"#7791DE", fontWeight: '600' }}>Let's set up Ur profile!</Text>
+      <Text style={{fontSize: 25, textAlign:'center', color:"#7791DE", fontWeight: '600', marginBottom:10 }}>Let's set up Ur profile!</Text>
     <View style={styles.minicontainer}>
-      <View style={styles.card}>
-        <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
-          Education
-        </Text>
-        <View style={{flexDirection:'row', alignItems:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-          <Text style={styles.editText}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {props.navigation.navigate('AddEducationPage')}}>
-          <IonIcon name="add-outline" size={30} color="#7791DE"/>
-          </TouchableOpacity>
+      <ScrollView contentContainerStyle={{height:520, justifyContent:'center', paddingLeft:10, paddingRight:10}}>
+
+      <View style={{marginBottom:20}}>
+      <View style={(listEducation.length == 0) ? styles.card3 : styles.card}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+            Education
+          </Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
+            <Text style={styles.editText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {props.navigation.navigate('AddEducationPage')}}>
+            <IonIcon name="add-outline" size={30} color="#7791DE"/>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={(listEducation.length == 0) ? {display:'none'} : styles.card2}>
+        <ScrollView>
+        {listEducation.map((education, i) => (
+            <Text key={i} style={styles.undertitle}>{education.school}</Text>
+          ))}
+        </ScrollView>
         </View>
       </View>
       
-      <View style={styles.card}>
-        <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
-          Experience
-        </Text>
-        <View style={{flexDirection:'row', alignItems:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-          <Text style={styles.editText}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-          <IonIcon name="add-outline" size={30} color="#7791DE"/>
-          </TouchableOpacity>
+      <View style={{marginBottom:20}}>
+        <View style={(listExperience.length == 0) ? styles.card3 : styles.card}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+            Experience
+          </Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
+            <Text style={styles.editText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+            <IonIcon name="add-outline" size={30} color="#7791DE"/>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={(listExperience.length == 0) ? {display:'none'} : styles.card2}>
+        <ScrollView>
+          
+        </ScrollView>
         </View>
       </View>
 
-      <View style={styles.card}>
-        <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
-          Languages
-        </Text>
-        <View style={{flexDirection:'row', alignItems:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-          <Text style={styles.editText}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {props.navigation.navigate('AddLanguagePage')}}>
-          <IonIcon name="add-outline" size={30} color="#7791DE"/>
-          </TouchableOpacity>
+      <View style={{marginBottom:20}}>
+      <View style={(listLanguage.length == 0) ? styles.card3 : styles.card}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+            Language
+          </Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
+            <Text style={styles.editText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {props.navigation.navigate('AddLanguagePage')}}>
+            <IonIcon name="add-outline" size={30} color="#7791DE"/>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={(listLanguage.length == 0) ? {display:'none'} : styles.card2}>
+        <ScrollView>
+          {listLanguage.map((langue, i) => (
+            <Text key={i} style={styles.undertitle}>{langue.name}</Text>
+          ))}
+        </ScrollView>
         </View>
       </View>
 
-      <View style={styles.card}>
-        <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
-          Licence
-        </Text>
-        <View style={{flexDirection:'row', alignItems:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-          <Text style={styles.editText}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-          <IonIcon name="add-outline" size={30} color="#7791DE"/>
-          </TouchableOpacity>
+      <View style={{marginBottom:20}}>
+      <View style={(listLicence.length == 0) ? styles.card3 : styles.card}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+            Licence
+          </Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
+            <Text style={styles.editText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+            <IonIcon name="add-outline" size={30} color="#7791DE"/>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={(listLicence.length == 0) ? {display:'none'} : styles.card2}>
+        <ScrollView>
+          
+        </ScrollView>
         </View>
       </View>
 
-      <View style={styles.card}>
-        <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
-          Skills
-        </Text>
-        <View style={{flexDirection:'row', alignItems:'center'}}>
-          <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-          <Text style={styles.editText}>EDIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-          <IonIcon name="add-outline" size={30} color="#7791DE"/>
-          </TouchableOpacity>
+      <View style={{marginBottom:20}}>
+      <View style={(listSkills.length == 0) ? styles.card3 : styles.card}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+            Skills
+          </Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
+            <Text style={styles.editText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+            <IonIcon name="add-outline" size={30} color="#7791DE"/>
+            </TouchableOpacity>
+          </View>
         </View>
+        <View style={(listSkills.length == 0) ? {display:'none'} : styles.card2}>
+        <ScrollView>
+          
+        </ScrollView>
+        </View>
+      
       </View>
-      </View>
+
+    </ScrollView>
+    </View>
       <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('AddTypeJobPage')}}>
         <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Continue</Text>
       </TouchableOpacity>
-    </View>
+      
+  </View>
   )
 }
 
@@ -120,7 +200,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     shadowOffset : { width: 0, height: 3 },
     color:"#fff",
-    marginBottom:10,
+    marginBottom:20,
     height:50,
     width: 200,
     justifyContent:"center",
@@ -131,7 +211,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     color:"#000",
     fontWeight: '600',
-    marginBottom: 50    
+    marginBottom: 20    
   },
   input: {
     marginBottom: 20,
@@ -178,9 +258,50 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 10,
     alignItems: 'center',
-    marginBottom: 30,
+    // marginBottom: 30,
     fontWeight: "500",
-    borderRadius: 15,
+    // borderRadius: 15,
+    borderTopEndRadius:15,
+    borderTopStartRadius:15,
+
+    height: 40,
+    textAlign: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3.84,
+    elevation: 9,
+  },
+  card2: {
+    backgroundColor: "#fff",
+    justifyContent: 'center',
+    paddingLeft: 10,
+    fontWeight: "500",
+    borderBottomEndRadius: 15,
+    borderBottomStartRadius: 15,
+    height: 65,
+    textAlign: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3.84,
+    elevation: 9,
+  },
+  card3: {
+    backgroundColor: "#fff",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 10,
+    paddingLeft: 10,
+    alignItems: 'center',
+    fontWeight: "500",
+    borderRadius:15,
     height: 50,
     textAlign: "center",
     shadowColor: "#000",
@@ -203,6 +324,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // backgroundColor:'red',
     width: "80%",
-
+  },
+  undertitle: {
+    paddingTop:1, 
+    paddingBottom: 1, 
+    fontSize:15, 
+    fontWeight:'500'
   }
 });

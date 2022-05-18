@@ -2,10 +2,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from 'rea
 import React, {useState, useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons } from '@expo/vector-icons';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function AddEducationPage(props) {
@@ -23,7 +20,7 @@ export default function AddEducationPage(props) {
   const [startDateToBDD, setStartDateToBDD] = useState();
   const [endDateToBDD, setEndDateToBDD] = useState();
 
-
+  const [errorMessage, setErrorMessage] = useState('');
 
 
   useEffect(() => {  
@@ -43,6 +40,7 @@ export default function AddEducationPage(props) {
   };
 
   const onSubmitClick = async () => {
+    if(school.length >= 1 && fieldstudy.length >= 1 && degree.length >= 1 && startDate.length >= 1, endDate.length >= 1 && description.length >= 1){
     let sendEducation = {
       id: userID,
       school: school,
@@ -60,6 +58,10 @@ export default function AddEducationPage(props) {
 
     await rawResponse.json()
     props.navigation.navigate('AddCVPage')
+    }
+    else {
+      setErrorMessage("Please fill in all the fields")
+    }
   }
 
   return (
@@ -72,6 +74,7 @@ export default function AddEducationPage(props) {
     />
     <View style={styles.inner}>
       <Text style={styles.title}>Add Education</Text>
+      <Text style={(errorMessage.length > 0)? styles.errorMessageStyle: {display: 'none'}}>{errorMessage}</Text>
       <TextInput
         style={styles.input}
         placeholder="School"
@@ -157,6 +160,7 @@ button1: {
   shadowRadius: 3.84,
   shadowOffset : { width: 0, height: 3 },
   color:"#fff",
+  // marginTop:20,
   marginBottom:10,
   height:50,
   width: 200,
@@ -168,7 +172,7 @@ title: {
   textAlign:'center',
   color:"#7791DE",
   fontWeight: '600',
-  marginBottom: 50    
+  marginBottom: 20    
 },
 input: {
   marginBottom: 20,
@@ -261,11 +265,11 @@ minicontainer: {
 inner: {
   alignItems:'center',
   backgroundColor:'#fff',
-  marginTop: 82,
+  marginTop: 40,
   // backgroundColor:'red'
 },
 returnButton: {
-  marginLeft: 10,
+  marginLeft: 20,
   marginTop:100,
 },
 inputDateBlack: {
@@ -280,5 +284,9 @@ inputDateGray: {
   fontWeight:'500',
   textAlign:'center',
   paddingTop:12
-}
+},
+errorMessageStyle:{
+  color: "red",
+  marginBottom: 20,
+},
 });
