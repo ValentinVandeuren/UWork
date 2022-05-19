@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@expo/ngrok": "^4.1.0",
     "cloudinary": "^1.30.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
