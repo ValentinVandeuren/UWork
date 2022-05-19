@@ -25,7 +25,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false, gestureEnabled: false, /*animationEnabled: false*/}}
+        screenOptions={{headerShown: false, /*gestureEnabled: false, /*animationEnabled: false*/}}
       >
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="SignInPage" component={SignInPage} />
