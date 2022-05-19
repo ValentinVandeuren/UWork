@@ -95,7 +95,7 @@ export default function HomePage(props) {
               style={styles.navbarButton}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate('ConversationPage')}>
             <Image
               source={require('../assets/button/send-gray.png')}
               style={styles.navbarButtonChat}
