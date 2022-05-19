@@ -13,7 +13,7 @@ export default function SigninPage(props) {
     if(email.length > 5 && email.match(/\@/i) && email.match(/\./i) && password.length > 8){
 
       let sendEmail = {email: email, password: password}
-      let rawResponse = await fetch('http://172.20.10.2:3000/users/signin', {
+      let rawResponse = await fetch('http://192.168.1.6:3000/users/signin', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendEmail)

@@ -50,7 +50,7 @@ export default function AddEducationPage(props) {
       end: endDateToBDD,
       description: description,
     }
-    let rawResponse = await fetch('http://172.20.10.2:3000/users/addEducation', {
+    let rawResponse = await fetch('http://192.168.1.6:3000/users/addEducation', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendEducation)
@@ -137,6 +137,8 @@ export default function AddEducationPage(props) {
         placeholder="Description"
         onChangeText={(value) => setDescription(value)}
         value={description}
+        multiline={true}
+
       />
         <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick()}>
           <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Save</Text>
@@ -193,7 +195,10 @@ input: {
   elevation: 9,
 },
 input2: {
-  marginBottom: 30,
+  paddingLeft:15,
+  paddingRight:15,
+  paddingTop:15,
+  marginBottom: 20,
   fontSize: 20,
   fontWeight: "500",
   backgroundColor: "#FFF",
@@ -201,8 +206,6 @@ input2: {
   width: "80%",
   height: 140,
   textAlign: 'center',
-  paddingBottom:100,
-  alignItems:'flex-start',
   shadowColor: "#000",
   shadowOffset: {
     width: 0,

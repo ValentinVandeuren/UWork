@@ -51,7 +51,7 @@ export default function CreateProfilPage(props) {
           type: 'image/jpeg',
           name: 'user_avatar.jpg',
        });
-       var rawResponse = await fetch('http://172.20.10.2:3000/users/uploalProfilePicture', {
+       var rawResponse = await fetch('http://192.168.1.6:3000/users/uploalProfilePicture', {
            method: 'POST',
            body: data
        })
@@ -82,7 +82,7 @@ export default function CreateProfilPage(props) {
         password: passwordStorage,
         token: tokenStorage,
       }
-      let rawResponse = await fetch('http://172.20.10.2:3000/users/createProfile', {
+      let rawResponse = await fetch('http://192.168.1.6:3000/users/createProfile', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendProfile)
@@ -135,6 +135,8 @@ export default function CreateProfilPage(props) {
             style={styles.input2}
             placeholder="Bio"
             onChangeText={(value) => setBio(value)}
+            multiline={true}
+
           />
             <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick() }>
               <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Continue</Text>
@@ -143,7 +145,6 @@ export default function CreateProfilPage(props) {
       </KeyboardAwareScrollView>
   )
 }
-
 
 const styles = StyleSheet.create({
   button1: {
@@ -203,6 +204,9 @@ const styles = StyleSheet.create({
     elevation: 9,
   },
   input2: {
+    paddingLeft:15,
+    paddingRight:15,
+    paddingTop:15,
     marginBottom: 20,
     fontSize: 20,
     fontWeight: "500",
@@ -211,8 +215,6 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 140,
     textAlign: 'center',
-    paddingBottom:100,
-    alignItems:'flex-start',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

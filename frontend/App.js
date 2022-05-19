@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 const Stack = createStackNavigator();
 
@@ -25,7 +27,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false, gestureEnabled: false, /*animationEnabled: false*/}}
+        screenOptions={{headerShown: false, /*gestureEnabled: false, /*animationEnabled: false*/}}
       >
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="SignInPage" component={SignInPage} />
