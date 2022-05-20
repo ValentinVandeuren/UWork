@@ -80,14 +80,18 @@ export default function CallendarPage(props) {
       </View>
         <View style={styles.calendarContainer}>
         <Calendar
+          selectedColor={'red'}
           style={{
             marginTop: 20,
             height: 375,
             width: 400,
           }}
-        markedDates={{
-          '2022-05-16': {marked: true, dotColor: '#7791DE'},
-          '2022-05-18': {marked: true, dotColor: '#7791DE'},
+          enableSwipeMonths={true}
+          markedDates={{
+          // '2022-05-26': {selected: true, selectedColor: '#7791DE'},
+          '2022-05-22': {marked: true, dotColor: '#7791DE'},
+          '2022-05-26': {marked: true, dotColor: '#7791DE'},
+          '2022-05-31': {marked: true, dotColor: '#7791DE'},
         }}
       />
         </View>
@@ -99,7 +103,7 @@ export default function CallendarPage(props) {
           <View style={styles.containerEvent}>
             <View>
               <View style={styles.dateEventBadge}>
-                <Text style={styles.dateEvent}>29</Text>
+                <Text style={styles.dateEvent}>22</Text>
               </View>
             </View>
             <View>
@@ -112,26 +116,26 @@ export default function CallendarPage(props) {
           <View style={styles.containerEvent}>
             <View>
               <View style={styles.dateEventBadge}>
-                <Text style={styles.dateEvent}>29</Text>
+                <Text style={styles.dateEvent}>26</Text>
               </View>
             </View>
             <View>
-              <Text style={styles.titleEvent}>Interview</Text>
-              <Text style={styles.subTitleEvent}>Cowboy</Text>
-              <Text style={styles.subTitleEvent}>12:30pm</Text>
+              <Text style={styles.titleEvent}>Call</Text>
+              <Text style={styles.subTitleEvent}>Facebook</Text>
+              <Text style={styles.subTitleEvent}>10:30am</Text>
             </View>
           
           </View>
           <View style={styles.containerEvent}>
             <View>
               <View style={styles.dateEventBadge}>
-                <Text style={styles.dateEvent}>29</Text>
+                <Text style={styles.dateEvent}>31</Text>
               </View>
             </View>
             <View>
-              <Text style={styles.titleEvent}>Interview</Text>
-              <Text style={styles.subTitleEvent}>Cowboy</Text>
-              <Text style={styles.subTitleEvent}>12:30pm</Text>
+              <Text style={styles.titleEvent}>Technical test</Text>
+              <Text style={styles.subTitleEvent}>Apple</Text>
+              <Text style={styles.subTitleEvent}>11:30am</Text>
             </View>
           
           </View>
@@ -199,7 +203,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize:15,
     fontWeight:"500",
-    marginBottom:2
+    marginBottom:4
   },
   navBar: {
     marginTop: 75,
