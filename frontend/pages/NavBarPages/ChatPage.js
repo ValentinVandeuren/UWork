@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Image, TouchableOpacity} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ChatPage() {
+export default function ChatPage(props) {
   let [messageInput, setMessageInput] = useState("");
   let [otherAvatar, setOtherAvatar] = useState();
   let [seeHourSend, setSeeHourSend] = useState(false);
