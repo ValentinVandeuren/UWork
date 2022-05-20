@@ -156,4 +156,13 @@ router.post('/modifyProfile', async function(req, res, next) {
   res.json(user);
 })
 
+router.post('/foundUserInfo', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id})
+
+  let userAvatar = user.avatar;
+  let userName = user.firstName;
+
+  res.json({userAvatar, userName})
+})
+
 module.exports = router;
