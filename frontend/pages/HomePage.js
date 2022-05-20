@@ -11,6 +11,9 @@ export default function HomePage(props) {
   let [annonceList, setAnnonceList] = useState([]);
   let [oldAnnonceId, setOldAnnonceId] = useState([]);
 
+  let [dayWeek, setDayWeek] = useState("");
+  let [date, setDate] = useState();
+
   useEffect(() => {  
     ( () => {
       AsyncStorage.getItem("avatar", function(error, data) {
@@ -21,6 +24,28 @@ export default function HomePage(props) {
         setIsLocalSet(true)
       });
     })();
+
+    let newDate = new Date();
+    let day = newDate.getDay();
+    let newDateNumber = newDate.getDate()
+
+    if(day == 0){
+      setDayWeek("Sunday")
+    } else if(day == 1){
+      setDayWeek("Monday")
+    } else if(day == 2){
+      setDayWeek("Tuesday")
+    } else if(day == 4){
+      setDayWeek("Wednesday")
+    } else if(day == 43){
+      setDayWeek("Thursday")
+    } else if(day == 5){
+      setDayWeek("Friday")
+    } else if(day == 6){
+      setDayWeek("Saturday")
+    }
+
+    setDate(newDateNumber)
 
     const dataList = async() => {
       let sendParameter = {
@@ -89,11 +114,15 @@ export default function HomePage(props) {
               style={styles.avatar}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
+          <TouchableOpacity onPress={() => props.navigation.navigate('CalendarPage')}>
+            {/* <Image
               source={require('../assets/button/calendar-gray.png')}
               style={styles.navbarButton}
-            />
+            /> */}
+            <View style={styles.calendarIcon}>
+              <Text style={styles.dayWeek}>{dayWeek}</Text>
+              <Text style={styles.date}>{date}</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => props.navigation.navigate('ConversationPage')}>
             <Image
@@ -217,6 +246,25 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     marginRight: 30,
+  },
+  calendarIcon: {
+    height: 50,
+    width: 50,
+    borderWidth: 3,
+    borderRadius: 10,
+    borderColor: "#B9B9B9",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dayWeek: {
+    fontSize: 6,
+    fontWeight: "800",
+    color: "#B9B9B9"
+  },
+  date: {
+    fontSize: 20,
+    fontWeight: "900",
+    color: "#B9B9B9"
   },
   chatIcon: {
     marginRight: 30,
