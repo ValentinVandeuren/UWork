@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
-export default function ConversationPage(props) {
-    let [avatar, setAvatar] = useState();
+export function ConversationPage(props) {
     let [userId, setUserId] = useState("");
     let [searchInput, setSearchInput] = useState("");
     let [conversationList, setConversationList] = useState([]);
@@ -15,24 +15,38 @@ export default function ConversationPage(props) {
     let [otherAvatar, setOtherAvatar] = useState([]);
     let [otherUserName, setOtherUserName] = useState([]);
 
+    let [dayWeek, setDayWeek] = useState("");
+    let [date, setDate] = useState();
+
     useEffect(() => {  
         ( () => {
           AsyncStorage.getItem("id", function(error, data) {
             setUserId(data);
-            const getProfile = async () => {
-                let sendID = {id: data}
-                let rawResponse = await fetch('http://172.20.10.2:3000/users/displayProfile', {
-                  method: 'POST',
-                  headers: {"Content-Type": "application/json"},
-                  body: JSON.stringify(sendID)
-                })
-                let response = await rawResponse.json()
-                setAvatar(response.avatar)
-            }
-            getProfile()
             setUserIsSet(true);
           });
         })();
+
+        let newDate = new Date();
+        let day = newDate.getDay();
+        let newDateNumber = newDate.getDate()
+
+        if(day == 0){
+        setDayWeek("Sunday")
+        } else if(day === 1){
+        setDayWeek("Monday")
+        } else if(day === 2){
+        setDayWeek("Tuesday")
+        } else if(day === 3){
+        setDayWeek("Wednesday")
+        } else if(day === 43){
+        setDayWeek("Thursday")
+        } else if(day === 5){
+        setDayWeek("Friday")
+        } else if(day === 6){
+        setDayWeek("Saturday")
+        }
+
+        setDate(newDateNumber)
     }, []);
 
     if(userisSet){
@@ -100,20 +114,25 @@ export default function ConversationPage(props) {
         setUserIsSet(false);
     }
 
+    const onConversationClick = async (conversationId) => {
+        props.sendConversationId(conversationId);
+        props.navigation.navigate('ChatPage');
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.navBar}>
-                <TouchableOpacity onPress={() => onProfilClick()}>
+                <TouchableOpacity onPress={() => props.navigation.navigate('HomePage')}>
                     <Image
-                    source={{uri: avatar}}
-                    style={styles.avatar}
+                        source={require('../../assets/button/home-gray.png')}
+                        style={styles.homeIcon}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <Image
-                    source={require('../../assets/button/calendar-gray.png')}
-                    style={styles.navbarButton}
-                    />
+                <TouchableOpacity onPress={() => props.navigation.navigate('CalendarPage')}>
+                    <View style={styles.calendarIcon}>
+                        <Text style={styles.dayWeek}>{dayWeek}</Text>
+                        <Text style={styles.date}>{date}</Text>
+                    </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => props.navigation.navigate('ConversationPage')}>
                     <Image
@@ -134,7 +153,7 @@ export default function ConversationPage(props) {
                 {conversationList.map((conversation,i) => (
                     <TouchableOpacity
                         key={i}
-                        onPress={() => props.navigation.navigate('ChatPage')}
+                        onPress={() => onConversationClick(conversation._id)}
                         style={{alignItems: "center"}}
                     >
                         <View style={(i === 0)? {display: "none"}: styles.hr}/>
@@ -166,6 +185,17 @@ export default function ConversationPage(props) {
     )
 }
 
+function mapDispatchToProps(dispatch){
+    return {
+      sendConversationId: function(id){
+        dispatch ({type: "addconversationId", conversationId: id})
+      }
+    }
+}
+
+export default connect(null, mapDispatchToProps)
+(ConversationPage);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -180,10 +210,9 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "space-between"
     },
-    avatar: {
-      height: 50,
-      width: 50,
-      borderRadius: 30,
+    homeIcon: {
+      height: 40,
+      width: 40,
       marginLeft: 30,
     },
     navbarButton: {
@@ -194,6 +223,27 @@ const styles = StyleSheet.create({
       height: 40,
       width: 40,
       marginRight: 30,
+    },
+    calendarIcon: {
+      height: 50,
+      width: 50,
+      borderWidth: 3,
+      borderRadius: 10,
+      borderColor: "#B9B9B9",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    dayWeek: {
+      fontSize: 6.5,
+      fontWeight: "900",
+      color: "#B9B9B9",
+      textAlign:'center'
+    },
+    date: {
+      fontSize: 20,
+      fontWeight: "900",
+      color: "#B9B9B9",
+      textAlign:'center'
     },
     title: {
         fontSize: 30,

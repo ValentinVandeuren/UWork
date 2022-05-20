@@ -17,4 +17,11 @@ router.post('/foundConversation', async function(req, res, next) {
   res.json(listConversation)
 })
 
+router.get('/getChat/:id', async function(req, res, next) {
+  let conversation = await conversationModel.findOne({_id: req.params.id})
+  console.log(conversation);
+
+  res.json(conversation)
+})
+
 module.exports = router;

@@ -4,6 +4,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();
 
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+
+import conversationId from './reducers/conversation'
+const store = createStore(combineReducers({conversationId}))
+
 const Stack = createStackNavigator();
 
 import WelcomePage from "./pages/WelcomePage";
@@ -26,27 +32,29 @@ import ChatPage from "./pages/NavBarPages/ChatPage";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{headerShown: false, /*gestureEnabled: false, animationEnabled: false*/}}
-      >
-        <Stack.Screen name="WelcomePage" component={WelcomePage} />
-        <Stack.Screen name="SignInPage" component={SignInPage} />
-        <Stack.Screen name="SignUpPage" component={SignUpPage} />
-        <Stack.Screen name="TokenVerifyPage" component={TokenVerifyPage} />
-        <Stack.Screen name="CreateProfilPage" component={CreateProfilPage} />
-        <Stack.Screen name="AddCVPage" component={AddCVPage} />
-        <Stack.Screen name="AddEducationPage" component={AddEducationPage} />
-        <Stack.Screen name="AddLanguagePage" component={AddLanguagePage} />
-        <Stack.Screen name="AddTypeJobPage" component={AddTypeJobPage} />
-        <Stack.Screen name="WellDonePage" component={WellDonePage} />
-        <Stack.Screen name="HomePage" component={HomePage} />
-        <Stack.Screen name="MessagePage" component={MessagePage} />
-        <Stack.Screen name="ProfilPage" component={ProfilPage} />
-        <Stack.Screen name="CalendarPage" component={CalendarPage} />
-        <Stack.Screen name="ConversationPage" component={ConversationPage} />
-        <Stack.Screen name="ChatPage" component={ChatPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{headerShown: false, /*gestureEnabled: false, animationEnabled: false*/}}
+        >
+          <Stack.Screen name="WelcomePage" component={WelcomePage} />
+          <Stack.Screen name="SignInPage" component={SignInPage} />
+          <Stack.Screen name="SignUpPage" component={SignUpPage} />
+          <Stack.Screen name="TokenVerifyPage" component={TokenVerifyPage} />
+          <Stack.Screen name="CreateProfilPage" component={CreateProfilPage} />
+          <Stack.Screen name="AddCVPage" component={AddCVPage} />
+          <Stack.Screen name="AddEducationPage" component={AddEducationPage} />
+          <Stack.Screen name="AddLanguagePage" component={AddLanguagePage} />
+          <Stack.Screen name="AddTypeJobPage" component={AddTypeJobPage} />
+          <Stack.Screen name="WellDonePage" component={WellDonePage} />
+          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="MessagePage" component={MessagePage} />
+          <Stack.Screen name="ProfilPage" component={ProfilPage} />
+          <Stack.Screen name="CalendarPage" component={CalendarPage} />
+          <Stack.Screen name="ConversationPage" component={ConversationPage} />
+          <Stack.Screen name="ChatPage" component={ChatPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
