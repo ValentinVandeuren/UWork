@@ -45,10 +45,10 @@ export default function ConversationPage(props) {
             let sendUser = {
                 id: userId
             }
-            let rawResponse = await fetch('http://172.20.10.2:3000/chat/foundConversation', {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(sendUser)
+            let rawResponse = await fetch('https://uworkapp.herokuapp.com/chat/foundConversation', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(sendUser)
             })
         
             let response = await rawResponse.json()
