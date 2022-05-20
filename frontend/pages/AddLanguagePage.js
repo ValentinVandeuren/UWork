@@ -29,7 +29,7 @@ export default function AddLanguagePage(props) {
       level: level,
       description: description,
     }
-    let rawResponse = await fetch('http://192.168.1.6:3000/users/addLanguage', {
+    let rawResponse = await fetch('http://172.20.10.5:3000/users/addLanguage', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendLanguage)
