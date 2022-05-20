@@ -30,7 +30,7 @@ export default function ConversationPage(props) {
             let sendUser = {
             id: userId
             }
-            let rawResponse = await fetch('http://172.20.10.2:3000/chat/foundConversation', {
+            let rawResponse = await fetch('http://172.20.10.5:3000/chat/foundConversation', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendUser)
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "90%",
         alignItems: 'center',
-        backgroundColor: "red"
+        // backgroundColor: "red"
     },
     hr: {
         height: 1,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "space-between",
         marginTop: 10,
-        backgroundColor: "#000"
+        // backgroundColor: "#000"
     },
     leftConversationCard: {
         flexDirection: "row",

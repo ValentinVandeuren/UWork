@@ -20,7 +20,7 @@ export default function ProfilPage(props) {
   const [bio, setBio] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [urlProfilePic, setUrlProfilePic] = useState('');
+  const [urlProfilePic, setUrlProfilePic] = useState();
   const [image, setImage] = useState(null);
   const [listEducation, setListEducation] = useState([]);
   const [listLanguage, setListLanguage] = useState([]);
@@ -42,7 +42,7 @@ export default function ProfilPage(props) {
          if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://192.168.1.6:3000/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -96,7 +96,7 @@ export default function ProfilPage(props) {
           type: 'image/jpeg',
           name: 'user_avatar.jpg',
        });
-       var rawResponse = await fetch('http://192.168.1.6:3000/users/uploalProfilePicture', {
+       var rawResponse = await fetch('http://172.20.10.5:3000/users/uploalProfilePicture', {
            method: 'POST',
            body: data
        })
@@ -133,7 +133,7 @@ export default function ProfilPage(props) {
         sector: jobSector,
       }
     }
-    let rawResponse = await fetch('http://192.168.1.6:3000/users/modifyProfile', {
+    let rawResponse = await fetch('http://172.20.10.5:3000/users/modifyProfile', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendNewProfile)

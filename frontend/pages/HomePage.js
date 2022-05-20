@@ -24,7 +24,7 @@ export default function HomePage(props) {
         if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://192.168.1.6:3000/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -45,17 +45,17 @@ export default function HomePage(props) {
 
     if(day == 0){
       setDayWeek("Sunday")
-    } else if(day == 1){
+    } else if(day === 1){
       setDayWeek("Monday")
-    } else if(day == 2){
+    } else if(day === 2){
       setDayWeek("Tuesday")
-    } else if(day == 4){
+    } else if(day === 3){
       setDayWeek("Wednesday")
-    } else if(day == 43){
+    } else if(day === 43){
       setDayWeek("Thursday")
-    } else if(day == 5){
+    } else if(day === 5){
       setDayWeek("Friday")
-    } else if(day == 6){
+    } else if(day === 6){
       setDayWeek("Saturday")
     }
 
@@ -65,7 +65,7 @@ export default function HomePage(props) {
       let sendParameter = {
         distance: 50
       }
-      let rawResponse = await fetch('http://192.168.1.6:3000/annonceJob', {
+      let rawResponse = await fetch('http://172.20.10.5:3000/annonceJob', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendParameter)
@@ -80,7 +80,7 @@ export default function HomePage(props) {
       let sendUserId = {
         userId: userId
       }
-      let rawResponse = await fetch('http://192.168.1.6:3000/users/oldAnnonceList', {
+      let rawResponse = await fetch('http://172.20.10.5:3000/users/oldAnnonceList', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendUserId)
@@ -271,14 +271,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   dayWeek: {
-    fontSize: 6,
-    fontWeight: "800",
-    color: "#B9B9B9"
+    fontSize: 6.5,
+    fontWeight: "900",
+    color: "#B9B9B9",
+    textAlign:'center'
   },
   date: {
     fontSize: 20,
     fontWeight: "900",
-    color: "#B9B9B9"
+    color: "#B9B9B9",
+    textAlign:'center'
   },
   chatIcon: {
     marginRight: 30,
