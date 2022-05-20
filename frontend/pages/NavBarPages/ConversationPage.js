@@ -2,24 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import { useIsFocused } from "@react-navigation/native";
 
 export default function ConversationPage(props) {
     let [avatar, setAvatar] = useState();
     let [userId, setUserId] = useState("");
     let [searchInput, setSearchInput] = useState("");
     let [conversationList, setConversationList] = useState([]);
-    let [hour, setHour] = useState([]);
     let [lastMessage, setLastMessage] = useState([]);
     let [userisSet, setUserIsSet] = useState(false);
+    
+    let [hour, setHour] = useState([]);
+    let [otherAvatar, setOtherAvatar] = useState([]);
+    let [otherUserName, setOtherUserName] = useState([]);
 
     useEffect(() => {  
         ( () => {
-          AsyncStorage.getItem("avatar", function(error, data) {
-            setAvatar(data)
-          });
           AsyncStorage.getItem("id", function(error, data) {
             setUserId(data);
+            const getProfile = async () => {
+                let sendID = {id: data}
+                let rawResponse = await fetch('http://172.20.10.2:3000/users/displayProfile', {
+                  method: 'POST',
+                  headers: {"Content-Type": "application/json"},
+                  body: JSON.stringify(sendID)
+                })
+                let response = await rawResponse.json()
+                setAvatar(response.avatar)
+            }
+            getProfile()
             setUserIsSet(true);
           });
         })();
@@ -27,30 +37,65 @@ export default function ConversationPage(props) {
 
     if(userisSet){
         const dataConversation = async() => {
+            let listhour = [];
+            let userNameList = [];
+            let otherAvatarList = [];
+            let lastMessageList = [];
+
             let sendUser = {
-            id: userId
+                id: userId
             }
-            let rawResponse = await fetch('http://172.20.10.5:3000/chat/foundConversation', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(sendUser)
+            let rawResponse = await fetch('http://172.20.10.2:3000/chat/foundConversation', {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(sendUser)
             })
         
             let response = await rawResponse.json()
             setConversationList(response)
 
-            for(let i=0; i<response.length; i++){
-                let lastItem = response[i].messages[response[i].messages.length -1]
-                let newDate = new Date(lastItem.date)
-                let hours = newDate.getHours();
-                let minutes = newDate.getMinutes();
-                let fullHour = `${hours}:${minutes}`;
-                setHour([...hour, fullHour]);
+            if(conversationList.length >=0){
+                for(let i=0; i<response.length; i++){
+                    let lastItem = response[i].messages[response[i].messages.length -1]
+                    let newDate = new Date(lastItem.date)
+                    let hours = newDate.getHours();
+                    let minutes = newDate.getMinutes();
+                    let fullHour = `${hours}:${minutes}`;
+                    listhour.push(fullHour)
+                }
+                setHour(listhour);
+
+                for(let i=0; i<response.length; i++){
+                    let sendUser = {
+                        id: (userId === response[i].employeeOwner) ?response[i].compagnyOwner : response[i].employeeOwner
+                    }
+                    let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(sendUser)
+                    })
+                
+                    let responseUserInfo = await rawResponseUserInfo.json()
+                    // console.log(response);
+                    userNameList.push(responseUserInfo.userName);
+                    otherAvatarList.push(responseUserInfo.userAvatar);
+                }
+                setOtherAvatar(otherAvatarList);
+                setOtherUserName(userNameList);
+
+                for(let i=0; i<response.length; i++){
+                    let lastItem = response[i].messages[response[i].messages.length -1].content
+                    if(lastItem.length > 20){
+                        // let newItem = lastItem.slice(0, 20);
+                        let newItem = lastItem.slice(0, 37) + "..."
+                        lastMessageList.push(newItem)
+                    }else {
+                        lastMessageList.push(lastItem)
+                    }
+                }
+                setLastMessage(lastMessageList)
             }
-            // for(let i=0; i<response.length; i++){
-            //     let lastItem = response[i].messages[response[i].messages.length -1].content
-            //     setLastMessage([...lastMessage, lastItem])
-            // }
+            
         }
         dataConversation();
         setUserIsSet(false);
@@ -88,17 +133,21 @@ export default function ConversationPage(props) {
             />
             <View style={styles.containerConversation}>
                 {conversationList.map((conversation,i) => (
-                    <TouchableOpacity key={i} onPress={() => props.navigation.navigate('ChatPage')}>
-                        <View style={styles.hr}/>
-                        <View style={styles.conversationCard}>
+                    <TouchableOpacity
+                        key={i}
+                        onPress={() => props.navigation.navigate('ChatPage')}
+                        style={{alignItems: "center"}}
+                    >
+                        <View style={(i === 0)? {display: "none"}: styles.hr}/>
+                        <View style={(i === 0)? styles.conversationCardTop: styles.conversationCard}>
                             <View style={styles.leftConversationCard}>
                                 <Image
-                                    source={{uri: avatar}}
+                                    source={{uri: otherAvatar[i]}}
                                     style={styles.avatarConversation}
                                 />
                                 <View style={styles.contentDescriptionCard}>
-                                    <Text style={styles.titleConversation}>{(userId === conversation.compagnyOwner)? conversation.employeeOwner: conversation.compagnyOwner}</Text>
-                                    <Text style={styles.contentConversation}>Hello Valentin, enchanté de faire votre ...</Text>
+                                    <Text style={styles.titleConversation}>{otherUserName[i]}</Text>
+                                    <Text style={styles.contentConversation}>{lastMessage[i]}</Text>
                                 </View>
                             </View>
                             <View style={{flexDirection: "row"}}>
@@ -161,34 +210,38 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         backgroundColor: "#EDEEF0",
         borderRadius: 10,
-        width: "90%",
+        width: 375,
         height: 40,
         paddingLeft: 30,
     },
     containerConversation: {
         flex: 1,
-        width: "90%",
+        width: 375,
         alignItems: 'center',
-        // backgroundColor: "red"
+
     },
     hr: {
         height: 1,
-        width: "90%",
+        width: 350,
         marginTop: 10,
         backgroundColor: "#C5C6CA",
         borderRadius: 5,
     },
     conversationCard: {
         flexDirection: "row",
-        width: "100%",
+        width: 375,
         justifyContent: "space-between",
         marginTop: 10,
-        // backgroundColor: "#000"
+    },
+    conversationCardTop: {
+        flexDirection: "row",
+        width: 375,
+        justifyContent: "space-between",
+        marginTop: 20,
     },
     leftConversationCard: {
         flexDirection: "row",
         margin: 0,
-        // backgroundColor: "#000"
     },
     avatarConversation: {
         height: 50,
