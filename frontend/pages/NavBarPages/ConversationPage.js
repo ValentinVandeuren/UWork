@@ -85,8 +85,7 @@ export default function ConversationPage(props) {
 
                 for(let i=0; i<response.length; i++){
                     let lastItem = response[i].messages[response[i].messages.length -1].content
-                    if(lastItem.length > 20){
-                        // let newItem = lastItem.slice(0, 20);
+                    if(lastItem.length > 37){
                         let newItem = lastItem.slice(0, 37) + "..."
                         lastMessageList.push(newItem)
                     }else {
