@@ -86,7 +86,7 @@ router.post('/addTypeJob', async function(req, res, next) {
     distance: req.body.distance,
     regime: req.body.regime,
   })
-  let userSaved = await user.save();
+  await user.save();
 
   res.json("sending");
 })
@@ -128,6 +128,32 @@ router.post('/displayLanguage', async function(req, res, next) {
 router.post('/displayEducation', async function(req, res, next) {
   let user = await usersModel.findOne({ _id: req.body.id })
   res.json(user.education);
+})
+
+router.post('/displayProfile', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+  res.json(user);
+})
+
+router.post('/modifyProfile', async function(req, res, next) {
+  let user = await usersModel.updateOne({ _id: req.body.id },{
+    firstName : req.body.firstName,
+    lastName : req.body.lastName,
+    avatar: req.body.avatar,
+    age : req.body.age,
+    bio : req.body.bio,
+    password : req.body.password,
+    city : req.body.city,
+    email : req.body.email,
+    jobType: {
+      contract: req.body.jobType.contract,
+      city: req.body.jobType.city,
+      distance: req.body.jobType.distance,
+      regime: req.body.jobType.regime,
+      sector: req.body.jobType.sector,
+    }
+    })
+  res.json(user);
 })
 
 module.exports = router;

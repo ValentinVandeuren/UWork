@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused } from "@react-navigation/native";
+
 
 export default function HomePage(props) {
+  const isFocused = useIsFocused();
+
   let [avatar, setAvatar] = useState();
   let [userId, setUserId] = useState("");
   let [isLocalSet, setIsLocalSet] = useState(false);
@@ -16,12 +20,22 @@ export default function HomePage(props) {
 
   useEffect(() => {  
     ( () => {
-      AsyncStorage.getItem("avatar", function(error, data) {
-        setAvatar(data)
-      });
       AsyncStorage.getItem("id", function(error, data) {
+        if(isFocused){
+        const getProfile = async () => {
+          let sendID = {id: data}
+          let rawResponse = await fetch('http://192.168.1.6:3000/users/displayProfile', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(sendID)
+          })
+          let response = await rawResponse.json()
+          setAvatar(response.avatar)
+        }
+        getProfile()
         setUserId(data)
         setIsLocalSet(true)
+      }
       });
     })();
 
@@ -51,7 +65,7 @@ export default function HomePage(props) {
       let sendParameter = {
         distance: 50
       }
-      let rawResponse = await fetch('http://172.20.10.2:3000/annonceJob', {
+      let rawResponse = await fetch('http://192.168.1.6:3000/annonceJob', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendParameter)
@@ -66,7 +80,7 @@ export default function HomePage(props) {
       let sendUserId = {
         userId: userId
       }
-      let rawResponse = await fetch('http://172.20.10.2:3000/users/oldAnnonceList', {
+      let rawResponse = await fetch('http://192.168.1.6:3000/users/oldAnnonceList', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendUserId)
@@ -78,11 +92,11 @@ export default function HomePage(props) {
     if(isLocalSet) oldAnnoneData()
 
     setPageLoaded(true)
-  }, []);
+  }, [isFocused]);
 
   const onProfilClick = () => {
-    AsyncStorage.clear()
-    props.navigation.navigate('WelcomePage')
+    // AsyncStorage.clear()
+    props.navigation.navigate('ProfilPage')
   }
 
   const refuseAnnonce = () => {

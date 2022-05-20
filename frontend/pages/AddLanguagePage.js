@@ -22,14 +22,14 @@ export default function AddLanguagePage(props) {
   }, []);
 
   const onSubmitClick = async () => {
-    if(language.length >= 1 && level.length >= 1 && description.length >= 1){
+    if(language.length >= 1 && level.length >= 1 ){
     let sendLanguage = {
       id: userID,
       name: language,
       level: level,
       description: description,
     }
-    let rawResponse = await fetch('http://172.20.10.2:3000/users/addLanguage', {
+    let rawResponse = await fetch('http://192.168.1.6:3000/users/addLanguage', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendLanguage)
@@ -70,6 +70,7 @@ export default function AddLanguagePage(props) {
         placeholder="Description"
         onChangeText={(value) => setDescription(value)}
         value={description}
+        multiline={true}
       />
         <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick()}>
           <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Save</Text>
@@ -125,7 +126,10 @@ input: {
   elevation: 9,
 },
 input2: {
-  marginBottom: 30,
+  paddingLeft:15,
+  paddingRight:15,
+  paddingTop:15,
+  marginBottom: 20,
   fontSize: 20,
   fontWeight: "500",
   backgroundColor: "#FFF",
@@ -133,8 +137,6 @@ input2: {
   width: "80%",
   height: 140,
   textAlign: 'center',
-  paddingBottom:100,
-  alignItems:'flex-start',
   shadowColor: "#000",
   shadowOffset: {
     width: 0,
@@ -144,7 +146,6 @@ input2: {
   shadowRadius: 3.84,
   elevation: 9,
 },
-
 inner: {
   alignItems:'center',
   backgroundColor:'#fff',
