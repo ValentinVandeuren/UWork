@@ -8,6 +8,7 @@ require('./models/connection');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+let chatRouter = require('./routes/chat');
 
 var app = express();
 app.use(fileUpload());
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/chat', chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

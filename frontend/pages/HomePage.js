@@ -138,7 +138,7 @@ export default function HomePage(props) {
               <Text style={styles.date}>{date}</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate('ConversationPage')}>
             <Image
               source={require('../assets/button/send-gray.png')}
               style={styles.navbarButtonChat}

@@ -21,14 +21,14 @@ import MessagePage from "./pages/MessagePage";
 
 import ProfilPage from "./pages/NavBarPages/ProfilPage";
 import CalendarPage from "./pages/NavBarPages/CalendarPage";
+import ConversationPage from './pages/NavBarPages/ConversationPage';
 import ChatPage from "./pages/NavBarPages/ChatPage";
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false, /*gestureEnabled: false, /*animationEnabled: false*/}}
-      >
+        screenOptions={{headerShown: false, /*gestureEnabled: false, animationEnabled: false*/}}
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="SignInPage" component={SignInPage} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} />
@@ -43,6 +43,7 @@ export default function App() {
         <Stack.Screen name="MessagePage" component={MessagePage} />
         <Stack.Screen name="ProfilPage" component={ProfilPage} />
         <Stack.Screen name="CalendarPage" component={CalendarPage} />
+        <Stack.Screen name="ConversationPage" component={ConversationPage} />
         <Stack.Screen name="ChatPage" component={ChatPage} />
       </Stack.Navigator>
     </NavigationContainer>
