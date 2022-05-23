@@ -83,7 +83,7 @@ export function ConversationPage(props) {
                     let sendUser = {
                         id: (userId === response[i].employeeOwner) ?response[i].compagnyOwner : response[i].employeeOwner
                     }
-                    let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
+                    let rawResponseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundUserInfo', {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(sendUser)
