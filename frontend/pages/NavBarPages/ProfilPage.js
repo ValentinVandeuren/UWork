@@ -42,7 +42,7 @@ export default function ProfilPage(props) {
          if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.2:3000/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -96,7 +96,7 @@ export default function ProfilPage(props) {
           type: 'image/jpeg',
           name: 'user_avatar.jpg',
        });
-       var rawResponse = await fetch('https://uworkapp.herokuapp.com/users/uploalProfilePicture', {
+       var rawResponse = await fetch('http://172.20.10.2:3000/users/uploalProfilePicture', {
            method: 'POST',
            body: data
        })
@@ -133,7 +133,7 @@ export default function ProfilPage(props) {
         sector: jobSector,
       }
     }
-    let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/modifyProfile', {
+    let rawResponse = await fetch('http://172.20.10.2:3000/users/modifyProfile', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendNewProfile)

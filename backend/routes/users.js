@@ -157,12 +157,16 @@ router.post('/modifyProfile', async function(req, res, next) {
 })
 
 router.post('/foundUserInfo', async function(req, res, next) {
-  let user = await usersModel.findOne({ _id: req.body.id})
-
-  let userAvatar = user.avatar;
-  let userName = user.firstName;
-
-  res.json({userAvatar, userName})
+  if(req.body.id.length != 0){
+    let user = await usersModel.findOne({ _id: req.body.id})
+  
+    let userAvatar = user.avatar;
+    let userName = user.firstName;
+  
+    res.json({userAvatar, userName})
+  }else {
+    res.json("rip")
+  }
 })
 
 module.exports = router;

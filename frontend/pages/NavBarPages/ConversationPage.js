@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'reac
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native";
 
 export function ConversationPage(props) {
     let [userId, setUserId] = useState("");
@@ -17,6 +18,8 @@ export function ConversationPage(props) {
 
     let [dayWeek, setDayWeek] = useState("");
     let [date, setDate] = useState();
+
+    const isFocused = useIsFocused();
 
     useEffect(() => {  
         ( () => {
@@ -47,7 +50,7 @@ export function ConversationPage(props) {
         }
 
         setDate(newDateNumber)
-    }, []);
+    }, [isFocused]);
 
     if(userisSet){
         const dataConversation = async() => {
@@ -59,7 +62,7 @@ export function ConversationPage(props) {
             let sendUser = {
                 id: userId
             }
-            let rawResponse = await fetch('https://uworkapp.herokuapp.com/chat/foundConversation', {
+            let rawResponse = await fetch('http://172.20.10.2:3000/chat/foundConversation', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendUser)
@@ -70,12 +73,28 @@ export function ConversationPage(props) {
 
             if(conversationList.length >=0){
                 for(let i=0; i<response.length; i++){
-                    let lastItem = response[i].messages[response[i].messages.length -1]
-                    let newDate = new Date(lastItem.date)
-                    let hours = newDate.getHours();
-                    let minutes = newDate.getMinutes();
-                    let fullHour = `${hours}:${minutes}`;
-                    listhour.push(fullHour)
+                    let lastItem = response[i].messages[response[i].messages.length -1];
+                    let newDate = new Date(lastItem.date);
+                    let nowDate = new Date();
+                    if(newDate.getDate() === nowDate.getDate()){
+                        let hours = newDate.getHours();
+                        let minutes;
+                        if(newDate.getMinutes().length >1){
+                            minutes = newDate.getMinutes();
+                        }else {
+                            minutes = "0" + newDate.getMinutes()
+                        }
+                        let fullHour = `${hours}:${minutes}`;
+                        listhour.push(fullHour);
+                    }else {
+                        if(newDate.getDay() === 0) listhour.push('Sunday')
+                        else if(newDate.getDay() === 1) listhour.push('Monday')
+                        else if(newDate.getDay() === 2) listhour.push('Tuesday')
+                        else if(newDate.getDay() === 3) listhour.push('Wednesday')
+                        else if(newDate.getDay() === 4) listhour.push('Thursday')
+                        else if(newDate.getDay() === 5) listhour.push('Friday')
+                        else if(newDate.getDay() === 6) listhour.push('Saturday')
+                    }
                 }
                 setHour(listhour);
 
@@ -83,7 +102,7 @@ export function ConversationPage(props) {
                     let sendUser = {
                         id: (userId === response[i].employeeOwner) ?response[i].compagnyOwner : response[i].employeeOwner
                     }
-                    let rawResponseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundUserInfo', {
+                    let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(sendUser)
@@ -297,6 +316,7 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 30,
         marginRight: 10,
+        backgroundColor: "#B9B9B9"
     },
     titleConversation: {
         fontSize: 17,
