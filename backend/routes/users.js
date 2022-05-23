@@ -165,4 +165,10 @@ router.post('/foundUserInfo', async function(req, res, next) {
   res.json({userAvatar, userName})
 })
 
+router.get('/displayEducation/:id', async function(req, res, next) {
+  let education = await usersModel.findOne({_id: req.params.id})
+  console.log(education);
+  res.json(education)
+})
+
 module.exports = router;
