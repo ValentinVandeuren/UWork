@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Im
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native";
+
 
 export function ChatPage(props) {
   let [userId, setUserId] = useState("");
@@ -13,6 +15,9 @@ export function ChatPage(props) {
   let [seeHourSend, setSeeHourSend] = useState(false);
   let [message, setMessage] = useState([]);
 
+  const isFocused = useIsFocused();
+
+
   useEffect(() => {  
     ( () => {
       AsyncStorage.getItem("id", function(error, data) {
@@ -21,14 +26,16 @@ export function ChatPage(props) {
       });
     })();
     let arrayConversation = [];
+    if(isFocused){
     const loadConversation = async() => {
-      let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
+      let responseConversation = await fetch(`https://uworkapp.herokuapp.com/chat/getChat/${props.conversationId}`)
       let response = await responseConversation.json()
       arrayConversation.push(response.messages)
       setMessage(arrayConversation)
     }
     loadConversation()
-  }, []);
+  }
+  }, [isFocused]);
 
   const onMessageClick = () => {
     if(seeHourSend){
@@ -61,7 +68,7 @@ export function ChatPage(props) {
           <View style={{width: 40, marginRight: 10}}></View>
         </View>
         <ScrollView style={{flex: 1, width: "100%"}}>
-          {message[0].map((messages,i) => (
+          {message[0]?.map((messages,i) => (
             <View key={i} style={(userId === messages.sender)?styles.containerMessageOwner: styles.containerMessage}>
               <TouchableOpacity onPress={() => onMessageClick()}>
                 <View style={(userId === messages.sender)?styles.boxMessageOwner: styles.boxMessage}>

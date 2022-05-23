@@ -221,7 +221,7 @@ export default function ProfilPage(props) {
         />
 
         <View style={{marginBottom:20}}>
-          <View style={styles.card}>
+          <View style={(listEducation.length == 0) ? styles.card4 : styles.card}>
             <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
               Education
             </Text>
@@ -244,7 +244,7 @@ export default function ProfilPage(props) {
         </View>
 
       <View style={{marginBottom:20}}>
-          <View style={styles.card}>
+          <View style={(listLanguage.length == 0) ? styles.card4 : styles.card}>
             <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
               Language
             </Text>
@@ -564,6 +564,27 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
     height: 290,
+    textAlign: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3.84,
+    elevation: 9,
+  },
+  card4: {
+    backgroundColor: "#fff",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 10,
+    paddingLeft: 10,
+    alignItems: 'center',
+    fontWeight: "500",
+    borderRadius:15,
+    width: 340,
+    height: 40,
     textAlign: "center",
     shadowColor: "#000",
     shadowOffset: {
