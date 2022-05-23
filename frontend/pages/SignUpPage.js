@@ -20,7 +20,6 @@ export default function SignUpPage(props) {
       })
 
       let response = await rawResponse.json()
-      console.log(response);
 
       if(response.isOk === true){
         props.navigation.navigate('TokenVerifyPage')
