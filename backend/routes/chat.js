@@ -18,6 +18,7 @@ router.post('/foundConversation', async function(req, res, next) {
 })
 
 router.get('/getChat/:id', async function(req, res, next) {
+  //conversation
   let conversation = await conversationModel.findOne({_id: req.params.id})
   console.log(conversation);
 
