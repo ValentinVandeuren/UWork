@@ -1,5 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Image, TouchableOpacity} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Button
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
@@ -8,33 +19,52 @@ import { useIsFocused } from "@react-navigation/native";
 
 export function ChatPage(props) {
   let [userId, setUserId] = useState("");
-  let [userisSet, setUserIsSet] = useState(false);
+  let [otherUserId, setOtherUserId] = useState("");
 
   let [messageInput, setMessageInput] = useState("");
   let [otherAvatar, setOtherAvatar] = useState();
+  let [otherUserName,  setOtherUserName] = useState("");
   let [seeHourSend, setSeeHourSend] = useState(false);
   let [message, setMessage] = useState([]);
 
   const isFocused = useIsFocused();
+  const scrollViewRef = useRef();
+  let [modalVisible, setModalVisible] = useState(false)
 
+  let arrayConversation = [];
+  const loadConversation = async() => {
+    let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
+    let response = await responseConversation.json()
+    arrayConversation.push(response.messages);
+    if(userId === response.compagnyOwner){
+      setOtherUserId(response.employeeOwner)
+    }else {
+      setOtherUserId(response.compagnyOwner)
+    }
+    setMessage(arrayConversation)
+  }
+  const loadInformationUser = async() => {
+    let sendID = {id: otherUserId}
+    let responseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendID)
+    })
+    let responseFromBack = await responseUserInfo.json();
+    setOtherAvatar(responseFromBack.userAvatar);
+    setOtherUserName(responseFromBack.userName);
+  }
 
   useEffect(() => {  
     ( () => {
       AsyncStorage.getItem("id", function(error, data) {
         setUserId(data);
-        setUserIsSet(true);
       });
     })();
-    let arrayConversation = [];
     if(isFocused){
-    const loadConversation = async() => {
-      let responseConversation = await fetch(`https://uworkapp.herokuapp.com/chat/getChat/${props.conversationId}`)
-      let response = await responseConversation.json()
-      arrayConversation.push(response.messages)
-      setMessage(arrayConversation)
+      loadInformationUser()
+      loadConversation()
     }
-    loadConversation()
-  }
   }, [isFocused]);
 
   const onMessageClick = () => {
@@ -45,10 +75,27 @@ export function ChatPage(props) {
     }
   }
 
-  console.log(message);
-  console.log(message.length);
+  const onSendMessageClick = async() => {
+    if(messageInput.length >0){
+      let sendInfo = {conversationId: props.conversationId, sender: userId, content: messageInput}
+      let responseConversationSend = await fetch('http://172.20.10.2:3000/chat/sendMessage', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(sendInfo)
+      })
+      await responseConversationSend.json();
+      loadConversation()
+      setMessageInput("")
+    }else {
+      
+    }
+  }
 
-  if(message.length >=0){
+  if(!otherAvatar){
+    loadInformationUser()
+  }
+
+  if(message.length >= 0){
     return (
       <View style={styles.container}>
         <View style={styles.topPage}>
@@ -58,23 +105,27 @@ export function ChatPage(props) {
             style={{marginLeft: 10, marginBottom: 5}}
             onPress={() => props.navigation.navigate('ConversationPage')}
           />
-          <View>
+          <View style={{alignItems: "center"}}>
             <Image
               source={{uri: otherAvatar}}
               style={styles.avatarConversation}
             />
-            <Text>Carrefour</Text>
+            <Text>{otherUserName}</Text>
           </View>
           <View style={{width: 40, marginRight: 10}}></View>
         </View>
-        <ScrollView style={{flex: 1, width: "100%"}}>
+        <ScrollView
+          style={{flex: 1, width: "100%"}}
+          ref={scrollViewRef}
+          onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+        >
           {message[0]?.map((messages,i) => (
             <View key={i} style={(userId === messages.sender)?styles.containerMessageOwner: styles.containerMessage}>
               <TouchableOpacity onPress={() => onMessageClick()}>
                 <View style={(userId === messages.sender)?styles.boxMessageOwner: styles.boxMessage}>
                   <Text style={(userId === messages.sender)?styles.messageOwner: styles.message}>{messages.content}</Text>
                 </View>
-                <Text style={(seeHourSend)? styles.sendingMessage: {display: "none"}}>10:30</Text>
+                <Text style={(seeHourSend)? (userId === messages.sender)?styles.sendingMessageOwner: styles.sendingMessage: {display: "none"}}>{messages.date}</Text>
               </TouchableOpacity>
             </View>
           ))}
@@ -85,8 +136,7 @@ export function ChatPage(props) {
               <Ionicons
                 name={'add-circle'}
                 size={30} color={'#7791DE'}
-                // style={styles.returnButton}
-                // onPress={() => props.navigation.navigate('HomePage')}
+                onPress={() => setModalVisible(true)}
               />
               <TextInput
                 style={styles.textField}
@@ -99,10 +149,35 @@ export function ChatPage(props) {
               name={'paper-plane-outline'}
               size={30} color={'#7791DE'}
               style={styles.sendIcon}
-              // onPress={() => props.navigation.navigate('HomePage')}
+              onPress={() => onSendMessageClick()}
             />
           </View>
         </KeyboardAvoidingView>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.modal}>
+            <View style={styles.containerModal}>
+              <Text style={{marginLeft: 35}}></Text>
+              <View style={{flexDirection: "row", alignItems: 'center'}}>
+                <Ionicons
+                  name={'attach'}
+                  size={30} color={'#7791DE'}
+                  onPress={() => setModalVisible(false)}
+                />
+                <Text style={styles.textModal}>Join document</Text>
+              </View>
+              <Ionicons
+                name={'close'}
+                size={20} color={'#000'}
+                style={styles.closeIcon}
+                onPress={() => setModalVisible(false)}
+              />
+            </View>
+          </View>
+        </Modal>
         <View style={{marginBottom: 30}}/>
       </View>
     )
@@ -146,7 +221,7 @@ const styles = StyleSheet.create({
     width: 60,
     borderRadius: 40,
     marginBottom: 5,
-    backgroundColor: "#000"
+    backgroundColor: "#B9B9B9"
   },
   containerMessage: {
     alignItems: 'flex-start'
@@ -178,14 +253,17 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   sendingMessage: {
-    marginLeft: 40,
-    color: "#B9B9B9"
+    marginLeft: 20,
+    color: "#B9B9B9",
+    textAlign: 'left',
   },
   sendingMessageOwner: {
-    marginLeft: 40,
-    color: "#B9B9B9"
+    marginRight: 20,
+    color: "#B9B9B9",
+    textAlign: 'right'
   },
   containerField: {
+    marginTop: 30,
     marginBottom: 10,
     width: 375,
     height: 40,
@@ -193,6 +271,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     borderColor: "#707070",
+    backgroundColor: "#FFF",
     alignItems: 'center',
     justifyContent: "space-between",
   },
@@ -207,5 +286,29 @@ const styles = StyleSheet.create({
   },
   sendIcon: {
     marginRight: 10,
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: "center",
+    backgroundColor: 'rgba(0,0,0,0.4)'
+  },
+  containerModal: {
+    height: 75,
+    width: "80%",
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  closeIcon: {
+    marginBottom: 40,
+    marginRight: 10
+  },
+  textModal: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#7791DE"
   }
 });
