@@ -92,6 +92,7 @@ router.post('/addTypeJob', async function(req, res, next) {
 })
 
 router.post('/addEducation', async function(req, res, next) {
+  console.log('langue ajoutée');
   let user = await usersModel.findOne({ _id: req.body.id })
 
   user.education.push({
