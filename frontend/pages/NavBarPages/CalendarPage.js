@@ -3,31 +3,86 @@ import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Scrol
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from "@react-navigation/native";
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 
 export default function CallendarPage(props) {
   const isFocused = useIsFocused();
 
-  let [avatar, setAvatar] = useState();
   let [userId, setUserId] = useState("");
   let [dayWeek, setDayWeek] = useState("");
   let [date, setDate] = useState();
+  let [eventList, setEventList] = useState([]);
+  let [allDay, setAllDay] = useState([]);
+  let [allStartHour, setAllStartHour] = useState([]);
+  let [allEndHour, setAllEndHour] = useState([]);
+  let [allCompanyName, setAllCompanyName] = useState([]);
 
   useEffect(() => {  
     ( () => {
       AsyncStorage.getItem("id", function(error, data) {
         if(isFocused){
-        const getProfile = async () => {
+        const getEvent = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.2:3000/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.5:3000/calendarEvent', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
           })
           let response = await rawResponse.json()
-          setAvatar(response.avatar)
+          setEventList(response)
+
+          let fullCompanyName = [];
+          for(var i = 0; i < response.length; i++){
+            let rawResponseCompanyInfo = await fetch('http://172.20.10.5:3000/users/foundCompagnyInfo', {
+              method: 'POST',
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({id: response[i].companyOwner})
+            })
+            let responseCompany = await rawResponseCompanyInfo.json()
+            fullCompanyName.push(responseCompany.userName)
+          }
+          setAllCompanyName(fullCompanyName);
+
+          let arrayDay = [];
+          let arrayStartHour = [];
+          let arrayEndHour = [];
+
+          for(var i = 0 ; i < response.length ; i ++){
+            let newDate = new Date(response[i].date)
+            let day = newDate.getDate()
+            // let month = newDate.getMonth() + 1
+            // let finalDateBadge = `${day}/${month}`
+            
+            let newStartHour = new Date(response[i].startTime)
+            let startHour = newStartHour.getHours()
+            let startMinute;
+              if(newStartHour.getMinutes() > 9){
+                startMinute = newStartHour.getMinutes();
+              } else {
+                startMinute = "0" + newStartHour.getMinutes()
+              }
+            let finalStartHour = `${startHour}:${startMinute}`
+
+            let newEndHour = new Date(response[i].endTime)
+            let endHour = newEndHour.getHours()
+            let endMinute;
+              if(newEndHour.getMinutes() > 9){
+                endMinute = newEndHour.getMinutes();
+              }else {
+                endMinute = "0" + newEndHour.getMinutes()
+              }
+            let finalEndHour = `${endHour}:${endMinute}`
+
+            arrayDay.push(day)
+            arrayStartHour.push(finalStartHour)
+            arrayEndHour.push(finalEndHour)
+
+          }
+          setAllDay(arrayDay);
+          setAllStartHour(arrayStartHour);
+          setAllEndHour(arrayEndHour);
         }
-        getProfile()
+        getEvent()
         setUserId(data)
       }
       });
@@ -55,6 +110,38 @@ export default function CallendarPage(props) {
 
     setDate(newDateNumber)
   }, [isFocused]);
+
+
+  function renderEvents(eventList){
+    eventList.sort(function(a, b) {
+      return new Date(a.date) - new Date(b.date);
+      })
+
+    const list = eventList.map((event, i) => {
+      var aDate = new Date(); 
+      var datFromBDD = new Date(event.date)
+      
+      if(datFromBDD > aDate){
+
+          return (
+            <View style={styles.containerEvent} key={i}>
+              <View>
+                <View style={styles.dateEventBadge}>
+                  <Text style={styles.dateEvent}>{allDay[i]}</Text>
+                </View>
+              </View>
+              <View>
+                <Text style={styles.titleEvent}>{event.type}</Text>
+                <Text style={styles.subTitleEvent}>{allCompanyName[i]}</Text>
+                <Text style={styles.subTitleEvent}>{allStartHour[i]} - {allEndHour[i]}</Text>
+              </View>
+            </View>
+  
+          )
+        }
+    })
+    return list;
+  }
 
   return (
     <View style={styles.container}>
@@ -88,62 +175,24 @@ export default function CallendarPage(props) {
           }}
           enableSwipeMonths={true}
           markedDates={{
-          // '2022-05-26': {selected: true, selectedColor: '#7791DE'},
-          '2022-05-22': {marked: true, dotColor: '#7791DE'},
-          '2022-05-26': {marked: true, dotColor: '#7791DE'},
-          '2022-05-31': {marked: true, dotColor: '#7791DE'},
+          '2022-05-28': {selected: true, selectedColor: '#7791DE'},
+          '2022-05-30': {selected: true, selectedColor: '#7791DE'},
+          '2022-06-01': {selected: true, selectedColor: '#7791DE'},
+
+
+          // '2022-05-22': {marked: true, dotColor: '#7791DE'},
+          // '2022-05-26': {marked: true, dotColor: '#7791DE'},
+          // '2022-05-31': {marked: true, dotColor: '#7791DE'},
         }}
       />
         </View>
 
         <View style={styles.upcomingContainer}>
           <ScrollView>
-          <Text style={{color:'#fff', fontSize:30, fontWeight:"600", textAlign:'center', marginBottom:30}}>Upcoming</Text>
-
-          <View style={styles.containerEvent}>
-            <View>
-              <View style={styles.dateEventBadge}>
-                <Text style={styles.dateEvent}>22</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.titleEvent}>Interview</Text>
-              <Text style={styles.subTitleEvent}>Cowboy</Text>
-              <Text style={styles.subTitleEvent}>12:30pm</Text>
-            </View>
-          
-          </View>
-          <View style={styles.containerEvent}>
-            <View>
-              <View style={styles.dateEventBadge}>
-                <Text style={styles.dateEvent}>26</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.titleEvent}>Call</Text>
-              <Text style={styles.subTitleEvent}>Facebook</Text>
-              <Text style={styles.subTitleEvent}>10:30am</Text>
-            </View>
-          
-          </View>
-          <View style={styles.containerEvent}>
-            <View>
-              <View style={styles.dateEventBadge}>
-                <Text style={styles.dateEvent}>31</Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.titleEvent}>Technical test</Text>
-              <Text style={styles.subTitleEvent}>Apple</Text>
-              <Text style={styles.subTitleEvent}>11:30am</Text>
-            </View>
-          
-          </View>
+            <Text style={{color:'#fff', fontSize:30, fontWeight:"600", textAlign:'center', marginBottom:30}}>Upcoming</Text>
+            {renderEvents(eventList)}
           </ScrollView>
         </View>
-        
-
-
     </View>
   )
 }

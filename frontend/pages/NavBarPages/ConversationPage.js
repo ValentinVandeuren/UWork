@@ -62,7 +62,7 @@ export function ConversationPage(props) {
             let sendUser = {
                 id: userId
             }
-            let rawResponse = await fetch('http://172.20.10.2:3000/chat/foundConversation', {
+            let rawResponse = await fetch('http://172.20.10.5:3000/chat/foundConversation', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendUser)
@@ -79,7 +79,7 @@ export function ConversationPage(props) {
                     if(newDate.getDate() === nowDate.getDate()){
                         let hours = newDate.getHours();
                         let minutes;
-                        if(newDate.getMinutes().length >1){
+                        if(newDate.getMinutes() > 9){
                             minutes = newDate.getMinutes();
                         }else {
                             minutes = "0" + newDate.getMinutes()
@@ -103,7 +103,7 @@ export function ConversationPage(props) {
                         id: (userId === response[i].employeeOwner) ?response[i].compagnyOwner : response[i].employeeOwner
                     }
                     if(userId === response[i].compagnyOwner){
-                        let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
+                        let rawResponseUserInfo = await fetch('http://172.20.10.5:3000/users/foundUserInfo', {
                         method: 'POST',
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(sendUser)
@@ -113,7 +113,7 @@ export function ConversationPage(props) {
                         userNameList.push(responseUserInfo.userName);
                         otherAvatarList.push(responseUserInfo.userAvatar);
                     }else {
-                        let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
+                        let rawResponseUserInfo = await fetch('http://172.20.10.5:3000/users/foundCompagnyInfo', {
                         method: 'POST',
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(sendUser)

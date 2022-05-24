@@ -25,7 +25,7 @@ export default function HomePage(props) {
         if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.2:3000/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -66,7 +66,7 @@ export default function HomePage(props) {
       let sendParameter = {
         distance: 50
       }
-      let rawResponse = await fetch('http://172.20.10.2:3000/annonceJob', {
+      let rawResponse = await fetch('http://172.20.10.5:3000/annonceJob', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendParameter)
@@ -81,7 +81,7 @@ export default function HomePage(props) {
       let sendUserId = {
         userId: userId
       }
-      let rawResponse = await fetch('http://172.20.10.2:3000/users/oldAnnonceList', {
+      let rawResponse = await fetch('http://172.20.10.5:3000/users/oldAnnonceList', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendUserId)
