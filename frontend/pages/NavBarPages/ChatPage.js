@@ -28,7 +28,7 @@ export function ChatPage(props) {
     let arrayConversation = [];
     if(isFocused){
     const loadConversation = async() => {
-      let responseConversation = await fetch(`http://172.20.10.5:3000/chat/getChat/${props.conversationId}`)
+      let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
       let response = await responseConversation.json()
       arrayConversation.push(response.messages)
       setMessage(arrayConversation)
