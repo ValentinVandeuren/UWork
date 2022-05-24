@@ -30,7 +30,7 @@ export default function HomePage(props) {
             body: JSON.stringify(sendID)
           })
           let response = await rawResponse.json()
-          setAvatar(response.avatar)
+          setAvatar(response.avatar);
         }
         getProfile()
         setUserId(data)

@@ -5,6 +5,7 @@ var uid2 = require('uid2');
 var cloudinary = require('cloudinary').v2;
 var uniqid = require('uniqid');
 var fs = require('fs');
+const nodemailer = require("nodemailer");
 
 cloudinary.config({
  cloud_name: 'dlwwftewi',
@@ -37,6 +38,27 @@ router.post('/verifyEmail', async function(req, res, next) {
   }else {
     let token = uid2(6);
     let isOk = true
+
+    async function main() {
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "uwork.infos@gmail.com",
+          pass: "LaCapsule2103",
+        },
+      });
+    
+      let info = await transporter.sendMail({
+        from: 'uwork.infos@gmail.com', // sender address
+        to: `${req.body.email}`, // list of receivers
+        subject: "Token for verify your email Address", // Subject line
+        // text: `${token}`, // plain text body
+        html: `<b>Hello! her you have your token for verify your account: ${token}</b>`, // html body
+      });
+      // console.log("Message sent: %s", info.messageId);
+      // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    }
+    main().catch(console.error);
     res.json({isOk, token });
   }
 })
@@ -189,13 +211,61 @@ router.post('/modifyLanguage', async function(req, res, next) {
 })
 
 router.post('/foundUserInfo', async function(req, res, next) {
-  let user = await usersModel.findOne({ _id: req.body.id})
-
-  let userAvatar = user.avatar;
-  let userName = user.firstName;
-
-  res.json({userAvatar, userName})
+  if(req.body.id.length != 0){
+    let user = await usersModel.findOne({ _id: req.body.id})
+  
+    let userAvatar = user.avatar;
+    let userName = user.firstName;
+  
+    res.json({userAvatar, userName})
+  }else {
+    res.json("rip")
+  }
 })
+
+module.exports = router;
+
+/* GET home page. */
+router.get("/", async function (req, res, next) {
+  // async..await is not allowed in global scope, must use a wrapper
+  async function main() {
+    // Generate test SMTP service account from ethereal.email
+    // Only needed if you don't have a real mail account for testing
+    // let testAccount = await nodemailer.createTestAccount();
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+    // host: "smtp-mail.outlook.com",
+    // host: "smtp.sendgrid.net",
+    // port: 587,
+    // secure: false,
+    service: "gmail",
+    auth: {
+      user: "killiangemoets@gmail.com", // generated ethereal user
+      pass: "........", // generated ethereal password
+    },
+    // tls: {
+    //   rejectUnauthorized: false,
+    // },
+});
+
+// send mail with defined transport object
+let info = await transporter.sendMail({
+  from: "killiangemoets@gmail.com", // sender address
+  to: "killiangemoets@gmail.com", // list of receivers
+  subject: "Man City <3", // Subject line
+  text: "It works! Finallyyy", // plain text body
+  // html: "<b>Hellooooo</b>", // html body
+});
+
+console.log("Message sent: %s", info.messageId);
+// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+// Preview only available when sending through an Ethereal account
+console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  }
+
 
 
 module.exports = router;
