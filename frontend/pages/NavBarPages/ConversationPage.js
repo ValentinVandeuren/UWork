@@ -102,16 +102,28 @@ export function ConversationPage(props) {
                     let sendUser = {
                         id: (userId === response[i].employeeOwner) ?response[i].compagnyOwner : response[i].employeeOwner
                     }
-                    let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
-                    method: 'POST',
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(sendUser)
-                    })
+                    if(userId === response[i].compagnyOwner){
+                        let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
+                        method: 'POST',
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(sendUser)
+                        })
+                        let responseUserInfo = await rawResponseUserInfo.json()
+                        // console.log(response);
+                        userNameList.push(responseUserInfo.userName);
+                        otherAvatarList.push(responseUserInfo.userAvatar);
+                    }else {
+                        let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
+                        method: 'POST',
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(sendUser)
+                        })
+                        let responseUserInfo = await rawResponseUserInfo.json()
+                        // console.log(response);
+                        userNameList.push(responseUserInfo.userName);
+                        otherAvatarList.push(responseUserInfo.userAvatar);
+                    }
                 
-                    let responseUserInfo = await rawResponseUserInfo.json()
-                    // console.log(response);
-                    userNameList.push(responseUserInfo.userName);
-                    otherAvatarList.push(responseUserInfo.userAvatar);
                 }
                 setOtherAvatar(otherAvatarList);
                 setOtherUserName(userNameList);
