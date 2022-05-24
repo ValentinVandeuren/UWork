@@ -10,13 +10,15 @@ import {
   TouchableOpacity,
   Modal,
   Button,
-  Pressable
+  Pressable,
+  Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
+import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 
 export function ChatPage(props) {
   let [userId, setUserId] = useState("");
@@ -38,6 +40,8 @@ export function ChatPage(props) {
   let [modalPicture, setModalPicture] = useState(false);
   let [urlPictureModal, setUrlPictureModal] = useState();
   let [sendPictureModal, setSendPictureModal] = useState(false);
+
+  let [messageId, setMessagId] = useState("");
 
   let arrayConversation = [];
   let arrayDate = [];
@@ -163,8 +167,23 @@ export function ChatPage(props) {
     }
   }
 
+  const onMessageSuppClick = async () => {
+    let sendInfo = {
+      conversationId: props.conversationId,
+      messageId: messageId,
+    }
+    let responseDeleteMessage = await fetch('http://172.20.10.2:3000/chat/deleteMessage', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendInfo)
+    })
+    await responseDeleteMessage.json();
+    setMessagId("");
+    loadConversation();
+  }
+
   if(!otherAvatar){
-    loadInformationUser()
+    loadInformationUser();
   }
 
   if(message.length >= 0){
@@ -195,11 +214,38 @@ export function ChatPage(props) {
             <View key={i} style={(userId === messages.sender)?styles.containerMessageOwner: styles.containerMessage}>
               <TouchableOpacity onPress={() => onMessageClick()}>
                 <View style={(userId === messages.sender)?styles.boxMessageOwner: styles.boxMessage}>
-                  <Text style={(userId === messages.sender)?styles.messageOwner: styles.message}>{messages.content}</Text>
+                  <LongPressGestureHandler
+                    onHandlerStateChange={({ nativeEvent }) => {  
+                      if(messages?.isDelete === false){
+                        if( nativeEvent.state === State.ACTIVE ){    
+                          Alert.alert(
+                            "Are you sure you want to delete this message?",
+                            messages.content,
+                            [
+                              {
+                                text: 'cencel'
+                              },
+                              {
+                                text: "delete",
+                                style: "destructive",
+                                onPress: () => onMessageSuppClick()
+                              },
+                            ]
+                          );
+                        }
+                        setMessagId(messages._id)
+                      }else {
+                        
+                      }
+                    }}
+                    minDurationMs={800}
+                  >
+                    <Text style={(userId === messages.sender)? (messages.isDelete)? styles.messageOwnerDelete: styles.messageOwner: (messages.isDelete)? styles.messageDelete:styles.message}>{(messages?.isDelete)? "Message deleted": messages.content}</Text>
+                  </LongPressGestureHandler>
                   <TouchableOpacity onPress={() => onPicturClick(messages?.document)}>
                     <Image
                       source={{uri: messages?.document}}
-                      style={(messages?.document)? styles.picturChat: {display: 'none'}}
+                      style={(messages?.document)? (messages.isDelete)? {display: "none"}:styles.picturChat: {display: 'none'}}
                     />
                   </TouchableOpacity>
                 </View>
@@ -373,9 +419,17 @@ const styles = StyleSheet.create({
   message: {
     fontWeight: "400",
   },
+  messageDelete: {
+    fontWeight: "400",
+    color: "#AFB0B1",
+  },
   messageOwner: {
     fontWeight: "400",
     color: "#FFF",
+  },
+  messageOwnerDelete: {
+    fontWeight: "400",
+    color: "#AFB0B1",
   },
   picturChat: {
     marginTop: 10,
