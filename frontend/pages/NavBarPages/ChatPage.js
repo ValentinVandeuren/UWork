@@ -26,22 +26,32 @@ export function ChatPage(props) {
   let [otherUserName,  setOtherUserName] = useState("");
   let [seeHourSend, setSeeHourSend] = useState(false);
   let [message, setMessage] = useState([]);
+  let [timeMessage, setTimeMessage] = useState([]);
 
   const isFocused = useIsFocused();
   const scrollViewRef = useRef();
   let [modalVisible, setModalVisible] = useState(false)
 
   let arrayConversation = [];
+  let arrayDate = [];
   const loadConversation = async() => {
     let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
     let response = await responseConversation.json()
     arrayConversation.push(response.messages);
+    for(let i=0; i< response.messages.length; i++){
+      let date = new Date(response.messages[i].date);
+      let day = date.getDate();
+      let month = date.getMonth() +1;
+      let finalTimde = `send: ${day}/${month}`
+      arrayDate.push(finalTimde)
+    }
     if(userId === response.compagnyOwner){
       setOtherUserId(response.employeeOwner)
     }else {
       setOtherUserId(response.compagnyOwner)
     }
-    setMessage(arrayConversation)
+    setMessage(arrayConversation);
+    setTimeMessage(arrayDate);
   }
   const loadInformationUser = async() => {
     let sendID = {id: otherUserId}
@@ -125,7 +135,7 @@ export function ChatPage(props) {
                 <View style={(userId === messages.sender)?styles.boxMessageOwner: styles.boxMessage}>
                   <Text style={(userId === messages.sender)?styles.messageOwner: styles.message}>{messages.content}</Text>
                 </View>
-                <Text style={(seeHourSend)? (userId === messages.sender)?styles.sendingMessageOwner: styles.sendingMessage: {display: "none"}}>{messages.date}</Text>
+                <Text style={(seeHourSend)? (userId === messages.sender)?styles.sendingMessageOwner: styles.sendingMessage: {display: "none"}}>{timeMessage[i]}</Text>
               </TouchableOpacity>
             </View>
           ))}
