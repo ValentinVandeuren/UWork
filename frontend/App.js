@@ -8,7 +8,14 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 
 import conversationId from './reducers/conversation'
-const store = createStore(combineReducers({conversationId}))
+import positionEducation from './reducers/education'
+import educationId from './reducers/educationId'
+import positionLanguage from './reducers/languagePosition'
+import languageId from './reducers/languageId'
+
+
+
+const store = createStore(combineReducers({conversationId, positionEducation, educationId, positionLanguage, languageId}))
 
 const Stack = createStackNavigator();
 
@@ -24,6 +31,13 @@ import AddTypeJobPage from "./pages/AddTypeJobPage";
 import WellDonePage from "./pages/WellDonePage";
 import HomePage from "./pages/HomePage";
 import MessagePage from "./pages/MessagePage";
+import AddEducationFromProfilePage from "./pages/AddEducationFromProfilePage";
+import AddLanguageFromProfilePage from "./pages/AddLanguageFromProfilePage";
+import ModifyEducationPage from "./pages/ModifyEducationPage";
+import ModifyLanguagePage from "./pages/ModifyLanguagePage";
+
+
+
 
 import ProfilPage from "./pages/NavBarPages/ProfilPage";
 import CalendarPage from "./pages/NavBarPages/CalendarPage";
@@ -53,6 +67,12 @@ export default function App() {
           <Stack.Screen name="CalendarPage" component={CalendarPage} />
           <Stack.Screen name="ConversationPage" component={ConversationPage} />
           <Stack.Screen name="ChatPage" component={ChatPage} />
+          <Stack.Screen name="AddEducationFromProfilePage" component={AddEducationFromProfilePage} />
+          <Stack.Screen name="AddLanguageFromProfilePage" component={AddLanguageFromProfilePage} />
+          <Stack.Screen name="ModifyEducationPage" component={ModifyEducationPage} />
+          <Stack.Screen name="ModifyLanguagePage" component={ModifyLanguagePage} />
+
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

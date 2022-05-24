@@ -178,6 +178,38 @@ router.post('/modifyProfile', async function(req, res, next) {
   res.json(user);
 })
 
+router.post('/modifyEducation', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  for(let i=0; i<user.education.length; i++){
+    if(user.education[i].id === req.body.educationId){
+      user.education[i].school = req.body.school;
+      user.education[i].studyfield = req.body.studyfield,
+      user.education[i].degree = req.body.degree,
+      user.education[i].start = req.body.start,
+      user.education[i].end = req.body.end,
+      user.education[i].description = req.body.description;
+    }
+  }
+  await user.save();
+  res.json(user);
+})
+
+router.post('/modifyLanguage', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  for(let i=0; i<user.language.length; i++){
+    if(user.language[i].id === req.body.languageId){
+      console.log('langue modifiée');
+      user.language[i].name = req.body.name;
+      user.language[i].level = req.body.level,
+      user.language[i].description = req.body.description;
+    }
+  }
+  await user.save();
+  res.json(user);
+})
+
 router.post('/foundUserInfo', async function(req, res, next) {
   if(req.body.id.length != 0){
     let user = await usersModel.findOne({ _id: req.body.id})
@@ -234,6 +266,6 @@ console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
   }
 
-  main().catch(console.error);
-  res.render("index", { title: "Express" });
-});
+
+
+module.exports = router;

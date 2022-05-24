@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-export default function AddEducationPage(props) {
+export default function AddEducationFromProfilePage(props) {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisibleEnd, setDatePickerVisibilityEnd] = useState(false);
@@ -57,7 +57,7 @@ export default function AddEducationPage(props) {
     })
 
     await rawResponse.json()
-    props.navigation.navigate('AddCVPage')
+    props.navigation.navigate('ProfilPage')
     }
     else {
       setErrorMessage("Please fill in all the fields")
@@ -70,7 +70,7 @@ export default function AddEducationPage(props) {
       name={'chevron-back-outline'}
       size={45} color={'#7791DE'}
       style={styles.returnButton}
-      onPress={() => props.navigation.navigate('AddCVPage')}
+      onPress={() => props.navigation.navigate('ProfilPage')}
     />
     <View style={styles.inner}>
       <Text style={styles.title}>Add Education</Text>

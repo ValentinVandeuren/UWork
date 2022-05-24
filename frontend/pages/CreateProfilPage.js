@@ -69,7 +69,7 @@ export default function CreateProfilPage(props) {
   }
 
   const onSubmitClick = async () => {
-    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3, bio.length >= 5){
+    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3){
 
       let sendProfile = {
         firstName: firstName,
@@ -89,7 +89,6 @@ export default function CreateProfilPage(props) {
       })
 
       let response = await rawResponse.json()
-      console.log(response);
       AsyncStorage.setItem("id", response.id)
       AsyncStorage.setItem("firstName", response.firstName)
       AsyncStorage.setItem("avatar", response.avatar)

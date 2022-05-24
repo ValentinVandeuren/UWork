@@ -4,14 +4,18 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { connect } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native";
 
-export default function AddEducationPage(props) {
+
+export function ModifyEducationPage(props) {
+
+  const isFocused = useIsFocused();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisibleEnd, setDatePickerVisibilityEnd] = useState(false);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
   const [userID, setUserID] = useState("");
   const [school, setSchool] = useState('');
   const [fieldstudy, setFieldstudy] = useState('');
@@ -19,17 +23,48 @@ export default function AddEducationPage(props) {
   const [description, setDescription] = useState('');
   const [startDateToBDD, setStartDateToBDD] = useState();
   const [endDateToBDD, setEndDateToBDD] = useState();
+  
 
   const [errorMessage, setErrorMessage] = useState('');
 
-
   useEffect(() => {  
     ( () => {
-      AsyncStorage.getItem("id", function(error, data) {
-        setUserID(data)
-       });
+       AsyncStorage.getItem("id", function(error, data) {
+         if(isFocused){
+        const getEducation = async () => {
+          let sendID = {id: data}
+          let rawResponse = await fetch('http://172.20.10.2:3000/users/displayEducation', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(sendID)
+          })
+          let response = await rawResponse.json()
+          setUserID(data)
+          setSchool(response[props.positionEducation].school)
+          setFieldstudy(response[props.positionEducation].studyfield)
+          setDegree(response[props.positionEducation].degree)
+          setDescription(response[props.positionEducation].description)
+          setStartDateToBDD(response[props.positionEducation].start)
+          setEndDateToBDD(response[props.positionEducation].end)
+
+            let dateFromDBStart = new Date(response[props.positionEducation].start);
+            let dayFromDBStart = dateFromDBStart.getDate();
+            let monthFromDBStart = dateFromDBStart.getMonth();
+            let yearFromDBStart = dateFromDBStart.getFullYear();
+            setStartDate(`${dayFromDBStart}/${monthFromDBStart + 1}/${yearFromDBStart}`)
+
+            let dateFromDBEnd = new Date(response[props.positionEducation].end);
+            let dayFromDBEnd = dateFromDBEnd.getDate();
+            let monthFromDBEnd = dateFromDBEnd.getMonth();
+            let yearFromDBEnd = dateFromDBEnd.getFullYear();
+            setEndDate(`${dayFromDBEnd}/${monthFromDBEnd + 1}/${yearFromDBEnd}`)
+        }
+          getEducation()
+      }
+      });
     })();
-  }, []);
+    
+  }, [isFocused]);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -41,8 +76,9 @@ export default function AddEducationPage(props) {
 
   const onSubmitClick = async () => {
     if(school.length >= 1 && fieldstudy.length >= 1 && degree.length >= 1 && startDate.length >= 1, endDate.length >= 1){
-    let sendEducation = {
+    let sendUpdateEducation = {
       id: userID,
+      educationId: props.educationId,
       school: school,
       studyfield: fieldstudy,
       degree: degree,
@@ -50,14 +86,14 @@ export default function AddEducationPage(props) {
       end: endDateToBDD,
       description: description,
     }
-    let rawResponse = await fetch('http://172.20.10.2:3000/users/addEducation', {
+    let rawResponse = await fetch('http://172.20.10.2:3000/users/modifyEducation', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(sendEducation)
+      body: JSON.stringify(sendUpdateEducation)
     })
 
     await rawResponse.json()
-    props.navigation.navigate('AddCVPage')
+    props.navigation.navigate('ProfilPage')
     }
     else {
       setErrorMessage("Please fill in all the fields")
@@ -70,10 +106,10 @@ export default function AddEducationPage(props) {
       name={'chevron-back-outline'}
       size={45} color={'#7791DE'}
       style={styles.returnButton}
-      onPress={() => props.navigation.navigate('AddCVPage')}
+      onPress={() => onSubmitClick()}
     />
     <View style={styles.inner}>
-      <Text style={styles.title}>Add Education</Text>
+      <Text style={styles.title}>Edit Education</Text>
       <Text style={(errorMessage.length > 0)? styles.errorMessageStyle: {display: 'none'}}>{errorMessage}</Text>
       <TextInput
         style={styles.input}
@@ -100,6 +136,7 @@ export default function AddEducationPage(props) {
         <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
+
         onConfirm={(date) => {
           setDatePickerVisibility(false)
           let day = date.getDate();
@@ -118,6 +155,7 @@ export default function AddEducationPage(props) {
         <DateTimePickerModal
           isVisible={isDatePickerVisibleEnd}
           mode="date"
+          
           onConfirm={(date2) => {
             setDatePickerVisibilityEnd(false)
             let day = date2.getDate();
@@ -147,6 +185,16 @@ export default function AddEducationPage(props) {
   </KeyboardAwareScrollView>
 )
 }
+
+function mapStateToProps(state){
+    return{
+        positionEducation: state.positionEducation,
+        educationId : state.educationId
+    }
+  }
+    
+  export default connect(mapStateToProps, null)
+  (ModifyEducationPage);
 
 const styles = StyleSheet.create({
 button1: {
