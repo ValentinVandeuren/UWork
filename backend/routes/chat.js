@@ -24,16 +24,23 @@ router.get('/getChat/:id', async function(req, res, next) {
 })
 
 router.post('/sendMessage', async function(req, res, next) {
-  console.log(req.body);
   let conversation = await conversationModel.findOne({_id: req.body.conversationId})
   const newDate = new Date();
-  console.log(req.body.content);
   
-  conversation.messages.push({
-    sender: req.body.sender,
-    date: newDate,
-    content: req.body.content,
-  })
+  if(req.body.document.length === 0){
+    conversation.messages.push({
+      sender: req.body.sender,
+      date: newDate,
+      content: req.body.content,
+    })
+  }else {
+    conversation.messages.push({
+      sender: req.body.sender,
+      date: newDate,
+      content: req.body.content,
+      document: req.body.document,
+    })
+  }
   await conversation.save();
   res.json('message sended')
 })

@@ -4,6 +4,7 @@ let messageSchema = mongoose.Schema({
     sender: String,
     date: Date,
     content: String,
+    document: String,
 });
 
 let conversationSchema = mongoose.Schema({
