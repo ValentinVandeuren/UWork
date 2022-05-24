@@ -51,9 +51,9 @@ router.post('/verifyEmail', async function(req, res, next) {
       await transporter.sendMail({
         from: 'uwork.infos@gmail.com', // sender address
         to: `${req.body.email}`, // list of receivers
-        subject: "Token for verify your email Address", // Subject line
+        subject: "Welcome on Uwork 👋🏼", // Subject line
         // text: `${token}`, // plain text body
-        html: `<b>Hello! her you have your token for verify your account: ${token}</b>`, // html body
+        html: `<b>Here is your verification token: ${token}<br>Enjoy! 🚀</b>`, // html body
       });
       // console.log("Message sent: %s", info.messageId);
       // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
