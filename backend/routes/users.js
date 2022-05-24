@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 let usersModel = require('../models/users');
+let compagnyModel = require('../models/compagnies')
+
 var uid2 = require('uid2');
 var cloudinary = require('cloudinary').v2;
 var uniqid = require('uniqid');
@@ -216,6 +218,19 @@ router.post('/foundUserInfo', async function(req, res, next) {
   
     let userAvatar = user.avatar;
     let userName = user.firstName;
+  
+    res.json({userAvatar, userName})
+  }else {
+    res.json("rip")
+  }
+})
+
+router.post('/foundCompagnyInfo', async function(req, res, next) {
+  if(req.body.id.length != 0){
+    let user = await compagnyModel.findOne({ _id: req.body.id})
+  
+    let userAvatar = user.logo;
+    let userName = user.compagnyName;
   
     res.json({userAvatar, userName})
   }else {

@@ -45,7 +45,7 @@ export function ChatPage(props) {
   }
   const loadInformationUser = async() => {
     let sendID = {id: otherUserId}
-    let responseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
+    let responseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendID)
