@@ -6,9 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { Slider, CheckBox } from 'react-native-elements';
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
 
-export default function ProfilPage(props) {
+export function ProfilPage(props) {
 
   const isFocused = useIsFocused();
 
@@ -42,7 +44,7 @@ export default function ProfilPage(props) {
          if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -79,6 +81,20 @@ export default function ProfilPage(props) {
     })();
   }, [isFocused]);
 
+  const educationEdit = async (positionEducation, educationId) => {
+    props.sendPositionEducation(positionEducation);
+    props.sendEducationID(educationId)
+    props.navigation.navigate('ModifyEducationPage');
+  }
+
+  const languageEdit = async (positionLanguage, languageId) => {
+    props.sendPositionLanguage(positionLanguage);
+    props.sendLanguageId(languageId)
+    props.navigation.navigate('ModifyLanguagePage');
+  }
+
+
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -96,7 +112,8 @@ export default function ProfilPage(props) {
           type: 'image/jpeg',
           name: 'user_avatar.jpg',
        });
-       var rawResponse = await fetch('https://uworkapp.herokuapp.com/users/uploalProfilePicture', {
+       var rawResponse = await fetch('http://172.20.10.5:3000/users/uploalProfilePicture', {
+
            method: 'POST',
            body: data
        })
@@ -133,7 +150,7 @@ export default function ProfilPage(props) {
         sector: jobSector,
       }
     }
-    let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/modifyProfile', {
+    let rawResponse = await fetch('http://172.20.10.5:3000/users/modifyProfile', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendNewProfile)
@@ -148,13 +165,6 @@ export default function ProfilPage(props) {
     props.navigation.navigate('WelcomePage')
     console.log("Je suis deconnecté");
   }
-  // const changeLanguage = () => {
-  //   for(var i = 0 ; i < listLanguage.length ; i++){
-  //     listLanguage[i].name = "Salut"
-  //     // console.log(listLanguage[i].name)
-  //   }
-  //   console.log(listLanguage)
-  // }
 
   return (
       <KeyboardAwareScrollView style={{backgroundColor:"#fff"}}>
@@ -220,53 +230,59 @@ export default function ProfilPage(props) {
           onChangeText={(value) => setBio(value)}
         />
 
+  {/* Start Card Education */}
         <View style={{marginBottom:20}}>
+          
           <View style={(listEducation.length == 0) ? styles.card4 : styles.card}>
             <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
               Education
             </Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}>
+            <TouchableOpacity style={{marginRight:8}} onPress={() => props.navigation.navigate('AddEducationFromProfilePage')}>
+              <IonIcon name="add-outline" size={30} color="#7791DE"/>
+            </TouchableOpacity>
+          </View>
+        
+          <View style={(listEducation.length == 0) ? {display:'none'} : styles.card2}>
+            <ScrollView>
+              {listEducation.map((education, i) => (
+                <View key={i} style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingRight:10}}>
+                  <Text style={styles.input3}>{education.school}</Text>
+                  <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}} onPress={() => educationEdit(i, education._id)}>
+                    <Text style={styles.editText}>EDIT</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
           </View>
         </View>
-        <View style={(listEducation.length == 0) ? {display:'none'} : styles.card2}>
-          <ScrollView>
-            {listEducation.map((education, i) => (
-              <TextInput
-              key={i}
-              style={styles.input3}
-              placeholder="Education"
-              value={education.school}
-            />
-            ))}
+  {/* End Card Education */}
 
-          </ScrollView>
+  {/* Start Card Language */}
+  <View style={{marginBottom:20}}>
+        
+        <View style={(listLanguage.length == 0) ? styles.card4 : styles.card}>
+          <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
+            Language
+          </Text>
+          <TouchableOpacity style={{marginRight:8}} onPress={() => props.navigation.navigate('AddLanguageFromProfilePage')}>
+            <IonIcon name="add-outline" size={30} color="#7791DE"/>
+          </TouchableOpacity>
         </View>
-        </View>
-
-      <View style={{marginBottom:20}}>
-          <View style={(listLanguage.length == 0) ? styles.card4 : styles.card}>
-            <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
-              Language
-            </Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}>
-          </View>
-        </View>
+      
         <View style={(listLanguage.length == 0) ? {display:'none'} : styles.card2}>
           <ScrollView>
-            {listLanguage.map((langue, i) => (
-              <TextInput
-              key={i}
-              style={styles.input3}
-              placeholder="Language"
-              value={langue.name}
-              // onChangeText={(value) => setListLanguage(value)}
-              // onChangeText={(value) => setListLanguage(listLanguage => [...listLanguage, value])}
-            />
+            {listLanguage.map((language, i) => (
+              <View key={i} style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingRight:10}}>
+                <Text style={styles.input3}>{language.name}</Text>
+                <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}} onPress={() => languageEdit(i, language._id)}>
+                  <Text style={styles.editText}>EDIT</Text>
+                </TouchableOpacity>
+              </View>
             ))}
-
           </ScrollView>
         </View>
-      </View>
+  </View>
+  {/* End Card Language */}
 
       <View style={{marginBottom:20}}>
           <View style={styles.card}>
@@ -418,6 +434,26 @@ export default function ProfilPage(props) {
       </KeyboardAwareScrollView>
   )
 }
+
+function mapDispatchToProps(dispatch){
+  return {
+    sendPositionEducation: function(position){
+      dispatch ({type: "addPositionEducation", positionEducation: position})
+    },
+    sendEducationID: function(id){
+      dispatch ({type: "addEducationId", educationId: id})
+    },
+    sendPositionLanguage: function(position){
+      dispatch ({type: "addPositionLanguage", positionLanguage: position})
+    },
+    sendLanguageId: function(id){
+      dispatch ({type: "addLanguageId", languageId: id})
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)
+(ProfilPage);
 
 
 const styles = StyleSheet.create({
@@ -699,5 +735,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     textAlign:'left'
+  },
+  editText: {
+    fontSize: 10, 
+    color:'#fff', 
+    padding:8,
+    fontWeight: 'bold',
   },
 });

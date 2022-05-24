@@ -24,9 +24,8 @@ export default function AddCVPage(props) {
        AsyncStorage.getItem("id", function(error, data) {
         if(isFocused){ 
           const getLanguages = async () => {
-            console.log(data);
             let sendID = {id: data}
-            let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayLanguage', {
+            let rawResponse = await fetch('http://172.20.10.5:3000/users/displayLanguage', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(sendID)
@@ -35,9 +34,8 @@ export default function AddCVPage(props) {
             setListLanguage(response)
           }
           const getEducation = async () => {
-            console.log(data);
             let sendID = {id: data}
-            let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayEducation', {
+            let rawResponse = await fetch('http://172.20.10.5:3000/users/displayEducation', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(sendID)
@@ -65,7 +63,7 @@ export default function AddCVPage(props) {
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-            <Text style={styles.editText}>EDIT</Text>
+            {/* <Text style={styles.editText}>EDIT</Text> */}
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {props.navigation.navigate('AddEducationPage')}}>
             <IonIcon name="add-outline" size={30} color="#7791DE"/>
@@ -88,7 +86,7 @@ export default function AddCVPage(props) {
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-            <Text style={styles.editText}>EDIT</Text>
+            {/* <Text style={styles.editText}>EDIT</Text> */}
             </TouchableOpacity>
             <TouchableOpacity>
             <IonIcon name="add-outline" size={30} color="#7791DE"/>
@@ -109,7 +107,7 @@ export default function AddCVPage(props) {
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-            <Text style={styles.editText}>EDIT</Text>
+            {/* <Text style={styles.editText}>EDIT</Text> */}
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {props.navigation.navigate('AddLanguagePage')}}>
             <IonIcon name="add-outline" size={30} color="#7791DE"/>
@@ -132,7 +130,7 @@ export default function AddCVPage(props) {
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-            <Text style={styles.editText}>EDIT</Text>
+            {/* <Text style={styles.editText}>EDIT</Text> */}
             </TouchableOpacity>
             <TouchableOpacity>
             <IonIcon name="add-outline" size={30} color="#7791DE"/>
@@ -153,7 +151,7 @@ export default function AddCVPage(props) {
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5}}>
-            <Text style={styles.editText}>EDIT</Text>
+            {/* <Text style={styles.editText}>EDIT</Text> */}
             </TouchableOpacity>
             <TouchableOpacity>
             <IonIcon name="add-outline" size={30} color="#7791DE"/>

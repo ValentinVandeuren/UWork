@@ -51,7 +51,7 @@ export default function CreateProfilPage(props) {
           type: 'image/jpeg',
           name: 'user_avatar.jpg',
        });
-       var rawResponse = await fetch('https://uworkapp.herokuapp.com/users/uploalProfilePicture', {
+       var rawResponse = await fetch('http://172.20.10.5:3000/users/uploalProfilePicture', {
            method: 'POST',
            body: data
        })
@@ -69,7 +69,7 @@ export default function CreateProfilPage(props) {
   }
 
   const onSubmitClick = async () => {
-    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3, bio.length >= 5){
+    if(firstName.length >= 1 && lastName.length >= 1 && age >= 16 && city.length >= 3){
 
       let sendProfile = {
         firstName: firstName,
@@ -82,14 +82,13 @@ export default function CreateProfilPage(props) {
         password: passwordStorage,
         token: tokenStorage,
       }
-      let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/createProfile', {
+      let rawResponse = await fetch('http://172.20.10.5:3000/users/createProfile', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendProfile)
       })
 
       let response = await rawResponse.json()
-      console.log(response);
       AsyncStorage.setItem("id", response.id)
       AsyncStorage.setItem("firstName", response.firstName)
       AsyncStorage.setItem("avatar", response.avatar)

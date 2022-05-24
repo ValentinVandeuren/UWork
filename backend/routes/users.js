@@ -91,21 +91,21 @@ router.post('/addTypeJob', async function(req, res, next) {
   res.json("sending");
 })
 
-// router.post('/addEducation', async function(req, res, next) {
-//   let user = await usersModel.findOne({ _id: req.body.id })
+router.post('/addEducation', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
 
-//   user.education.push({
-//     school: req.body.school,
-//     studyfield: req.body.studyfield,
-//     degree: req.body.degree,
-//     start: req.body.start,
-//     end: req.body.end,
-//     description: req.body.description,
-//   })
-//   await user.save();
+  user.education.push({
+    school: req.body.school,
+    studyfield: req.body.studyfield,
+    degree: req.body.degree,
+    start: req.body.start,
+    end: req.body.end,
+    description: req.body.description,
+  })
+  await user.save();
 
-//   res.json("sending");
-// })
+  res.json("sending");
+})
 
 router.post('/addLanguage', async function(req, res, next) {
   let user = await usersModel.findOne({ _id: req.body.id })
@@ -156,6 +156,38 @@ router.post('/modifyProfile', async function(req, res, next) {
   res.json(user);
 })
 
+router.post('/modifyEducation', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  for(let i=0; i<user.education.length; i++){
+    if(user.education[i].id === req.body.educationId){
+      user.education[i].school = req.body.school;
+      user.education[i].studyfield = req.body.studyfield,
+      user.education[i].degree = req.body.degree,
+      user.education[i].start = req.body.start,
+      user.education[i].end = req.body.end,
+      user.education[i].description = req.body.description;
+    }
+  }
+  await user.save();
+  res.json(user);
+})
+
+router.post('/modifyLanguage', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.id })
+
+  for(let i=0; i<user.language.length; i++){
+    if(user.language[i].id === req.body.languageId){
+      console.log('langue modifiée');
+      user.language[i].name = req.body.name;
+      user.language[i].level = req.body.level,
+      user.language[i].description = req.body.description;
+    }
+  }
+  await user.save();
+  res.json(user);
+})
+
 router.post('/foundUserInfo', async function(req, res, next) {
   let user = await usersModel.findOne({ _id: req.body.id})
 
@@ -165,10 +197,5 @@ router.post('/foundUserInfo', async function(req, res, next) {
   res.json({userAvatar, userName})
 })
 
-router.get('/displayEducation/:id', async function(req, res, next) {
-  let education = await usersModel.findOne({_id: req.params.id})
-  console.log(education);
-  res.json(education)
-})
 
 module.exports = router;

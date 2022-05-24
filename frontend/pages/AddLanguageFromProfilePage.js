@@ -4,7 +4,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AddLanguagePage(props) {
+export default function AddLanguageFromProfilePage(props) {
   
   const [userID, setUserID] = useState('');
   const [language, setLanguage] = useState('');
@@ -37,7 +37,7 @@ export default function AddLanguagePage(props) {
     })
 
     await rawResponse.json()
-    props.navigation.navigate('AddCVPage')
+    props.navigation.navigate('ProfilPage')
   } else {
     setErrorMessage("Please fill in all the fields")
   }
@@ -49,7 +49,7 @@ export default function AddLanguagePage(props) {
       name={'chevron-back-outline'}
       size={45} color={'#7791DE'}
       style={styles.returnButton}
-      onPress={() => props.navigation.navigate('AddCVPage')}
+      onPress={() => props.navigation.navigate('ProfilPage')}
     />
     <View style={styles.inner}>
       <Text style={styles.title}>Add Language</Text>
@@ -79,6 +79,14 @@ export default function AddLanguagePage(props) {
     </View>
   </KeyboardAwareScrollView>
 )
+}
+
+function mapDispatchToProps(dispatch){
+  return {
+    sendConversationId: function(id){
+      dispatch ({type: "addconversationId", conversationId: id})
+    }
+  }
 }
 
 const styles = StyleSheet.create({

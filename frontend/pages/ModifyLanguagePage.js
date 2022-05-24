@@ -3,8 +3,13 @@ import React, {useState, useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { connect } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native";
 
-export default function AddLanguagePage(props) {
+
+export function ModifyLanguagePage(props) {
+    
+const isFocused = useIsFocused();
   
   const [userID, setUserID] = useState('');
   const [language, setLanguage] = useState('');
@@ -15,32 +20,49 @@ export default function AddLanguagePage(props) {
 
   useEffect(() => {  
     ( () => {
-      AsyncStorage.getItem("id", function(error, data) {
-        setUserID(data)
-       });
+       AsyncStorage.getItem("id", function(error, data) {
+         if(isFocused){
+        const getLanguage = async () => {
+          let sendID = {id: data}
+          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayLanguage', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(sendID)
+          })
+          let response = await rawResponse.json()
+          setLanguage(response[props.positionLanguage].name)
+          setLevel(response[props.positionLanguage].level)
+          setDescription(response[props.positionLanguage].description)
+          setUserID(data)
+        }
+          getLanguage()
+      }
+      });
     })();
-  }, []);
+    
+  }, [isFocused]);
 
   const onSubmitClick = async () => {
-    if(language.length >= 1 && level.length >= 1 ){
-    let sendLanguage = {
+    if(language.length >= 1 && level.length >= 1){
+    let sendUpdateLanguage = {
       id: userID,
+      languageId: props.languageId,
       name: language,
       level: level,
-      description: description,
+      description: description
     }
-
-    let rawResponse = await fetch('http://172.20.10.5:3000/users/addLanguage', {
+    let rawResponse = await fetch('http://172.20.10.5:3000/users/modifyLanguage', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(sendLanguage)
+      body: JSON.stringify(sendUpdateLanguage)
     })
 
     await rawResponse.json()
-    props.navigation.navigate('AddCVPage')
-  } else {
-    setErrorMessage("Please fill in all the fields")
-  }
+    props.navigation.navigate('ProfilPage')
+    }
+    else {
+      setErrorMessage("Please fill in all the fields")
+    }
   }
 
   return (
@@ -49,10 +71,10 @@ export default function AddLanguagePage(props) {
       name={'chevron-back-outline'}
       size={45} color={'#7791DE'}
       style={styles.returnButton}
-      onPress={() => props.navigation.navigate('AddCVPage')}
+      onPress={() => onSubmitClick()}
     />
     <View style={styles.inner}>
-      <Text style={styles.title}>Add Language</Text>
+      <Text style={styles.title}>Edit Language</Text>
       <Text style={(errorMessage.length > 0)? styles.errorMessageStyle: {display: 'none'}}>{errorMessage}</Text>
       <TextInput
         style={styles.input}
@@ -80,6 +102,16 @@ export default function AddLanguagePage(props) {
   </KeyboardAwareScrollView>
 )
 }
+
+function mapStateToProps(state){
+    return{
+        positionLanguage: state.positionLanguage,
+        languageId : state.languageId
+    }
+  }
+    
+  export default connect(mapStateToProps, null)
+  (ModifyLanguagePage);
 
 const styles = StyleSheet.create({
 button1: {
