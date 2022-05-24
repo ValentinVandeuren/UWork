@@ -180,10 +180,10 @@ export function ProfilPage(props) {
             />
           </View>
           <TouchableOpacity onPress={pickImage}>
-          <Image
-              source={{uri: urlProfilePic}}
-              style={{width: 152, height: 152, borderRadius:150, marginBottom:15}}
-            />
+            <Image
+                source={{uri: urlProfilePic}}
+                style={{width: 152, height: 152, borderRadius:150, marginBottom:15}}
+              />
           </TouchableOpacity>
         <TextInput
           style={styles.input}
