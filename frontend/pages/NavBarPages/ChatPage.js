@@ -9,43 +9,64 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Button
+  Button,
+  Pressable,
+  Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
-
+import * as ImagePicker from 'expo-image-picker';
+import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 
 export function ChatPage(props) {
   let [userId, setUserId] = useState("");
   let [otherUserId, setOtherUserId] = useState("");
 
   let [messageInput, setMessageInput] = useState("");
+  let [messageInputModal, setMessageInputModal] = useState("");
   let [otherAvatar, setOtherAvatar] = useState();
   let [otherUserName,  setOtherUserName] = useState("");
   let [seeHourSend, setSeeHourSend] = useState(false);
   let [message, setMessage] = useState([]);
+  let [timeMessage, setTimeMessage] = useState([]);
 
   const isFocused = useIsFocused();
   const scrollViewRef = useRef();
-  let [modalVisible, setModalVisible] = useState(false)
+  let [modalVisible, setModalVisible] = useState(false);
+  let [urlNewPicture, setUrlNewPicture] = useState("");
+
+  let [modalPicture, setModalPicture] = useState(false);
+  let [urlPictureModal, setUrlPictureModal] = useState();
+  let [sendPictureModal, setSendPictureModal] = useState(false);
+
+  let [messageId, setMessagId] = useState("");
 
   let arrayConversation = [];
+  let arrayDate = [];
   const loadConversation = async() => {
-    let responseConversation = await fetch(`http://172.20.10.5:3000/chat/getChat/${props.conversationId}`)
+    let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
     let response = await responseConversation.json()
     arrayConversation.push(response.messages);
+    for(let i=0; i< response.messages.length; i++){
+      let date = new Date(response.messages[i].date);
+      let day = date.getDate();
+      let month = date.getMonth() +1;
+      let finalTimde = `send: ${day}/${month}`
+      arrayDate.push(finalTimde)
+    }
     if(userId === response.compagnyOwner){
       setOtherUserId(response.employeeOwner)
     }else {
       setOtherUserId(response.compagnyOwner)
     }
-    setMessage(arrayConversation)
+    setMessage(arrayConversation);
+    setTimeMessage(arrayDate);
   }
   const loadInformationUser = async() => {
     let sendID = {id: otherUserId}
-    let responseUserInfo = await fetch('http://172.20.10.5:3000/users/foundCompagnyInfo', {
+    let responseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendID)
@@ -75,24 +96,94 @@ export function ChatPage(props) {
     }
   }
 
-  const onSendMessageClick = async() => {
-    if(messageInput.length >0){
-      let sendInfo = {conversationId: props.conversationId, sender: userId, content: messageInput}
-      let responseConversationSend = await fetch('http://172.20.10.5:3000/chat/sendMessage', {
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      var data = new FormData();
+               
+      data.append('avatar', {
+        uri: result.uri,
+        type: 'image/jpeg',
+        name: 'user_avatar.jpg',
+      });
+      var rawResponse = await fetch('http://172.20.10.2:3000/users/uploalProfilePicture', {
         method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(sendInfo)
+        body: data
       })
-      await responseConversationSend.json();
-      loadConversation()
-      setMessageInput("")
+      var response = await rawResponse.json()
+      setUrlNewPicture(response.resultCloudinary.url);
+      setModalVisible(false);
+      setSendPictureModal(true);
+    }
+  };
+
+  const onPicturClick = (url) => {
+    setModalPicture(true);
+    setUrlPictureModal(url)
+  }
+
+  const onSendMessageClick = async() => {
+    if(messageInput.length >0 || messageInputModal.length >0){
+      if(urlNewPicture.length === 0){
+        let sendInfo = {
+          conversationId: props.conversationId,
+          sender: userId,
+          content: messageInput,
+          document: urlNewPicture
+        }
+        let responseConversationSend = await fetch('http://172.20.10.2:3000/chat/sendMessage', {
+          method: 'POST',
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(sendInfo)
+        })
+        await responseConversationSend.json();
+        setMessageInput("");
+      }else {
+        let sendInfo = {
+          conversationId: props.conversationId,
+          sender: userId,
+          content: messageInputModal,
+          document: urlNewPicture
+        }
+        let responseConversationSend = await fetch('http://172.20.10.2:3000/chat/sendMessage', {
+          method: 'POST',
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(sendInfo)
+        })
+        await responseConversationSend.json();
+        setMessageInputModal("");
+      }
+      loadConversation();
+      setSendPictureModal(false);
+      setUrlNewPicture("");
     }else {
       
     }
   }
 
+  const onMessageSuppClick = async () => {
+    let sendInfo = {
+      conversationId: props.conversationId,
+      messageId: messageId,
+    }
+    let responseDeleteMessage = await fetch('http://172.20.10.2:3000/chat/deleteMessage', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendInfo)
+    })
+    await responseDeleteMessage.json();
+    setMessagId("");
+    loadConversation();
+  }
+
   if(!otherAvatar){
-    loadInformationUser()
+    loadInformationUser();
   }
 
   if(message.length >= 0){
@@ -123,9 +214,42 @@ export function ChatPage(props) {
             <View key={i} style={(userId === messages.sender)?styles.containerMessageOwner: styles.containerMessage}>
               <TouchableOpacity onPress={() => onMessageClick()}>
                 <View style={(userId === messages.sender)?styles.boxMessageOwner: styles.boxMessage}>
-                  <Text style={(userId === messages.sender)?styles.messageOwner: styles.message}>{messages.content}</Text>
+                  <LongPressGestureHandler
+                    onHandlerStateChange={({ nativeEvent }) => {  
+                      if(messages?.isDelete === false){
+                        if( nativeEvent.state === State.ACTIVE ){    
+                          Alert.alert(
+                            "Are you sure you want to delete this message?",
+                            messages.content,
+                            [
+                              {
+                                text: 'cencel'
+                              },
+                              {
+                                text: "delete",
+                                style: "destructive",
+                                onPress: () => onMessageSuppClick()
+                              },
+                            ]
+                          );
+                        }
+                        setMessagId(messages._id)
+                      }else {
+                        
+                      }
+                    }}
+                    minDurationMs={800}
+                  >
+                    <Text style={(userId === messages.sender)? (messages.isDelete)? styles.messageOwnerDelete: styles.messageOwner: (messages.isDelete)? styles.messageDelete:styles.message}>{(messages?.isDelete)? "Message deleted": messages.content}</Text>
+                  </LongPressGestureHandler>
+                  <TouchableOpacity onPress={() => onPicturClick(messages?.document)}>
+                    <Image
+                      source={{uri: messages?.document}}
+                      style={(messages?.document)? (messages.isDelete)? {display: "none"}:styles.picturChat: {display: 'none'}}
+                    />
+                  </TouchableOpacity>
                 </View>
-                <Text style={(seeHourSend)? (userId === messages.sender)?styles.sendingMessageOwner: styles.sendingMessage: {display: "none"}}>{messages.date}</Text>
+                <Text style={(seeHourSend)? (userId === messages.sender)?styles.sendingMessageOwner: styles.sendingMessage: {display: "none"}}>{timeMessage[i]}</Text>
               </TouchableOpacity>
             </View>
           ))}
@@ -161,14 +285,17 @@ export function ChatPage(props) {
           <View style={styles.modal}>
             <View style={styles.containerModal}>
               <Text style={{marginLeft: 35}}></Text>
-              <View style={{flexDirection: "row", alignItems: 'center'}}>
+              <TouchableOpacity
+                style={{flexDirection: "row", alignItems: 'center'}}
+                onPress={() => pickImage()}
+              >
                 <Ionicons
                   name={'attach'}
                   size={30} color={'#7791DE'}
                   onPress={() => setModalVisible(false)}
                 />
                 <Text style={styles.textModal}>Join document</Text>
-              </View>
+              </TouchableOpacity>
               <Ionicons
                 name={'close'}
                 size={20} color={'#000'}
@@ -177,6 +304,50 @@ export function ChatPage(props) {
               />
             </View>
           </View>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalPicture}
+        >
+          <Pressable style={styles.modalPicture} onPress={() => setModalPicture(false)}>
+            <Image
+              source={{uri: urlPictureModal}}
+              style={styles.picturModal}
+            />
+          </Pressable>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={sendPictureModal}
+        >
+          <Pressable
+            style={styles.modal}
+            onPress={() => {setSendPictureModal(false), setMessageInputModal(""), setUrlNewPicture("")}}
+          >
+            <View style={styles.containerModalSendPicture}>
+              <Image
+                source={{uri: urlNewPicture}}
+                style={styles.picturModalSend}
+              />
+              <View style={styles.containerFieldModal}>
+                <TextInput
+                  style={styles.textFieldModal}
+                  placeholder="Text Message"
+                  placeholderTextColor="#000"
+                  onChangeText={(value) => setMessageInputModal(value)}
+                  value={messageInputModal}
+                />
+                <Ionicons
+                  name={'paper-plane-outline'}
+                  size={30} color={'#7791DE'}
+                  style={styles.sendIcon}
+                  onPress={() => onSendMessageClick()}
+                />
+              </View>
+            </View>
+          </Pressable>
         </Modal>
         <View style={{marginBottom: 30}}/>
       </View>
@@ -248,9 +419,22 @@ const styles = StyleSheet.create({
   message: {
     fontWeight: "400",
   },
+  messageDelete: {
+    fontWeight: "400",
+    color: "#AFB0B1",
+  },
   messageOwner: {
     fontWeight: "400",
     color: "#FFF",
+  },
+  messageOwnerDelete: {
+    fontWeight: "400",
+    color: "#AFB0B1",
+  },
+  picturChat: {
+    marginTop: 10,
+    height: 150,
+    width: 250
   },
   sendingMessage: {
     marginLeft: 20,
@@ -310,5 +494,48 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: "#7791DE"
-  }
+  },
+  modalPicture: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: "center",
+    backgroundColor: 'rgba(0,0,0,0.9)'
+  },
+  picturModal: {
+    height: 300,
+    width: "90%"
+  },
+  containerModalSendPicture: {
+    height: 415,
+    width: 370,
+    backgroundColor: "#FFF",
+    alignItems: 'center',
+    borderRadius: 20,
+    marginBottom:0
+  },
+  picturModalSend: {
+    height: 300,
+    width: 330,
+    borderRadius: 10,
+    marginTop: 20
+  },
+  containerFieldModal: {
+    marginTop: 30,
+    marginBottom: 10,
+    width: 330,
+    height: 40,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: "#707070",
+    backgroundColor: "#FFF",
+    alignItems: 'center',
+    justifyContent: "space-between",
+  },
+  textFieldModal: {
+    width: 280,
+    fontSize: 17,
+    paddingLeft: 10,
+    color: '#000',
+  },
 });

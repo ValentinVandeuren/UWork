@@ -129,12 +129,14 @@ export function ConversationPage(props) {
                 setOtherUserName(userNameList);
 
                 for(let i=0; i<response.length; i++){
-                    let lastItem = response[i].messages[response[i].messages.length -1].content
-                    if(lastItem.length > 37){
-                        let newItem = lastItem.slice(0, 37) + "..."
+                    let lastItem = response[i].messages[response[i].messages.length -1]
+                    if(lastItem.isDelete){
+                        lastMessageList.push('Message Deleted')
+                    } else if(lastItem.content.length > 37){
+                        let newItem = lastItem.content.slice(0, 37) + "..."
                         lastMessageList.push(newItem)
                     }else {
-                        lastMessageList.push(lastItem)
+                        lastMessageList.push(lastItem.content)
                     }
                 }
                 setLastMessage(lastMessageList)

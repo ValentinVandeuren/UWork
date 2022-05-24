@@ -4,6 +4,8 @@ let messageSchema = mongoose.Schema({
     sender: String,
     date: Date,
     content: String,
+    document: String,
+    isDelete: Boolean,
 });
 
 let conversationSchema = mongoose.Schema({

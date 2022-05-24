@@ -24,18 +24,39 @@ router.get('/getChat/:id', async function(req, res, next) {
 })
 
 router.post('/sendMessage', async function(req, res, next) {
-  console.log(req.body);
   let conversation = await conversationModel.findOne({_id: req.body.conversationId})
   const newDate = new Date();
-  console.log(req.body.content);
   
-  conversation.messages.push({
-    sender: req.body.sender,
-    date: newDate,
-    content: req.body.content,
-  })
+  if(req.body.document.length === 0){
+    conversation.messages.push({
+      sender: req.body.sender,
+      date: newDate,
+      content: req.body.content,
+      isDelete: false,
+    })
+  }else {
+    conversation.messages.push({
+      sender: req.body.sender,
+      date: newDate,
+      content: req.body.content,
+      document: req.body.document,
+      isDelete: false,
+    })
+  }
   await conversation.save();
   res.json('message sended')
+})
+
+router.post('/deleteMessage', async function(req, res, next) {
+  let conversation = await conversationModel.findOne({_id: req.body.conversationId})
+  
+  for(let i=0; i< conversation.messages.length; i++){
+    if(conversation.messages[i].id === req.body.messageId){
+      conversation.messages[i].isDelete = true;
+    }
+  }
+  await conversation.save()
+  res.json("message deleted")
 })
 
 module.exports = router;
