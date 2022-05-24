@@ -62,7 +62,7 @@ export function ConversationPage(props) {
             let sendUser = {
                 id: userId
             }
-            let rawResponse = await fetch('https://uworkapp.herokuapp.com/chat/foundConversation', {
+            let rawResponse = await fetch('http://172.20.10.2:3000/chat/foundConversation', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendUser)
@@ -103,7 +103,7 @@ export function ConversationPage(props) {
                         id: (userId === response[i].employeeOwner) ?response[i].compagnyOwner : response[i].employeeOwner
                     }
                     if(userId === response[i].compagnyOwner){
-                        let rawResponseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundUserInfo', {
+                        let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundUserInfo', {
                         method: 'POST',
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(sendUser)
@@ -113,7 +113,7 @@ export function ConversationPage(props) {
                         userNameList.push(responseUserInfo.userName);
                         otherAvatarList.push(responseUserInfo.userAvatar);
                     }else {
-                        let rawResponseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundCompagnyInfo', {
+                        let rawResponseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
                         method: 'POST',
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(sendUser)

@@ -238,4 +238,16 @@ router.post('/foundCompagnyInfo', async function(req, res, next) {
   }
 })
 
+router.post('/addOldAnonnceJob', async function(req, res, next) {
+  let user = await usersModel.findOne({ _id: req.body.userId});
+
+  user.oldAnnonceJob.push({
+    id: req.body.oldCardId
+  })
+
+  await user.save();
+
+  res.json('oldAnnonceAdd')
+})
+
 module.exports = router;
