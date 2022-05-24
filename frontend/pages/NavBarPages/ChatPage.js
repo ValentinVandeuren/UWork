@@ -33,7 +33,7 @@ export function ChatPage(props) {
 
   let arrayConversation = [];
   const loadConversation = async() => {
-    let responseConversation = await fetch(`https://uworkapp.herokuapp.com/chat/getChat/${props.conversationId}`)
+    let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
     let response = await responseConversation.json()
     arrayConversation.push(response.messages);
     if(userId === response.compagnyOwner){
@@ -45,7 +45,7 @@ export function ChatPage(props) {
   }
   const loadInformationUser = async() => {
     let sendID = {id: otherUserId}
-    let responseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundCompagnyInfo', {
+    let responseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendID)
@@ -78,7 +78,7 @@ export function ChatPage(props) {
   const onSendMessageClick = async() => {
     if(messageInput.length >0){
       let sendInfo = {conversationId: props.conversationId, sender: userId, content: messageInput}
-      let responseConversationSend = await fetch('https://uworkapp.herokuapp.com/chat/sendMessage', {
+      let responseConversationSend = await fetch('http://172.20.10.2:3000/chat/sendMessage', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendInfo)

@@ -25,7 +25,7 @@ export default function HomePage(props) {
         if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayProfile', {
+          let rawResponse = await fetch('http://172.20.10.2:3000/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -66,7 +66,7 @@ export default function HomePage(props) {
       let sendParameter = {
         distance: 50
       }
-      let rawResponse = await fetch('https://uworkapp.herokuapp.com/annonceJob', {
+      let rawResponse = await fetch('http://172.20.10.2:3000/annonceJob', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendParameter)
@@ -81,7 +81,7 @@ export default function HomePage(props) {
       let sendUserId = {
         userId: userId
       }
-      let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/oldAnnonceList', {
+      let rawResponse = await fetch('http://172.20.10.2:3000/users/oldAnnonceList', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendUserId)
@@ -99,17 +99,37 @@ export default function HomePage(props) {
     props.navigation.navigate('ProfilPage')
   }
 
-  const refuseAnnonce = () => {
+  const refuseAnnonce = async () => {
+    let sendOldCardId = {
+      userId: userId,
+      oldCardId: annonceList[0]._id
+    }
+    await fetch('http://172.20.10.2:3000/users/addOldAnonnceJob', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendOldCardId)
+    })
+    
     setAnnonceList((card) => card.filter((_, index) => index !== 0));
     setisInformation(false);
   }
   
-  const accepteAnnonce = () => {
+  const accepteAnnonce = async() => {
+    let sendOldCardId = {
+      userId: userId,
+      oldCardId: annonceList[0]._id
+    }
+    await fetch('http://172.20.10.2:3000/users/addOldAnonnceJob', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(sendOldCardId)
+    })
+    
     setAnnonceList((card) => card.filter((_, index) => index !== 0));
     setisInformation(false);
   }
   
-  const test = () => {
+  const oldAnnonce = () => {
     for(let i=0; i<annonceList.length; i++){
       for(let y=0; y<oldAnnonceId.length; y++){
         if(annonceList[i]._id === oldAnnonceId[y].id){
@@ -126,9 +146,9 @@ export default function HomePage(props) {
       setisInformation(true);
     }
   }
-
+  
   if(pageLoaded){
-    test()
+    oldAnnonce()
     return (
       <View style={styles.container}>
         <View style={styles.navBar}>
@@ -196,11 +216,6 @@ export default function HomePage(props) {
                 source={{uri: annonce.image[2]?.urlAddress}}
                 style={(annonce.image.length < 3)? {display: "none"}: styles.imageAnnonce}
               />
-              {/* <Text style={styles.compagnyName}>{annonce.compagnyName}</Text>
-              <Text style={styles.descriptionAnnonce}>- {annonce.jobName}</Text>
-              <Text style={styles.descriptionAnnonce}>- {annonce.contract}</Text>
-              <Text style={styles.descriptionAnnonce}>- {annonce.city}</Text>
-              <Text style={styles.descriptionAnnonce}>- {annonce.regime}</Text> */}
             </ScrollView>
             <Ionicons
               name={'information-circle'}
