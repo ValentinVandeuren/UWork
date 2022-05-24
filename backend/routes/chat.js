@@ -32,6 +32,7 @@ router.post('/sendMessage', async function(req, res, next) {
       sender: req.body.sender,
       date: newDate,
       content: req.body.content,
+      isDelete: false,
     })
   }else {
     conversation.messages.push({
@@ -39,10 +40,23 @@ router.post('/sendMessage', async function(req, res, next) {
       date: newDate,
       content: req.body.content,
       document: req.body.document,
+      isDelete: false,
     })
   }
   await conversation.save();
   res.json('message sended')
+})
+
+router.post('/deleteMessage', async function(req, res, next) {
+  let conversation = await conversationModel.findOne({_id: req.body.conversationId})
+  
+  for(let i=0; i< conversation.messages.length; i++){
+    if(conversation.messages[i].id === req.body.messageId){
+      conversation.messages[i].isDelete = true;
+    }
+  }
+  await conversation.save()
+  res.json("message deleted")
 })
 
 module.exports = router;
