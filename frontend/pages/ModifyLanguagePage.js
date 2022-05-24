@@ -24,7 +24,7 @@ const isFocused = useIsFocused();
          if(isFocused){
         const getLanguage = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.2:3000/users/displayLanguage', {
+          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayLanguage', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -51,7 +51,7 @@ const isFocused = useIsFocused();
       level: level,
       description: description
     }
-    let rawResponse = await fetch('http://172.20.10.2:3000/users/modifyLanguage', {
+    let rawResponse = await fetch('http://172.20.10.5:3000/users/modifyLanguage', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendUpdateLanguage)
