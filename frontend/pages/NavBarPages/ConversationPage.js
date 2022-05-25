@@ -9,8 +9,10 @@ export function ConversationPage(props) {
     let [userId, setUserId] = useState("");
     let [searchInput, setSearchInput] = useState("");
     let [conversationList, setConversationList] = useState([]);
+    let [conversationSearchList, setConversationSearchList] = useState([]);
     let [lastMessage, setLastMessage] = useState([]);
     let [userisSet, setUserIsSet] = useState(false);
+    let [isSearching, setIsSearching] = useState(false);
     
     let [hour, setHour] = useState([]);
     let [otherAvatar, setOtherAvatar] = useState([]);
@@ -113,13 +115,13 @@ export function ConversationPage(props) {
                         userNameList.push(responseUserInfo.userName);
                         otherAvatarList.push(responseUserInfo.userAvatar);
                     }else {
+
                         let rawResponseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundCompagnyInfo', {
                         method: 'POST',
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(sendUser)
                         })
                         let responseUserInfo = await rawResponseUserInfo.json()
-                        // console.log(response);
                         userNameList.push(responseUserInfo.userName);
                         otherAvatarList.push(responseUserInfo.userAvatar);
                     }
@@ -152,6 +154,26 @@ export function ConversationPage(props) {
         props.navigation.navigate('ChatPage');
     }
 
+    setInterval(() => {
+        if(searchInput.length  === 0){
+            setIsSearching(false);
+        }
+    }, 3000);
+
+    const onSearchClick = async() => {
+        let searchConversationIndex = otherUserName.indexOf(searchInput);
+        if(searchConversationIndex != -1){
+            let searchConversationList = [];
+            searchConversationList.push(conversationList[searchConversationIndex])
+            setConversationSearchList(searchConversationList)
+            setTimeout(() => {
+                setIsSearching(true);
+            }, 2000)
+        }else {
+            setSearchInput("");
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.navBar}>
@@ -175,44 +197,84 @@ export function ConversationPage(props) {
                 </TouchableOpacity>
             </View>
             <Text style={styles.title}><Text style={styles.uTitle}>U</Text>r chat</Text>
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Search"
-                onChangeText={(value) => setSearchInput(value)}
-                value={searchInput}
-                autoCapitalize = 'none'
-            />
+            <View style={styles.fieldContainer}>
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Search"
+                    onChangeText={(value) => setSearchInput(value)}
+                    value={searchInput}
+                    autoCapitalize = 'none'
+                />
+                <Ionicons
+                    name={'search'}
+                    size={20} color={'#B9B9B9'}
+                    style={(searchInput.length > 0)? styles.searchButton: {display: 'none'}}
+                    onPress={() => onSearchClick()}
+                />
+            </View>
             <View style={styles.containerConversation}>
-                {conversationList.map((conversation,i) => (
-                    <TouchableOpacity
-                        key={i}
-                        onPress={() => onConversationClick(conversation._id)}
-                        style={{alignItems: "center"}}
-                    >
-                        <View style={(i === 0)? {display: "none"}: styles.hr}/>
-                        <View style={(i === 0)? styles.conversationCardTop: styles.conversationCard}>
-                            <View style={styles.leftConversationCard}>
-                                <Image
-                                    source={{uri: otherAvatar[i]}}
-                                    style={styles.avatarConversation}
-                                />
-                                <View style={styles.contentDescriptionCard}>
-                                    <Text style={styles.titleConversation}>{otherUserName[i]}</Text>
-                                    <Text style={styles.contentConversation}>{lastMessage[i]}</Text>
+                {(isSearching)?
+                    conversationSearchList.map((conversation,i) => (
+                        <TouchableOpacity
+                            key={i}
+                            onPress={() => onConversationClick(conversation._id)}
+                            style={{alignItems: "center"}}
+                        >
+                            <View style={(i === 0)? {display: "none"}: styles.hr}/>
+                            <View style={(i === 0)? styles.conversationCardTop: styles.conversationCard}>
+                                <View style={styles.leftConversationCard}>
+                                    <Image
+                                        source={{uri: otherAvatar[i]}}
+                                        style={styles.avatarConversation}
+                                    />
+                                    <View style={styles.contentDescriptionCard}>
+                                        <Text style={styles.titleConversation}>{otherUserName[i]}</Text>
+                                        <Text style={styles.contentConversation}>{lastMessage[i]}</Text>
+                                    </View>
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={{color: "#B9B9B9"}}>{hour[i]}</Text>
+                                    <Ionicons
+                                        name={'chevron-forward-outline'}
+                                        size={15} color={'#B9B9B9'}
+                                        style={styles.returnButton}
+                                        onPress={() => props.navigation.navigate('HomePage')}
+                                    />
                                 </View>
                             </View>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={{color: "#B9B9B9"}}>{hour[i]}</Text>
-                                <Ionicons
-                                     name={'chevron-forward-outline'}
-                                    size={15} color={'#B9B9B9'}
-                                    style={styles.returnButton}
-                                    onPress={() => props.navigation.navigate('HomePage')}
-                                />
+                        </TouchableOpacity>
+                    )) : 
+                    conversationList.map((conversation,i) => (
+                        <TouchableOpacity
+                            key={i}
+                            onPress={() => onConversationClick(conversation._id)}
+                            style={{alignItems: "center"}}
+                        >
+                            <View style={(i === 0)? {display: "none"}: styles.hr}/>
+                            <View style={(i === 0)? styles.conversationCardTop: styles.conversationCard}>
+                                <View style={styles.leftConversationCard}>
+                                    <Image
+                                        source={{uri: otherAvatar[i]}}
+                                        style={styles.avatarConversation}
+                                    />
+                                    <View style={styles.contentDescriptionCard}>
+                                        <Text style={styles.titleConversation}>{otherUserName[i]}</Text>
+                                        <Text style={styles.contentConversation}>{lastMessage[i]}</Text>
+                                    </View>
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={{color: "#B9B9B9"}}>{hour[i]}</Text>
+                                    <Ionicons
+                                        name={'chevron-forward-outline'}
+                                        size={15} color={'#B9B9B9'}
+                                        style={styles.returnButton}
+                                        onPress={() => props.navigation.navigate('HomePage')}
+                                    />
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                ))}
+                        </TouchableOpacity>
+                    ))
+                }
             </View>
         </View>
     )
@@ -286,21 +348,29 @@ const styles = StyleSheet.create({
     uTitle: {
         color: "#7791DE"
     },
-    searchInput: {
-        marginTop: 20,
-        fontSize: 20,
-        fontWeight: "500",
-        backgroundColor: "#EDEEF0",
-        borderRadius: 10,
+    fieldContainer: {
         width: 375,
         height: 40,
-        paddingLeft: 30,
+        marginTop: 20,
+        paddingLeft: 20,
+        borderRadius: 10,
+        backgroundColor: "#EDEEF0",
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems:'center'
+    },
+    searchInput: {
+        fontSize: 20,
+        fontWeight: "500",
+        width: 320,
+    },
+    searchButton: {
+        paddingRight: 20,
     },
     containerConversation: {
         flex: 1,
         width: 375,
         alignItems: 'center',
-
     },
     hr: {
         height: 1,

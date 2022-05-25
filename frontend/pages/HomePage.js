@@ -67,6 +67,7 @@ export default function HomePage(props) {
         distance: 50
       }
       let rawResponse = await fetch('https://uworkapp.herokuapp.com/annonceJob', {
+
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendParameter)
@@ -81,7 +82,9 @@ export default function HomePage(props) {
       let sendUserId = {
         userId: userId
       }
+
       let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/oldAnnonceList', {
+
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendUserId)

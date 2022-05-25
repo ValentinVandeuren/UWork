@@ -35,6 +35,7 @@ export default function AddCVPage(props) {
           }
           const getEducation = async () => {
             let sendID = {id: data}
+
             let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayEducation', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},

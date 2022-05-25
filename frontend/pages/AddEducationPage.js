@@ -50,6 +50,7 @@ export default function AddEducationPage(props) {
       end: endDateToBDD,
       description: description,
     }
+
     let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/addEducation', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},

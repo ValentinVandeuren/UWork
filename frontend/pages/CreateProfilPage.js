@@ -82,6 +82,7 @@ export default function CreateProfilPage(props) {
         password: passwordStorage,
         token: tokenStorage,
       }
+
       let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/createProfile', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},

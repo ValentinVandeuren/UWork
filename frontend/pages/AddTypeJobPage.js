@@ -43,6 +43,7 @@ export default function AddTypeJobPage(props) {
       distance: inputValue,
       regime: regime,
     }
+
     let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/addTypeJob', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
