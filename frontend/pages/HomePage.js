@@ -25,7 +25,7 @@ export default function HomePage(props) {
         if(isFocused){
         const getProfile = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayProfile', {
+          let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayProfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -66,7 +66,7 @@ export default function HomePage(props) {
       let sendParameter = {
         distance: 50
       }
-      let rawResponse = await fetch('http://172.20.10.5:3000/annonceJob', {
+      let rawResponse = await fetch('https://uworkapp.herokuapp.com/annonceJob', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendParameter)
@@ -81,7 +81,7 @@ export default function HomePage(props) {
       let sendUserId = {
         userId: userId
       }
-      let rawResponse = await fetch('http://172.20.10.5:3000/users/oldAnnonceList', {
+      let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/oldAnnonceList', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendUserId)
@@ -104,7 +104,7 @@ export default function HomePage(props) {
       userId: userId,
       oldCardId: annonceList[0]._id
     }
-    await fetch('http://172.20.10.2:3000/users/addOldAnonnceJob', {
+    await fetch('https://uworkapp.herokuapp.com/users/addOldAnonnceJob', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendOldCardId)
@@ -119,7 +119,7 @@ export default function HomePage(props) {
       userId: userId,
       oldCardId: annonceList[0]._id
     }
-    await fetch('http://172.20.10.2:3000/users/addOldAnonnceJob', {
+    await fetch('https://uworkapp.herokuapp.com/users/addOldAnonnceJob', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendOldCardId)
@@ -382,8 +382,8 @@ const styles = StyleSheet.create({
   },
   descriptionTitleInfo: {
     color: '#575757',
-    fontSize: 15,
-    fontWeight: "700"
+    fontSize: 19,
+    fontWeight: "700",
   },
   descriptionAnnonce: {
     color: "#FFF",
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
   descriptionInfo: {
     color: "#575757",
     marginTop: 10,
-    marginLeft: 10,
+    // marginLeft: 10,
     fontWeight: "500",
     marginBottom: 30,
   },

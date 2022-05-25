@@ -33,7 +33,7 @@ export function ModifyEducationPage(props) {
          if(isFocused){
         const getEducation = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.5:3000/users/displayEducation', {
+          let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayEducation', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -86,7 +86,7 @@ export function ModifyEducationPage(props) {
       end: endDateToBDD,
       description: description,
     }
-    let rawResponse = await fetch('http://172.20.10.5:3000/users/modifyEducation', {
+    let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/modifyEducation', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendUpdateEducation)

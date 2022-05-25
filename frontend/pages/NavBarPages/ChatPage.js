@@ -46,7 +46,7 @@ export function ChatPage(props) {
   let arrayConversation = [];
   let arrayDate = [];
   const loadConversation = async() => {
-    let responseConversation = await fetch(`http://172.20.10.2:3000/chat/getChat/${props.conversationId}`)
+    let responseConversation = await fetch(`https://uworkapp.herokuapp.com/chat/getChat/${props.conversationId}`)
     let response = await responseConversation.json()
     arrayConversation.push(response.messages);
     for(let i=0; i< response.messages.length; i++){
@@ -66,7 +66,7 @@ export function ChatPage(props) {
   }
   const loadInformationUser = async() => {
     let sendID = {id: otherUserId}
-    let responseUserInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
+    let responseUserInfo = await fetch('https://uworkapp.herokuapp.com/users/foundCompagnyInfo', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendID)
@@ -112,7 +112,7 @@ export function ChatPage(props) {
         type: 'image/jpeg',
         name: 'user_avatar.jpg',
       });
-      var rawResponse = await fetch('http://172.20.10.2:3000/users/uploalProfilePicture', {
+      var rawResponse = await fetch('https://uworkapp.herokuapp.com/users/uploalProfilePicture', {
         method: 'POST',
         body: data
       })
@@ -137,7 +137,7 @@ export function ChatPage(props) {
           content: messageInput,
           document: urlNewPicture
         }
-        let responseConversationSend = await fetch('http://172.20.10.2:3000/chat/sendMessage', {
+        let responseConversationSend = await fetch('https://uworkapp.herokuapp.com/chat/sendMessage', {
           method: 'POST',
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(sendInfo)
@@ -151,7 +151,7 @@ export function ChatPage(props) {
           content: messageInputModal,
           document: urlNewPicture
         }
-        let responseConversationSend = await fetch('http://172.20.10.2:3000/chat/sendMessage', {
+        let responseConversationSend = await fetch('https://uworkapp.herokuapp.com/chat/sendMessage', {
           method: 'POST',
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(sendInfo)
@@ -172,7 +172,7 @@ export function ChatPage(props) {
       conversationId: props.conversationId,
       messageId: messageId,
     }
-    let responseDeleteMessage = await fetch('http://172.20.10.2:3000/chat/deleteMessage', {
+    let responseDeleteMessage = await fetch('https://uworkapp.herokuapp.com/chat/deleteMessage', {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(sendInfo)

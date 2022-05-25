@@ -13,7 +13,7 @@ export default function SignUpPage(props) {
     if(email.length > 5 && email.match(/\@/i) && email.match(/\./i) && password.length > 8){
 
       let sendEmail = {email: email}
-      let rawResponse = await fetch('http://172.20.10.5:3000/users/verifyEmail', {
+      let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/verifyEmail', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendEmail)
