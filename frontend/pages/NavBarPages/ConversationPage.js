@@ -8,11 +8,11 @@ import { useIsFocused } from "@react-navigation/native";
 export function ConversationPage(props) {
     let [userId, setUserId] = useState("");
     let [searchInput, setSearchInput] = useState("");
+    let [indexSearchConversation, setIndexSearchConversation] = useState(null);
     let [conversationList, setConversationList] = useState([]);
     let [conversationSearchList, setConversationSearchList] = useState([]);
     let [lastMessage, setLastMessage] = useState([]);
     let [userisSet, setUserIsSet] = useState(false);
-    let [isSearching, setIsSearching] = useState(false);
     
     let [hour, setHour] = useState([]);
     let [otherAvatar, setOtherAvatar] = useState([]);
@@ -156,23 +156,24 @@ export function ConversationPage(props) {
 
     setInterval(() => {
         if(searchInput.length  === 0){
-            setIsSearching(false);
+            if(conversationSearchList.length === 1){
+                setConversationSearchList(conversationSearchList.shift())
+            }
         }
     }, 3000);
 
     const onSearchClick = async() => {
         let searchConversationIndex = otherUserName.indexOf(searchInput);
+        console.log(searchConversationIndex);
         if(searchConversationIndex != -1){
             let searchConversationList = [];
             searchConversationList.push(conversationList[searchConversationIndex])
-            setConversationSearchList(searchConversationList)
-            setTimeout(() => {
-                setIsSearching(true);
-            }, 2000)
+            setConversationSearchList(searchConversationList);
+            setIndexSearchConversation(searchConversationIndex)
         }else {
             setSearchInput("");
-        }
-    }
+        };
+    };
 
     return (
         <View style={styles.container}>
@@ -213,7 +214,7 @@ export function ConversationPage(props) {
                 />
             </View>
             <View style={styles.containerConversation}>
-                {(isSearching)?
+                {(conversationSearchList.length === 1)?
                     conversationSearchList.map((conversation,i) => (
                         <TouchableOpacity
                             key={i}
@@ -224,16 +225,16 @@ export function ConversationPage(props) {
                             <View style={(i === 0)? styles.conversationCardTop: styles.conversationCard}>
                                 <View style={styles.leftConversationCard}>
                                     <Image
-                                        source={{uri: otherAvatar[i]}}
+                                        source={{uri: otherAvatar[indexSearchConversation]}}
                                         style={styles.avatarConversation}
                                     />
                                     <View style={styles.contentDescriptionCard}>
-                                        <Text style={styles.titleConversation}>{otherUserName[i]}</Text>
-                                        <Text style={styles.contentConversation}>{lastMessage[i]}</Text>
+                                        <Text style={styles.titleConversation}>{otherUserName[indexSearchConversation]}</Text>
+                                        <Text style={styles.contentConversation}>{lastMessage[indexSearchConversation]}</Text>
                                     </View>
                                 </View>
                                 <View style={{flexDirection: "row"}}>
-                                    <Text style={{color: "#B9B9B9"}}>{hour[i]}</Text>
+                                    <Text style={{color: "#B9B9B9"}}>{hour[indexSearchConversation]}</Text>
                                     <Ionicons
                                         name={'chevron-forward-outline'}
                                         size={15} color={'#B9B9B9'}
