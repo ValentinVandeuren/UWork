@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Scrol
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from "@react-navigation/native";
+import { useFonts } from 'expo-font';
 
 
 export default function HomePage(props) {
@@ -18,6 +19,12 @@ export default function HomePage(props) {
 
   let [dayWeek, setDayWeek] = useState("");
   let [date, setDate] = useState();
+
+  const [loaded] = useFonts({
+    Poppins: require('../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsSemiBold: require('../assets/fonts/Poppins-SemiBold.ttf'),
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
+  });
 
   useEffect(() => {  
     ( () => {
@@ -328,12 +335,15 @@ const styles = StyleSheet.create({
   dayWeek: {
     fontSize: 6.5,
     fontWeight: "900",
+    fontFamily: 'PoppinsSemiBold',
     color: "#B9B9B9",
-    textAlign:'center'
+    textAlign:'center',
+    marginTop: 5,
   },
   date: {
     fontSize: 20,
     fontWeight: "900",
+    fontFamily: 'PoppinsBold',
     color: "#B9B9B9",
     textAlign:'center'
   },
@@ -343,12 +353,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "700",
+    fontFamily: 'PoppinsBold',
     color: "#7791DE"
   },
   cardLoading: {
     height: "60%",
     width: "95%",
-    marginTop: 20,
+    marginTop: 5,
     backgroundColor: "#707070",
     borderRadius: 30,
     justifyContent: 'center',
@@ -357,12 +368,13 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 50,
     fontWeight: "700",
+    fontFamily: 'PoppinsSemiBold',
     textAlign: 'center',
   },
   card: {
     height: "60%",
     width: "95%",
-    marginTop: 20,
+    marginTop: 5,
     backgroundColor: "#E0DFDF",
     borderRadius: 30,
     justifyContent: 'space-between',
@@ -374,30 +386,34 @@ const styles = StyleSheet.create({
   compagnyName: {
     color: "#FFF",
     fontSize: 25,
-    fontWeight: "600"
+    fontWeight: "600",
+    fontFamily: 'PoppinsSemiBold',
   },
   compagnyNameInfo: {
     marginBottom: 50,
     color: "#575757",
     fontSize: 30,
     fontWeight: "600",
+    fontFamily: 'PoppinsSemiBold',
     textAlign: 'center',
   },
   descriptionTitleInfo: {
     color: '#575757',
     fontSize: 19,
     fontWeight: "700",
+    fontFamily: 'PoppinsSemiBold'
   },
   descriptionAnnonce: {
     color: "#FFF",
     fontSize: 18,
-    fontWeight: "500"
+    fontWeight: "500",
+    fontFamily: 'Poppins',
   },
   descriptionInfo: {
     color: "#575757",
     marginTop: 10,
-    // marginLeft: 10,
     fontWeight: "500",
+    fontFamily: 'Poppins',
     marginBottom: 30,
   },
   imageAnnonce: {

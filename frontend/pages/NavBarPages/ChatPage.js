@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
+import { useFonts } from 'expo-font';
 
 export function ChatPage(props) {
   let [userId, setUserId] = useState("");
@@ -42,6 +43,11 @@ export function ChatPage(props) {
   let [sendPictureModal, setSendPictureModal] = useState(false);
 
   let [messageId, setMessagId] = useState("");
+
+  const [loaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
+  });
 
   let arrayConversation = [];
   let arrayDate = [];
@@ -201,7 +207,7 @@ export function ChatPage(props) {
               source={{uri: otherAvatar}}
               style={styles.avatarConversation}
             />
-            <Text>{otherUserName}</Text>
+            <Text style={{fontFamily: 'PoppinsSemiBold'}}>{otherUserName}</Text>
           </View>
           <View style={{width: 40, marginRight: 10}}></View>
         </View>
@@ -418,18 +424,22 @@ const styles = StyleSheet.create({
   },
   message: {
     fontWeight: "400",
+    fontFamily: 'Poppins',
   },
   messageDelete: {
     fontWeight: "400",
     color: "#AFB0B1",
+    fontFamily: 'Poppins',
   },
   messageOwner: {
     fontWeight: "400",
     color: "#FFF",
+    fontFamily: 'Poppins',
   },
   messageOwnerDelete: {
     fontWeight: "400",
     color: "#AFB0B1",
+    fontFamily: 'Poppins',
   },
   picturChat: {
     marginTop: 10,
@@ -467,6 +477,7 @@ const styles = StyleSheet.create({
     width: 290,
     fontSize: 17,
     paddingLeft: 10,
+    fontFamily: 'Poppins',
   },
   sendIcon: {
     marginRight: 10,
@@ -493,7 +504,8 @@ const styles = StyleSheet.create({
   textModal: {
     fontSize: 20,
     fontWeight: "600",
-    color: "#7791DE"
+    color: "#7791DE",
+    fontFamily: 'Poppins',
   },
   modalPicture: {
     flex: 1,
@@ -537,5 +549,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     paddingLeft: 10,
     color: '#000',
+    fontFamily: 'Poppins',
   },
 });

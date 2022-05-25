@@ -34,7 +34,8 @@
     "react-native-web": "0.17.7",
     "react-redux": "^8.0.1",
     "redux": "^4.2.0",
-    "webpack-dev-server": "~3.11.0"
+    "webpack-dev-server": "~3.11.0",
+    "expo-font": "~10.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
