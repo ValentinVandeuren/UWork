@@ -51,7 +51,7 @@ export default function CreateProfilPage(props) {
           type: 'image/jpeg',
           name: 'user_avatar.jpg',
        });
-       var rawResponse = await fetch('http://172.20.10.2:3000/users/uploalProfilePicture', {
+       var rawResponse = await fetch('https://uworkapp.herokuapp.com/users/uploalProfilePicture', {
            method: 'POST',
            body: data
        })
@@ -82,7 +82,8 @@ export default function CreateProfilPage(props) {
         password: passwordStorage,
         token: tokenStorage,
       }
-      let rawResponse = await fetch('http://172.20.10.2:3000/users/createProfile', {
+
+      let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/createProfile', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(sendProfile)

@@ -25,7 +25,7 @@ export default function AddCVPage(props) {
         if(isFocused){ 
           const getLanguages = async () => {
             let sendID = {id: data}
-            let rawResponse = await fetch('http://172.20.10.2:3000/users/displayLanguage', {
+            let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayLanguage', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(sendID)
@@ -35,7 +35,8 @@ export default function AddCVPage(props) {
           }
           const getEducation = async () => {
             let sendID = {id: data}
-            let rawResponse = await fetch('http://172.20.10.2:3000/users/displayEducation', {
+
+            let rawResponse = await fetch('https://uworkapp.herokuapp.com/users/displayEducation', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(sendID)

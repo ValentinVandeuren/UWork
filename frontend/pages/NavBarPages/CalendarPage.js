@@ -19,11 +19,12 @@ export default function CallendarPage(props) {
 
   useEffect(() => {  
     ( () => {
+
       AsyncStorage.getItem("id", function(error, data) {
         if(isFocused){
         const getEvent = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.2:3000/calendarEvent', {
+          let rawResponse = await fetch('https://uworkapp.herokuapp.com/calendarEvent', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -33,7 +34,7 @@ export default function CallendarPage(props) {
 
           let fullCompanyName = [];
           for(var i = 0; i < response.length; i++){
-            let rawResponseCompanyInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
+            let rawResponseCompanyInfo = await fetch('https://uworkapp.herokuapp.com/users/foundCompagnyInfo', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify({id: response[i].companyOwner})
@@ -112,17 +113,37 @@ export default function CallendarPage(props) {
   }, [isFocused]);
 
 
+  let markedDay = {};
+
+  eventList.map((item) => {
+        var dateOfToday = new Date(); 
+        var datFromBDD = new Date(item.date)
+        if(datFromBDD > dateOfToday){
+          markedDay[item.date.slice(0, -14)] = {
+          selected: true,
+          selectedColor: "#7791DE",
+         };
+        } else {
+          markedDay[item.date.slice(0, -14)] = {
+            selected: true,
+            selectedColor: "#d3dcf4",
+          };  
+        }
+        // var dateOfTodayString = JSON.stringify(dateOfToday)
+        // markedDay[dateOfTodayString.slice(1, 11)] = { selected: true, selectedColor: "#7791DE"}
+      });
+
   function renderEvents(eventList){
     eventList.sort(function(a, b) {
       return new Date(a.date) - new Date(b.date);
       })
 
-    const list = eventList.map((event, i) => {
-      var aDate = new Date(); 
-      var datFromBDD = new Date(event.date)
-      
-      if(datFromBDD > aDate){
-
+      const list = eventList.map((event, i) => {
+        var aDate = new Date(); 
+        var datFromBDD = new Date(event.date)
+        
+        if(datFromBDD > aDate){
+          
           return (
             <View style={styles.containerEvent} key={i}>
               <View>
@@ -136,21 +157,21 @@ export default function CallendarPage(props) {
                 <Text style={styles.subTitleEvent}>{allStartHour[i]} - {allEndHour[i]}</Text>
               </View>
             </View>
-  
-          )
-        }
-    })
-    return list;
-  }
+  )
+}
+})
+return list;
+}
 
-  return (
-    <View style={styles.container}>
+
+return (
+  <View style={styles.container}>
       <View style={styles.navBar}>
         <TouchableOpacity onPress={() => props.navigation.navigate('HomePage')}>
           <Image
             source={require('../../assets/button/home-gray.png')}
             style={styles.navbarButtonHome}
-          />
+            />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.navigation.navigate('CalendarPage')}>
           <View style={styles.calendarIcon}>
@@ -162,29 +183,28 @@ export default function CallendarPage(props) {
           <Image
             source={require('../../assets/button/send-gray.png')}
             style={styles.navbarButtonChat}
-          />
+            />
         </TouchableOpacity>
       </View>
         <View style={styles.calendarContainer}>
         <Calendar
-          selectedColor={'red'}
+          firstDay={1}
           style={{
             marginTop: 20,
             height: 375,
             width: 400,
           }}
           enableSwipeMonths={true}
-          markedDates={{
-          '2022-05-28': {selected: true, selectedColor: '#7791DE'},
-          '2022-05-30': {selected: true, selectedColor: '#7791DE'},
-          '2022-06-01': {selected: true, selectedColor: '#7791DE'},
-
-
-          // '2022-05-22': {marked: true, dotColor: '#7791DE'},
-          // '2022-05-26': {marked: true, dotColor: '#7791DE'},
-          // '2022-05-31': {marked: true, dotColor: '#7791DE'},
-        }}
-      />
+          markedDates={ markedDay } 
+          theme={{
+            arrowColor: '#7791DE',
+            todayTextColor: '#7791DE',
+            monthTextColor: '#7791DE',
+            textMonthFontWeight: 'bold',
+            textDayFontWeight: 'bold',
+            textDayHeaderFontWeight: 'bold',
+          }}
+        />
         </View>
 
         <View style={styles.upcomingContainer}>
