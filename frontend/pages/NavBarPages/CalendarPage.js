@@ -23,7 +23,7 @@ export default function CallendarPage(props) {
         if(isFocused){
         const getEvent = async () => {
           let sendID = {id: data}
-          let rawResponse = await fetch('http://172.20.10.5:3000/calendarEvent', {
+          let rawResponse = await fetch('http://172.20.10.2:3000/calendarEvent', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(sendID)
@@ -33,7 +33,7 @@ export default function CallendarPage(props) {
 
           let fullCompanyName = [];
           for(var i = 0; i < response.length; i++){
-            let rawResponseCompanyInfo = await fetch('http://172.20.10.5:3000/users/foundCompagnyInfo', {
+            let rawResponseCompanyInfo = await fetch('http://172.20.10.2:3000/users/foundCompagnyInfo', {
               method: 'POST',
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify({id: response[i].companyOwner})
