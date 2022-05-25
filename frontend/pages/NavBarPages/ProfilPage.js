@@ -8,10 +8,9 @@ import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-
+import { useFonts } from 'expo-font';
 
 export function ProfilPage(props) {
-
   const isFocused = useIsFocused();
 
   const [userID, setUserID] = useState('');
@@ -37,6 +36,12 @@ export function ProfilPage(props) {
   const [check3, setCheck3] = useState(false);
 
   const [displayMenu, setDisplayMenu] = useState(false);
+
+  const [loaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+  });
 
   useEffect(() => {  
     ( () => {
@@ -234,7 +239,7 @@ export function ProfilPage(props) {
         <View style={{marginBottom:20}}>
           
           <View style={(listEducation.length == 0) ? styles.card4 : styles.card}>
-            <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
+            <Text style={{fontSize: 20, color:'#000', fontWeight:'600', fontFamily: 'PoppinsSemiBold'}}>
               Education
             </Text>
             <TouchableOpacity style={{marginRight:8}} onPress={() => props.navigation.navigate('AddEducationFromProfilePage')}>
@@ -261,7 +266,7 @@ export function ProfilPage(props) {
   <View style={{marginBottom:20}}>
         
         <View style={(listLanguage.length == 0) ? styles.card4 : styles.card}>
-          <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
+          <Text style={{fontSize: 20, color:'#000', fontWeight:'600', fontFamily: 'PoppinsSemiBold'}}>
             Language
           </Text>
           <TouchableOpacity style={{marginRight:8}} onPress={() => props.navigation.navigate('AddLanguageFromProfilePage')}>
@@ -286,7 +291,7 @@ export function ProfilPage(props) {
 
       <View style={{marginBottom:20}}>
           <View style={styles.card}>
-            <Text style={{fontSize: 20, color:'#000', fontWeight:'600'}}>
+            <Text style={{fontSize: 20, color:'#000', fontWeight:'600', fontFamily: 'PoppinsSemiBold'}}>
               Job Type
             </Text>
             <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -355,10 +360,10 @@ export function ProfilPage(props) {
             <View style={styles.containerCheckBox}>
             <CheckBox
               center
-              textStyle={{color: "#B9B9B9", marginLeft:0}}
+              textStyle={{color: "#B9B9B9", marginLeft:0, fontFamily: 'PoppinsSemiBold'}}
               containerStyle={styles.checkBox}
               checkedTitle={
-                <Text style={{color: "#000"}}>Remote</Text>
+                <Text style={{color: "#000", fontFamily: 'PoppinsSemiBold'}}>Remote</Text>
               }
               title="Remote"
               checkedIcon={
@@ -378,10 +383,10 @@ export function ProfilPage(props) {
             />
             <CheckBox
               center
-              textStyle={{color: "#B9B9B9", marginLeft:0}}
+              textStyle={{color: "#B9B9B9", marginLeft:0, fontFamily: 'PoppinsSemiBold'}}
               containerStyle={styles.checkBox}
               checkedTitle={
-                <Text style={{color: "#000"}}>Office only</Text>
+                <Text style={{color: "#000", fontFamily: 'PoppinsSemiBold'}}>Office only</Text>
               }
               title="Office only"
               checkedIcon={
@@ -401,10 +406,10 @@ export function ProfilPage(props) {
             />
             <CheckBox
               center
-              textStyle={{color: "#B9B9B9", marginLeft:0}}
+              textStyle={{color: "#B9B9B9", marginLeft:0, fontFamily: 'PoppinsSemiBold'}}
               containerStyle={styles.checkBox}
               checkedTitle={
-                <Text style={{color: "#000"}}>Hybride</Text>
+                <Text style={{color: "#000", fontFamily: 'PoppinsSemiBold'}}>Hybride</Text>
               }
               title="Hybride"
               checkedIcon={
@@ -428,7 +433,7 @@ export function ProfilPage(props) {
         </View>
 
           <TouchableOpacity style={styles.button1} onPress={() => modifyProfile() }>
-            <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Save</Text>
+            <Text style={{color:"#fff", fontSize:20, fontWeight:'500', fontFamily: 'PoppinsSemiBold'}}>Save</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -476,13 +481,6 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     alignItems:'center',
   },
-  title: {
-    fontSize: 30,
-    textAlign:'center',
-    color:"#000",
-    fontWeight: '600',
-    marginBottom: 20    
-  },
   buttonAddPicture: {
     width:150,
     height:150,
@@ -497,8 +495,9 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20,
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",
@@ -518,8 +517,9 @@ const styles = StyleSheet.create({
     paddingRight:15,
     paddingTop:15,
     marginBottom: 20,
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",
@@ -535,8 +535,9 @@ const styles = StyleSheet.create({
     elevation: 9,
   },
   input3:{
-    fontSize: 18,
+    fontSize: 17,
     fontWeight:'500',
+    fontFamily: 'PoppinsSemiBold',
     paddingTop:10,
     paddingBottom:10,
   },
@@ -546,10 +547,11 @@ const styles = StyleSheet.create({
     marginTop: 78,
   },
   logOutText: {
-    fontSize: 10, 
+    fontSize: 11,
+    fontFamily: 'PoppinsSemiBold',
     color:'#fff', 
     padding:8,
-    paddingTop:10,
+    textAlignVertical: 'center',
     fontWeight: 'bold',
   },
   card: {
@@ -560,6 +562,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     alignItems: 'center',
     fontWeight: "500",
+    fontFamily: 'Poppins',
     borderTopEndRadius:15,
     borderTopStartRadius:15,
     width: 340,
@@ -579,6 +582,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     fontWeight: "500",
+    fontFamily: 'Poppins',
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
     height: 150,
@@ -597,9 +601,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     fontWeight: "500",
+    fontFamily: 'Poppins',
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
-    height: 290,
+    height: 300,
     textAlign: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -618,6 +623,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     alignItems: 'center',
     fontWeight: "500",
+    fontFamily: 'Poppins',
     borderRadius:15,
     width: 340,
     height: 40,
@@ -649,6 +655,7 @@ const styles = StyleSheet.create({
   subBitleJobType:{
     fontSize: 18,
     fontWeight:'600',
+    fontFamily: 'PoppinsSemiBold',
     paddingTop:10,
     paddingBottom:10,
     color:'#7791DE'
@@ -657,6 +664,7 @@ const styles = StyleSheet.create({
     color: "#B9B9B9",
     fontSize: 18,
     fontWeight: "600",
+    fontFamily: 'PoppinsSemiBold',
     paddingTop:10,
     paddingBottom:10,
   },
@@ -664,6 +672,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 18,
     fontWeight: "600",
+    fontFamily: 'PoppinsSemiBold',
     paddingTop:10,
     paddingBottom:10,
   },
@@ -672,12 +681,14 @@ const styles = StyleSheet.create({
     color: "#B9B9B9",
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: 'PoppinsSemiBold',
   },
   distanceTextBlack: {
     marginTop: 20,
     color: "#000",
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: 'PoppinsSemiBold'
   },
   thumb: {
     width: 25,
@@ -691,6 +702,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 18,
     fontWeight: "500",
+    fontFamily: 'Poppins',
     borderRadius: 30,
     width: 200,
     height: 30,
@@ -704,6 +716,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 18,
     fontWeight: "500",
+    fontFamily: 'Poppins',
     width: 200,
     height: 30,
     flexDirection: 'row',
@@ -716,21 +729,23 @@ const styles = StyleSheet.create({
     color: "#B9B9B9",
     fontSize: 18,
     fontWeight: "500",
+    fontFamily: 'Poppins',
     paddingTop:3,
   },
   textScrollMenuBlack: {
     color: "#000",
     fontSize: 18,
     fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     paddingTop:3,
   },
   dropDownList: {
     backgroundColor: "#FFF",
-
   },
   textScroolMenu: {
     fontSize: 18,
     fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     color: "#A9A9A9",
     marginTop: 5,
     marginBottom: 5,
@@ -738,8 +753,9 @@ const styles = StyleSheet.create({
   },
   editText: {
     fontSize: 10, 
-    color:'#fff', 
+    color:'#fff',
     padding:8,
     fontWeight: 'bold',
+    fontFamily: 'PoppinsSemiBold'
   },
 });

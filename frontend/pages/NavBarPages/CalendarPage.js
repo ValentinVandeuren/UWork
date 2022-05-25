@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from "@react-navigation/native";
 import {Calendar} from 'react-native-calendars';
+import { useFonts } from 'expo-font';
 
 export default function CallendarPage(props) {
   const isFocused = useIsFocused();
@@ -16,6 +17,12 @@ export default function CallendarPage(props) {
   let [allStartHour, setAllStartHour] = useState([]);
   let [allEndHour, setAllEndHour] = useState([]);
   let [allCompanyName, setAllCompanyName] = useState([]);
+
+  const [loaded] = useFonts({
+    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
+    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+  });
 
   useEffect(() => {  
     ( () => {
@@ -209,7 +216,7 @@ return (
 
         <View style={styles.upcomingContainer}>
           <ScrollView>
-            <Text style={{color:'#fff', fontSize:30, fontWeight:"600", textAlign:'center', marginBottom:30}}>Upcoming</Text>
+            <Text style={{color:'#fff', fontSize:30, fontWeight:"600", textAlign:'center', marginBottom:30, fontFamily: 'PoppinsSemiBold'}}>Upcoming</Text>
             {renderEvents(eventList)}
           </ScrollView>
         </View>
@@ -223,15 +230,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     alignItems: 'center',
   },
-  calendarContainer:{
-    // flex:1,
-    // justifyContent:'center',
-    // backgroundColor:'red',
-  },
   upcomingContainer:{
     flex:1,
     width:'95%',
-    // justifyContent:'space-around',
     alignItems:'center',
     backgroundColor:'#7791DE',
     borderTopRightRadius: 20,
@@ -244,12 +245,12 @@ const styles = StyleSheet.create({
     alignItems:'baseline',
     width:350,
     marginBottom:30,
-
   },
   dateEvent:{
     color: '#7791DE',
     fontSize:18,
     fontWeight:"600",
+    fontFamily: 'PoppinsBold',
     paddingBottom:1,
     paddingTop:1,
   },
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff', 
     marginRight:10,
     padding:2,
-    width:28,
+    width:32,
     justifyContent:'center',
     alignItems:'center',
     textAlign:'center',
@@ -266,12 +267,14 @@ const styles = StyleSheet.create({
   titleEvent:{
     color: '#fff',
     fontSize:25,
-    fontWeight:"600"
+    fontWeight:"600",
+    fontFamily: 'PoppinsSemiBold'
   },
   subTitleEvent:{
     color: '#fff',
     fontSize:15,
     fontWeight:"500",
+    fontFamily: 'Poppins',
     marginBottom:4
   },
   navBar: {
@@ -304,11 +307,14 @@ const styles = StyleSheet.create({
     fontSize: 6.5,
     fontWeight: "900",
     color: "#7791DE",
-    textAlign:'center'
+    fontFamily: 'PoppinsSemiBold',
+    textAlign:'center',
+    marginTop: 5,
   },
   date: {
     fontSize: 20,
     fontWeight: "900",
+    fontFamily: 'PoppinsBold',
     color: "#7791DE",
     textAlign:'center'
   },

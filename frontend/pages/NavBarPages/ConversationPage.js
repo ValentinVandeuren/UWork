@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
+import { useFonts } from 'expo-font';
 
 export function ConversationPage(props) {
     let [userId, setUserId] = useState("");
@@ -22,6 +23,12 @@ export function ConversationPage(props) {
     let [date, setDate] = useState();
 
     const isFocused = useIsFocused();
+
+    const [loaded] = useFonts({
+        Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
+        PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
+        PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
+    });
 
     useEffect(() => {  
         ( () => {
@@ -234,7 +241,7 @@ export function ConversationPage(props) {
                                     </View>
                                 </View>
                                 <View style={{flexDirection: "row"}}>
-                                    <Text style={{color: "#B9B9B9"}}>{hour[indexSearchConversation]}</Text>
+                                    <Text style={{color: "#B9B9B9", fontFamily: 'Poppins'}}>{hour[indexSearchConversation]}</Text>
                                     <Ionicons
                                         name={'chevron-forward-outline'}
                                         size={15} color={'#B9B9B9'}
@@ -264,7 +271,7 @@ export function ConversationPage(props) {
                                     </View>
                                 </View>
                                 <View style={{flexDirection: "row"}}>
-                                    <Text style={{color: "#B9B9B9"}}>{hour[i]}</Text>
+                                    <Text style={{color: "#B9B9B9", fontFamily: 'Poppins'}}>{hour[i]}</Text>
                                     <Ionicons
                                         name={'chevron-forward-outline'}
                                         size={15} color={'#B9B9B9'}
@@ -330,20 +337,24 @@ const styles = StyleSheet.create({
       justifyContent: "center",
     },
     dayWeek: {
-      fontSize: 6.5,
-      fontWeight: "900",
-      color: "#B9B9B9",
-      textAlign:'center'
+        fontSize: 6.5,
+        fontWeight: "900",
+        fontFamily: 'PoppinsSemiBold',
+        color: "#B9B9B9",
+        textAlign:'center',
+        marginTop: 5,
     },
     date: {
-      fontSize: 20,
-      fontWeight: "900",
-      color: "#B9B9B9",
-      textAlign:'center'
+        fontSize: 20,
+        fontWeight: "900",
+        fontFamily: 'PoppinsBold',
+        color: "#B9B9B9",
+        textAlign:'center'
     },
     title: {
         fontSize: 30,
         fontWeight: "600",
+        fontFamily: 'PoppinsSemiBold',
         marginTop: 20
     },
     uTitle: {
@@ -363,6 +374,7 @@ const styles = StyleSheet.create({
     searchInput: {
         fontSize: 20,
         fontWeight: "500",
+        fontFamily: 'PoppinsSemiBold',
         width: 320,
     },
     searchButton: {
@@ -405,10 +417,12 @@ const styles = StyleSheet.create({
     },
     titleConversation: {
         fontSize: 17,
-        fontWeight: "500"
+        fontWeight: "500",
+        fontFamily: 'PoppinsSemiBold',
     },
     contentConversation: {
         fontSize: 15,
-        color: "#949598"
+        color: "#949598",
+        fontFamily: 'Poppins',
     }
 });
