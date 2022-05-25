@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   calendarIcon: {
+    marginRight:10,
     height: 50,
     width: 50,
     borderWidth: 3,
