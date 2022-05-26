@@ -142,7 +142,7 @@ export default function AddEducationPage(props) {
 
       />
         <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick()}>
-          <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Save</Text>
+          <Text style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}>Save</Text>
         </TouchableOpacity>
     </View>
   </KeyboardAwareScrollView>
@@ -163,7 +163,6 @@ button1: {
   shadowRadius: 3.84,
   shadowOffset : { width: 0, height: 3 },
   color:"#fff",
-  // marginTop:20,
   marginBottom:10,
   height:50,
   width: 200,
@@ -174,13 +173,13 @@ title: {
   fontSize: 30,
   textAlign:'center',
   color:"#7791DE",
-  fontWeight: '600',
+  fontFamily:'PoppinsSemiBold',
   marginBottom: 20    
 },
 input: {
   marginBottom: 20,
   fontSize: 20,
-  fontWeight: "500",
+  fontFamily:'PoppinsSemiBold',
   backgroundColor: "#FFF",
   borderRadius: 30,
   width: "80%",
@@ -201,7 +200,7 @@ input2: {
   paddingTop:15,
   marginBottom: 20,
   fontSize: 20,
-  fontWeight: "500",
+  fontFamily:'PoppinsSemiBold',
   backgroundColor: "#FFF",
   borderRadius: 30,
   width: "80%",
@@ -219,7 +218,7 @@ input2: {
 input3: {
   marginBottom: 20,
   fontSize: 20,
-  fontWeight: "500",
+  fontFamily:'PoppinsSemiBold',
   backgroundColor: "#FFF",
   borderRadius: 30,
   width: "48%",
@@ -242,7 +241,7 @@ card: {
   paddingLeft: 10,
   alignItems: 'center',
   marginBottom: 30,
-  fontWeight: "500",
+  fontFamily:'PoppinsSemiBold',
   borderRadius: 15,
   height: 50,
   textAlign: "center",
@@ -255,12 +254,6 @@ card: {
   shadowRadius: 3.84,
   elevation: 9,
 },
-editText: {
-  fontSize: 10, 
-  color:'#fff', 
-  padding:8,
-  fontWeight: 'bold',
-},
 minicontainer: {
   flex: 1,
   justifyContent: 'center',
@@ -270,7 +263,6 @@ inner: {
   alignItems:'center',
   backgroundColor:'#fff',
   marginTop: 40,
-  // backgroundColor:'red'
 },
 returnButton: {
   marginLeft: 20,
@@ -278,14 +270,15 @@ returnButton: {
 },
 inputDateBlack: {
   color:"#000",
-  fontSize:20, fontWeight:'500',
+  fontSize:20,
+  fontFamily:'PoppinsSemiBold',
   textAlign:'center',
   paddingTop:12
 },
 inputDateGray: {
   color:"#B9B9B9",
   fontSize:20,
-  fontWeight:'500',
+  fontFamily:'PoppinsSemiBold',
   textAlign:'center',
   paddingTop:12
 },

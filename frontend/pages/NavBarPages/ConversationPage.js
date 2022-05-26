@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
-import { useFonts } from 'expo-font';
 
 export function ConversationPage(props) {
     let [userId, setUserId] = useState("");
@@ -23,12 +22,6 @@ export function ConversationPage(props) {
     let [date, setDate] = useState();
 
     const isFocused = useIsFocused();
-
-    const [loaded] = useFonts({
-        Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-        PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
-        PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-    });
 
     useEffect(() => {  
         ( () => {
@@ -50,7 +43,7 @@ export function ConversationPage(props) {
         setDayWeek("Tuesday")
         } else if(day === 3){
         setDayWeek("Wednesday")
-        } else if(day === 43){
+        } else if(day === 4){
         setDayWeek("Thursday")
         } else if(day === 5){
         setDayWeek("Friday")
@@ -358,7 +351,8 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     uTitle: {
-        color: "#7791DE"
+        color: "#7791DE",
+        fontFamily: 'PoppinsSemiBold',
     },
     fieldContainer: {
         width: 375,

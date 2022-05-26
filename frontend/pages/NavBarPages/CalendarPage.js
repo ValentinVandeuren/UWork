@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from "@react-navigation/native";
 import {Calendar} from 'react-native-calendars';
-import { useFonts } from 'expo-font';
 
 export default function CallendarPage(props) {
   const isFocused = useIsFocused();
@@ -17,12 +16,6 @@ export default function CallendarPage(props) {
   let [allStartHour, setAllStartHour] = useState([]);
   let [allEndHour, setAllEndHour] = useState([]);
   let [allCompanyName, setAllCompanyName] = useState([]);
-
-  const [loaded] = useFonts({
-    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-    PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
-    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-  });
 
   useEffect(() => {  
     ( () => {
@@ -108,7 +101,7 @@ export default function CallendarPage(props) {
       setDayWeek("Tuesday")
     } else if(day === 3){
       setDayWeek("Wednesday")
-    } else if(day === 43){
+    } else if(day === 4){
       setDayWeek("Thursday")
     } else if(day === 5){
       setDayWeek("Friday")
@@ -206,7 +199,7 @@ return (
           theme={{
             arrowColor: '#7791DE',
             todayTextColor: '#7791DE',
-            monthTextColor: '#7791DE',
+            monthTextColor: '#000',
             textMonthFontWeight: 'bold',
             textDayFontWeight: 'bold',
             textDayHeaderFontWeight: 'bold',
@@ -273,9 +266,8 @@ const styles = StyleSheet.create({
   subTitleEvent:{
     color: '#fff',
     fontSize:15,
-    fontWeight:"500",
     fontFamily: 'Poppins',
-    marginBottom:4
+    marginBottom:4,
   },
   navBar: {
     marginTop: 75,

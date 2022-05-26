@@ -108,10 +108,10 @@ export default function AddTypeJobPage(props) {
       <View style={styles.containerCheckBox}>
         <CheckBox
           center
-          textStyle={{color: "#B9B9B9", marginLeft:0}}
+          textStyle={{color: "#B9B9B9", marginLeft:0, fontFamily:'PoppinsSemiBold'}}
           containerStyle={styles.checkBox}
           checkedTitle={
-            <Text style={{color: "#000"}}>Remote</Text>
+            <Text style={{color: "#000", fontFamily:'PoppinsSemiBold'}}>Remote</Text>
           }
           title="Remote"
           checkedIcon={
@@ -131,10 +131,10 @@ export default function AddTypeJobPage(props) {
         />
         <CheckBox
           center
-          textStyle={{color: "#B9B9B9", marginLeft:0}}
+          textStyle={{color: "#B9B9B9", marginLeft:0, fontFamily:'PoppinsSemiBold'}}
           containerStyle={styles.checkBox}
           checkedTitle={
-            <Text style={{color: "#000"}}>Office only</Text>
+            <Text style={{color: "#000", fontFamily:'PoppinsSemiBold'}}>Office only</Text>
           }
           title="Office only"
           checkedIcon={
@@ -154,10 +154,10 @@ export default function AddTypeJobPage(props) {
         />
         <CheckBox
           center
-          textStyle={{color: "#B9B9B9", marginLeft:0}}
+          textStyle={{color: "#B9B9B9", marginLeft:0, fontFamily:'PoppinsSemiBold'}}
           containerStyle={styles.checkBox}
           checkedTitle={
-            <Text style={{color: "#000"}}>Hybride</Text>
+            <Text style={{color: "#000", fontFamily:'PoppinsSemiBold'}}>Hybride</Text>
           }
           title="Hybride"
           checkedIcon={
@@ -177,7 +177,7 @@ export default function AddTypeJobPage(props) {
         />
       </View>
       <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick() }>
-        <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Continue</Text>
+        <Text style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}>Continue</Text>
       </TouchableOpacity>
     </View>
   )
@@ -188,7 +188,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   buttonLater: {
     marginTop: 50,
@@ -198,20 +197,20 @@ const styles = StyleSheet.create({
   textLater: {
     color: "#C9C9C9",
     fontSize: 17,
-    fontWeight: "700",
-    marginRight: 30
+    fontFamily:'PoppinsSemiBold',
+    marginRight: 30,
   },
   textTitle: {
     marginTop: 100,
     marginBottom: 50,
     color: "#7791DE",
     fontSize: 25,
-    fontWeight: "700",
+    fontFamily:'PoppinsSemiBold',
   },
   scrollMenu: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",
@@ -219,7 +218,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: "space-between",
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -232,7 +230,7 @@ const styles = StyleSheet.create({
   scrollMenuScrolling: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
@@ -241,7 +239,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: "space-between",
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -254,12 +251,12 @@ const styles = StyleSheet.create({
   textScrollMenu: {
     color: "#B9B9B9",
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
   },
   textScrollMenuBlack: {
     color: "#000",
     fontSize: 20,
-    fontWeight: "500"
+    fontFamily:'PoppinsSemiBold',
   },
   dropDown: {
     marginRight: 10,
@@ -269,7 +266,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -281,7 +277,7 @@ const styles = StyleSheet.create({
   },
   textScroolMenu: {
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     color: "#A9A9A9",
     marginTop: 5,
     marginBottom: 5,
@@ -290,13 +286,12 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",
     height: 50,
     textAlign: "center",
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -310,13 +305,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: "#B9B9B9",
     fontSize: 18,
-    fontWeight: "700",
+    fontFamily:'PoppinsSemiBold',
   },
   distanceTextBlack: {
     marginTop: 20,
     color: "#000",
     fontSize: 18,
-    fontWeight: "700",
+    fontFamily:'PoppinsSemiBold',
   },
   thumb: {
     width: 25,
@@ -329,12 +324,12 @@ const styles = StyleSheet.create({
   radiusDistance: {
     color: "#B9B9B9",
     fontSize: 15,
-    fontWeight: "700"
+    fontFamily:'PoppinsSemiBold',
   },
   radiusDistanceBlack: {
     color: "#000",
     fontSize: 15,
-    fontWeight: "700"
+    fontFamily:'PoppinsSemiBold',
   },
   containerCheckBox: {
     flexDirection: "row",
@@ -362,7 +357,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     shadowOffset : { width: 0, height: 3 },
     color: "#fff",
-    // marginBottom: 10,
     marginTop: 120,
     height: 50,
     width: 200,

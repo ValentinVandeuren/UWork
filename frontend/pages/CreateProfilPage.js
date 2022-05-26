@@ -139,7 +139,7 @@ export default function CreateProfilPage(props) {
 
           />
             <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick() }>
-              <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Continue</Text>
+              <Text style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}>Continue</Text>
             </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign:'center',
     color:"#000",
-    fontWeight: '600',
+    fontFamily:'PoppinsSemiBold',
     marginBottom: 20    
   },
   buttonAddPicture: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     paddingTop:15,
     marginBottom: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",

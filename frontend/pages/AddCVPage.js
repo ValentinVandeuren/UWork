@@ -53,13 +53,13 @@ export default function AddCVPage(props) {
   return (
   <View style={styles.container}>
       <Text style={styles.title}>Nice to meet <Text style={{color:'#7791DE'}}>U</Text>, {"\n"}{firstName} 👋🏼</Text>
-      <Text style={{fontSize: 25, textAlign:'center', color:"#7791DE", fontWeight: '600', marginBottom:10 }}>Let's set up Ur profile!</Text>
+      <Text style={{fontSize: 25, textAlign:'center', color:"#7791DE", fontFamily:'PoppinsSemiBold', marginBottom:10 }}>Let's set up Ur profile!</Text>
     <View style={styles.minicontainer}>
       <ScrollView contentContainerStyle={{height:520, justifyContent:'center', paddingLeft:10, paddingRight:10}}>
 
       <View style={{marginBottom:20}}>
       <View style={(listEducation.length == 0) ? styles.card3 : styles.card}>
-          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontFamily:'PoppinsSemiBold'}}>
             Education
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -82,7 +82,7 @@ export default function AddCVPage(props) {
       
       <View style={{marginBottom:20}}>
         <View style={(listExperience.length == 0) ? styles.card3 : styles.card}>
-          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontFamily:'PoppinsSemiBold'}}>
             Experience
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -103,7 +103,7 @@ export default function AddCVPage(props) {
 
       <View style={{marginBottom:20}}>
       <View style={(listLanguage.length == 0) ? styles.card3 : styles.card}>
-          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontFamily:'PoppinsSemiBold'}}>
             Language
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -126,7 +126,7 @@ export default function AddCVPage(props) {
 
       <View style={{marginBottom:20}}>
       <View style={(listLicence.length == 0) ? styles.card3 : styles.card}>
-          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontFamily:'PoppinsSemiBold'}}>
             Licence
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -147,7 +147,7 @@ export default function AddCVPage(props) {
 
       <View style={{marginBottom:20}}>
       <View style={(listSkills.length == 0) ? styles.card3 : styles.card}>
-          <Text style={{fontSize: 20, color:'#B9B9B9', fontWeight:'600'}}>
+          <Text style={{fontSize: 20, color:'#B9B9B9', fontFamily:'PoppinsSemiBold'}}>
             Skills
           </Text>
           <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -170,7 +170,7 @@ export default function AddCVPage(props) {
     </ScrollView>
     </View>
       <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('AddTypeJobPage')}}>
-        <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Continue</Text>
+        <Text style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}>Continue</Text>
       </TouchableOpacity>
       
   </View>
@@ -209,46 +209,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign:'center',
     color:"#000",
-    fontWeight: '600',
+    fontFamily:'PoppinsSemiBold',
     marginBottom: 20    
-  },
-  input: {
-    marginBottom: 20,
-    fontSize: 20,
-    fontWeight: "500",
-    backgroundColor: "#FFF",
-    borderRadius: 30,
-    width: "80%",
-    height: 50,
-    textAlign: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-    elevation: 9,
-  },
-  input2: {
-    marginBottom: 20,
-    fontSize: 20,
-    fontWeight: "500",
-    backgroundColor: "#FFF",
-    borderRadius: 30,
-    width: "80%",
-    height: 150,
-    textAlign: 'center',
-    paddingBottom:100,
-    alignItems:'flex-start',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-    elevation: 9,
   },
   card: {
     backgroundColor: "#fff",
@@ -257,9 +219,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 10,
     alignItems: 'center',
-    // marginBottom: 30,
-    fontWeight: "500",
-    // borderRadius: 15,
+    fontFamily:'PoppinsSemiBold',
     borderTopEndRadius:15,
     borderTopStartRadius:15,
 
@@ -278,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: 'center',
     paddingLeft: 10,
-    fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     borderBottomEndRadius: 15,
     borderBottomStartRadius: 15,
     height: 65,
@@ -300,6 +260,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     alignItems: 'center',
     fontWeight: "500",
+    fontFamily:'PoppinsSemiBold',
     borderRadius:15,
     height: 50,
     textAlign: "center",
@@ -317,17 +278,17 @@ const styles = StyleSheet.create({
     color:'#fff', 
     padding:8,
     fontWeight: 'bold',
+    fontFamily:'PoppinsSemiBold',
   },
   minicontainer: {
     flex: 1,
     justifyContent: 'center',
-    // backgroundColor:'red',
     width: "80%",
   },
   undertitle: {
     paddingTop:1, 
     paddingBottom: 1, 
-    fontSize:15, 
-    fontWeight:'500'
+    fontSize:15,
+    fontFamily:'PoppinsSemiBold',
   }
 });

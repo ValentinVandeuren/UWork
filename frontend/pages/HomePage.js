@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Scrol
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused } from "@react-navigation/native";
-import { useFonts } from 'expo-font';
-
 
 export default function HomePage(props) {
   const isFocused = useIsFocused();
@@ -20,13 +18,7 @@ export default function HomePage(props) {
   let [dayWeek, setDayWeek] = useState("");
   let [date, setDate] = useState();
 
-  const [loaded] = useFonts({
-    Poppins: require('../assets/fonts/Poppins-Regular.ttf'),
-    PoppinsSemiBold: require('../assets/fonts/Poppins-SemiBold.ttf'),
-    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
-  });
-
-  useEffect(() => {  
+  useEffect(() => { 
     ( () => {
       AsyncStorage.getItem("id", function(error, data) {
         if(isFocused){
@@ -59,7 +51,7 @@ export default function HomePage(props) {
       setDayWeek("Tuesday")
     } else if(day === 3){
       setDayWeek("Wednesday")
-    } else if(day === 43){
+    } else if(day === 4){
       setDayWeek("Thursday")
     } else if(day === 5){
       setDayWeek("Friday")
@@ -181,7 +173,7 @@ export default function HomePage(props) {
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.title}>Would U like to do this job?</Text>
+        <Text style={styles.title}>Would <Text style={styles.title1}>U</Text> like to do this job?</Text>
         {annonceList.map((annonce,i) => (
           (isInformation === false)?
           <ImageBackground
@@ -352,9 +344,13 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   title: {
-    fontSize: 25,
-    fontWeight: "700",
-    fontFamily: 'PoppinsBold',
+    fontSize: 27,
+    fontFamily: 'PoppinsSemiBold',
+    color: "#000"
+  },
+  title1: {
+    fontSize: 27,
+    fontFamily: 'PoppinsSemiBold',
     color: "#7791DE"
   },
   cardLoading: {

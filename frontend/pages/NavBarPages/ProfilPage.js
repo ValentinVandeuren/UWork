@@ -8,7 +8,6 @@ import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
-import { useFonts } from 'expo-font';
 
 export function ProfilPage(props) {
   const isFocused = useIsFocused();
@@ -36,12 +35,6 @@ export function ProfilPage(props) {
   const [check3, setCheck3] = useState(false);
 
   const [displayMenu, setDisplayMenu] = useState(false);
-
-  const [loaded] = useFonts({
-    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-    PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
-    PoppinsBold: require('../../assets/fonts/Poppins-Bold.ttf'),
-  });
 
   useEffect(() => {  
     ( () => {
