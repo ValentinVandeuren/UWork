@@ -82,7 +82,7 @@ export default function SigninPage(props) {
         onPress={() => onSendClick()}
         >
       <Text
-        style={{color:"#fff", fontSize:20, fontWeight:'500'}}
+        style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}
         >Let's go!</Text>
       </TouchableOpacity>
         </View>
@@ -132,20 +132,20 @@ const styles = StyleSheet.create({
     marginTop: 50,
     textAlign: "center",
     fontSize: 30,
-    fontWeight: '600',
+    fontFamily: 'PoppinsSemiBold',
   },
   textSignUp: {
     marginTop: 40,
     marginBottom: 50,
     color: "#7791DE",
     fontSize: 25,
-    fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     textAlign: 'center'
   },
   input: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "70%",
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   errorMessageStyle:{
     color: "red",
     marginTop: 20,
+    fontFamily: 'PoppinsSemiBold',
   },
   button: {
     borderRadius:25,
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
     fontWeight: "700",
+    fontFamily: 'PoppinsSemiBold',
   },
   rowLogo: {
     flexDirection: "row",

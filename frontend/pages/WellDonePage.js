@@ -24,7 +24,7 @@ export default function WellDonePage(props) {
         🚀🚀🚀
       </Text>
       <TouchableOpacity style={styles.button1} onPress={() => {props.navigation.navigate('HomePage')}}>
-        <Text style={{color:"#fff", fontSize:20, fontWeight:'600'}}>Let's go!</Text>
+        <Text style={{color:"#fff", fontSize:20, fontWeight:'600', fontFamily:'PoppinsSemiBold'}}>Let's go!</Text>
       </TouchableOpacity>
     </View>
   )
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   textDescription: {
     textAlign: 'center',
     fontSize: 30,
-    fontWeight: "700"
+    fontFamily:'PoppinsSemiBold'
   },
   button1: {
     borderRadius:25,

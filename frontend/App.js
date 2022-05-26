@@ -6,14 +6,24 @@ LogBox.ignoreAllLogs();
 
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
+import AppLoading from 'expo-app-loading';
+import { useState } from 'react';
+import * as Font from 'expo-font';
+
+const fetchFonts = () => {
+  return Font.loadAsync({
+     'Poppins': require('./assets/fonts/Poppins-Regular.ttf'),
+     'PoppinsSemiBold': require('./assets/fonts/Poppins-SemiBold.ttf'),
+     'PoppinsBold': require('./assets/fonts/Poppins-Bold.ttf')
+
+  });
+};
 
 import conversationId from './reducers/conversation'
 import positionEducation from './reducers/education'
 import educationId from './reducers/educationId'
 import positionLanguage from './reducers/languagePosition'
 import languageId from './reducers/languageId'
-
-
 
 const store = createStore(combineReducers({conversationId, positionEducation, educationId, positionLanguage, languageId}))
 
@@ -30,14 +40,10 @@ import AddLanguagePage from "./pages/AddLanguagePage";
 import AddTypeJobPage from "./pages/AddTypeJobPage";
 import WellDonePage from "./pages/WellDonePage";
 import HomePage from "./pages/HomePage";
-import MessagePage from "./pages/MessagePage";
 import AddEducationFromProfilePage from "./pages/AddEducationFromProfilePage";
 import AddLanguageFromProfilePage from "./pages/AddLanguageFromProfilePage";
 import ModifyEducationPage from "./pages/ModifyEducationPage";
 import ModifyLanguagePage from "./pages/ModifyLanguagePage";
-
-
-
 
 import ProfilPage from "./pages/NavBarPages/ProfilPage";
 import CalendarPage from "./pages/NavBarPages/CalendarPage";
@@ -45,6 +51,16 @@ import ConversationPage from './pages/NavBarPages/ConversationPage';
 import ChatPage from "./pages/NavBarPages/ChatPage";
 
 export default function App() {
+  const [ fontsLoaded, setFontsLoaded ] = useState(false);
+  if (!fontsLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onError={console.warn}
+        onFinish={() => setFontsLoaded(true)}
+      />
+    );
+  }
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -62,7 +78,6 @@ export default function App() {
           <Stack.Screen name="AddTypeJobPage" component={AddTypeJobPage} />
           <Stack.Screen name="WellDonePage" component={WellDonePage} />
           <Stack.Screen name="HomePage" component={HomePage} />
-          <Stack.Screen name="MessagePage" component={MessagePage} />
           <Stack.Screen name="ProfilPage" component={ProfilPage} />
           <Stack.Screen name="CalendarPage" component={CalendarPage} />
           <Stack.Screen name="ConversationPage" component={ConversationPage} />
@@ -71,8 +86,6 @@ export default function App() {
           <Stack.Screen name="AddLanguageFromProfilePage" component={AddLanguageFromProfilePage} />
           <Stack.Screen name="ModifyEducationPage" component={ModifyEducationPage} />
           <Stack.Screen name="ModifyLanguagePage" component={ModifyLanguagePage} />
-
-
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

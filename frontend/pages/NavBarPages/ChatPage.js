@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
-import { useFonts } from 'expo-font';
+
 
 export function ChatPage(props) {
   let [userId, setUserId] = useState("");
@@ -43,11 +43,6 @@ export function ChatPage(props) {
   let [sendPictureModal, setSendPictureModal] = useState(false);
 
   let [messageId, setMessagId] = useState("");
-
-  const [loaded] = useFonts({
-    Poppins: require('../../assets/fonts/Poppins-Regular.ttf'),
-    PoppinsSemiBold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
-  });
 
   let arrayConversation = [];
   let arrayDate = [];

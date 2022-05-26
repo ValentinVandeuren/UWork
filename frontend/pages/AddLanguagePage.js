@@ -74,7 +74,7 @@ export default function AddLanguagePage(props) {
         multiline={true}
       />
         <TouchableOpacity style={styles.button1} onPress={() => onSubmitClick()}>
-          <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Save</Text>
+          <Text style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}>Save</Text>
         </TouchableOpacity>
     </View>
   </KeyboardAwareScrollView>
@@ -105,13 +105,13 @@ title: {
   fontSize: 30,
   textAlign:'center',
   color:"#7791DE",
-  fontWeight: '600',
+  fontFamily:'PoppinsSemiBold',
   marginBottom: 20    
 },
 input: {
   marginBottom: 20,
   fontSize: 20,
-  fontWeight: "500",
+  fontFamily:'PoppinsSemiBold',
   backgroundColor: "#FFF",
   borderRadius: 30,
   width: "80%",
@@ -132,7 +132,7 @@ input2: {
   paddingTop:15,
   marginBottom: 20,
   fontSize: 20,
-  fontWeight: "500",
+  fontFamily:'PoppinsSemiBold',
   backgroundColor: "#FFF",
   borderRadius: 30,
   width: "80%",

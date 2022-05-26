@@ -37,7 +37,7 @@ export default function TokenVerifyPage(props) {
         style={styles.button}
         onPress={() => onTokenClick()}
       >
-        <Text style={{color:"#fff", fontSize:20, fontWeight:'500'}}>Let's go!</Text>
+        <Text style={{color:"#fff", fontSize:20, fontFamily:'PoppinsSemiBold'}}>Let's go!</Text>
       </TouchableOpacity>
       </View>
       </KeyboardAvoidingView>
@@ -60,19 +60,19 @@ const styles = StyleSheet.create({
     marginTop: 50,
     textAlign: "center",
     fontSize: 30,
-    fontWeight: '600',
+    fontFamily: 'PoppinsSemiBold',
   },
   textTokenInsert: {
     marginTop: 40,
     marginBottom: 50,
     color: "#7791DE",
     fontSize: 25,
-    fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
   },
   input: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: "500",
+    fontFamily: 'PoppinsSemiBold',
     backgroundColor: "#FFF",
     borderRadius: 30,
     width: "80%",
