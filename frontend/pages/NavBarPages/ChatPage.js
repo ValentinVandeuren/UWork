@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   View,
   Text,
@@ -13,6 +14,7 @@ import {
   Pressable,
   Alert
 } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
@@ -206,11 +208,12 @@ export function ChatPage(props) {
           </View>
           <View style={{width: 40, marginRight: 10}}></View>
         </View>
-        <ScrollView
+        <KeyboardAwareScrollView
           style={{flex: 1, width: "100%"}}
           ref={scrollViewRef}
           onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
         >
+        {/* <KeyboardAvoidingView behavior='padding'> */}
           {message[0]?.map((messages,i) => (
             <View key={i} style={(userId === messages.sender)?styles.containerMessageOwner: styles.containerMessage}>
               <TouchableOpacity onPress={() => onMessageClick()}>
@@ -254,8 +257,8 @@ export function ChatPage(props) {
               </TouchableOpacity>
             </View>
           ))}
-        </ScrollView>
-        <KeyboardAvoidingView behavior= 'position'>
+        </KeyboardAwareScrollView>
+        <KeyboardAvoidingView behavior='position'>
           <View style={styles.containerField}>
             <View style={styles.leftContainerField}>
               <Ionicons
@@ -282,19 +285,19 @@ export function ChatPage(props) {
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-        >
+          >
           <View style={styles.modal}>
             <View style={styles.containerModal}>
               <Text style={{marginLeft: 35}}></Text>
               <TouchableOpacity
                 style={{flexDirection: "row", alignItems: 'center'}}
                 onPress={() => pickImage()}
-              >
+                >
                 <Ionicons
                   name={'attach'}
                   size={30} color={'#7791DE'}
                   onPress={() => setModalVisible(false)}
-                />
+                  />
                 <Text style={styles.textModal}>Join document</Text>
               </TouchableOpacity>
               <Ionicons
@@ -302,7 +305,7 @@ export function ChatPage(props) {
                 size={20} color={'#000'}
                 style={styles.closeIcon}
                 onPress={() => setModalVisible(false)}
-              />
+                />
             </View>
           </View>
         </Modal>
@@ -310,28 +313,29 @@ export function ChatPage(props) {
           animationType="slide"
           transparent={true}
           visible={modalPicture}
-        >
+          >
           <Pressable style={styles.modalPicture} onPress={() => setModalPicture(false)}>
             <Image
               source={{uri: urlPictureModal}}
               style={styles.picturModal}
-            />
+              />
           </Pressable>
         </Modal>
         <Modal
           animationType="slide"
           transparent={true}
           visible={sendPictureModal}
-        >
+          >
           <Pressable
             style={styles.modal}
             onPress={() => {setSendPictureModal(false), setMessageInputModal(""), setUrlNewPicture("")}}
-          >
+            >
             <View style={styles.containerModalSendPicture}>
               <Image
                 source={{uri: urlNewPicture}}
                 style={styles.picturModalSend}
-              />
+                />
+
               <View style={styles.containerFieldModal}>
                 <TextInput
                   style={styles.textFieldModal}
@@ -339,14 +343,15 @@ export function ChatPage(props) {
                   placeholderTextColor="#000"
                   onChangeText={(value) => setMessageInputModal(value)}
                   value={messageInputModal}
-                />
+                  />
                 <Ionicons
                   name={'paper-plane-outline'}
                   size={30} color={'#7791DE'}
                   style={styles.sendIcon}
                   onPress={() => onSendMessageClick()}
-                />
+                  />
               </View>
+
             </View>
           </Pressable>
         </Modal>
@@ -452,7 +457,7 @@ const styles = StyleSheet.create({
     textAlign: 'right'
   },
   containerField: {
-    marginTop: 30,
+    marginTop: 5,
     marginBottom: 10,
     width: 375,
     height: 40,
@@ -506,25 +511,26 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: "center",
+    marginBottom:20,
     backgroundColor: 'rgba(0,0,0,0.9)'
   },
   picturModal: {
     height: 300,
-    width: "90%"
+    width: "90%",
   },
   containerModalSendPicture: {
-    height: 415,
-    width: 370,
+    height: 360,
+    width: 380,
     backgroundColor: "#FFF",
     alignItems: 'center',
     borderRadius: 20,
-    marginBottom:0
+    marginBottom:140,
   },
   picturModalSend: {
-    height: 300,
+    height: 250,
     width: 330,
     borderRadius: 10,
-    marginTop: 20
+    marginTop: 20,
   },
   containerFieldModal: {
     marginTop: 30,
