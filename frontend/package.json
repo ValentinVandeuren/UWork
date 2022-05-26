@@ -36,7 +36,8 @@
     "redux": "^4.2.0",
     "webpack-dev-server": "~3.11.0",
     "expo-font": "~10.1.0",
-    "expo-app-loading": "~2.0.0"
+    "expo-app-loading": "~2.0.0",
+    "expo-updates": "~0.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
