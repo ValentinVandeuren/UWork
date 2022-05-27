@@ -71,7 +71,11 @@ export function ConversationPage(props) {
             })
         
             let response = await rawResponse.json()
-            setConversationList(response)
+            setConversationList(response.sort(function(a, b) {
+                let newDateA = new Date(a.messages[a.messages.length -1].date);
+                let newDateB = new Date(b.messages[b.messages.length -1].date);
+                return newDateB - newDateA
+            }))
 
             if(conversationList.length >=0){
                 for(let i=0; i<response.length; i++){

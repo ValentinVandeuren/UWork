@@ -269,5 +269,6 @@ inputDateGray: {
 errorMessageStyle:{
   color: "red",
   marginBottom: 20,
+  fontFamily: 'PoppinsSemiBold',
 },
 });

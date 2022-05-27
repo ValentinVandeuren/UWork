@@ -193,12 +193,13 @@ export function ChatPage(props) {
     return (
       <View style={styles.container}>
         <View style={styles.topPage}>
-          <Ionicons
-            name={'chevron-back'}
-            size={40} color={'#7791DE'}
-            style={{marginLeft: 10, marginBottom: 5}}
-            onPress={() => props.navigation.navigate('ConversationPage')}
-          />
+          <Pressable onPress={() => props.navigation.navigate('ConversationPage')}>
+            <Ionicons
+              name={'chevron-back'}
+              size={40} color={'#7791DE'}
+              style={{marginLeft: 10, marginBottom: 5}}
+            />
+          </Pressable>
           <View style={{alignItems: "center"}}>
             <Image
               source={{uri: otherAvatar}}
@@ -227,10 +228,10 @@ export function ChatPage(props) {
                             messages.content,
                             [
                               {
-                                text: 'cencel'
+                                text: 'Cancel'
                               },
                               {
-                                text: "delete",
+                                text: "Delete",
                                 style: "destructive",
                                 onPress: () => onMessageSuppClick()
                               },

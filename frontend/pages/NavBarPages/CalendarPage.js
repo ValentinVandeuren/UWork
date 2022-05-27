@@ -156,8 +156,8 @@ export default function CallendarPage(props) {
                 <Text style={styles.subTitleEvent}>{allStartHour[i]} - {allEndHour[i]}</Text>
               </View>
             </View>
-  )
-}
+      )
+      }
 })
 return list;
 }
