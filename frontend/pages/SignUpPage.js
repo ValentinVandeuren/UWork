@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -46,12 +46,13 @@ export default function SignUpPage(props) {
     <View style={styles.container}>
       <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
       <View style={styles.containerTop}>
-        <Ionicons
-          name={'chevron-back-outline'}
-          size={45} color={'#7791DE'}
-          style={styles.returnButton}
-          onPress={() => props.navigation.navigate('WelcomePage')}
-        />
+        <Pressable onPress={() => props.navigation.navigate('WelcomePage')}>
+          <Ionicons
+            name={'chevron-back-outline'}
+            size={45} color={'#7791DE'}
+            style={styles.returnButton}
+          />
+        </Pressable>
         <Image
           style={styles.logo}
           source={require('../assets/logo.png')}
@@ -166,7 +167,6 @@ const styles = StyleSheet.create({
     color: "red",
     marginTop: 20,
     fontFamily: 'PoppinsSemiBold',
-
   },
   button: {
     borderRadius:25,

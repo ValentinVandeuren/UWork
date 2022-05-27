@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, Pressable } from 'react-native'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -92,7 +92,6 @@ export function ProfilPage(props) {
   }
 
 
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -171,11 +170,12 @@ export function ProfilPage(props) {
             <TouchableOpacity style={{backgroundColor:'#7791DE', borderRadius:10, marginRight:5, height:30}} onPress={() => logOutClick()}>
               <Text style={styles.logOutText}>LOG OUT</Text>
             </TouchableOpacity>
-            <Ionicons
-              name={'chevron-forward-outline'}
-              size={45} color={'#7791DE'}
-              onPress={() => modifyProfile()}
-            />
+            <Pressable onPress={() => modifyProfile()}>
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={45} color={'#7791DE'}
+              />
+            </Pressable>
           </View>
           <TouchableOpacity onPress={pickImage}>
             <Image
@@ -692,7 +692,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   scrollMenu: {
-    marginTop: 5,
+    marginTop: 6,
     fontSize: 18,
     fontWeight: "500",
     fontFamily: 'Poppins',
@@ -706,7 +706,7 @@ const styles = StyleSheet.create({
     paddingRight:90,
   },
   scrollMenuScrolling: {
-    marginTop: 5,
+    marginTop: 6,
     fontSize: 18,
     fontWeight: "500",
     fontFamily: 'Poppins',

@@ -111,5 +111,6 @@ const styles = StyleSheet.create({
   errorMessageStyle:{
     color: "red",
     marginTop: 20,
+    fontFamily: 'PoppinsSemiBold',
   },
 });

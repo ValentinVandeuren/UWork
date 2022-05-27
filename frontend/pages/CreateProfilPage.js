@@ -232,5 +232,6 @@ const styles = StyleSheet.create({
   errorMessageStyle:{
     color: "red",
     marginBottom: 20,
+    fontFamily: 'PoppinsSemiBold',
   },
 });
