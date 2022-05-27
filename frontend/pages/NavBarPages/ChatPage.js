@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: "center",
-    backgroundColor: 'rgba(0,0,0,0.4)'
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   containerModal: {
     height: 75,
@@ -512,7 +512,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: "center",
-    marginBottom:20,
     backgroundColor: 'rgba(0,0,0,0.9)'
   },
   picturModal: {
