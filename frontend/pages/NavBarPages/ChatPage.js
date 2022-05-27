@@ -272,6 +272,7 @@ export function ChatPage(props) {
                 placeholder="Text Message"
                 onChangeText={(value) => setMessageInput(value)}
                 value={messageInput}
+                multiline={true}
               />
             </View>
             <Ionicons
