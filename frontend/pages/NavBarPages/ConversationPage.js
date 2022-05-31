@@ -36,19 +36,19 @@ export function ConversationPage(props) {
         let newDateNumber = newDate.getDate()
 
         if(day == 0){
-        setDayWeek("Sunday")
+        setDayWeek("SUN")
         } else if(day === 1){
-        setDayWeek("Monday")
+        setDayWeek("MON")
         } else if(day === 2){
-        setDayWeek("Tuesday")
+        setDayWeek("TUE")
         } else if(day === 3){
-        setDayWeek("Wednesday")
+        setDayWeek("WED")
         } else if(day === 4){
-        setDayWeek("Thursday")
+        setDayWeek("THU")
         } else if(day === 5){
-        setDayWeek("Friday")
+        setDayWeek("FRI")
         } else if(day === 6){
-        setDayWeek("Saturday")
+        setDayWeek("SAT")
         }
 
         setDate(newDateNumber)
@@ -325,29 +325,29 @@ const styles = StyleSheet.create({
       marginRight: 30,
     },
     calendarIcon: {
-      height: 50,
-      width: 50,
-      borderWidth: 3,
-      borderRadius: 10,
-      borderColor: "#B9B9B9",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    dayWeek: {
-        fontSize: 6.5,
+        height: 50,
+        width: 50,
+        borderWidth: 3,
+        borderRadius: 10,
+        borderColor: "#B9B9B9",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      dayWeek: {
+        fontSize: 12,
         fontWeight: "900",
-        fontFamily: 'PoppinsSemiBold',
         color: "#B9B9B9",
+        fontFamily: 'PoppinsSemiBold',
         textAlign:'center',
         marginTop: 5,
-    },
-    date: {
+      },
+      date: {
         fontSize: 20,
-        fontWeight: "900",
         fontFamily: 'PoppinsBold',
         color: "#B9B9B9",
-        textAlign:'center'
-    },
+        textAlign:'center',
+        marginTop:-5,
+      },
     title: {
         fontSize: 30,
         fontWeight: "600",

@@ -77,10 +77,10 @@ export default function App() {
           <Stack.Screen name="AddLanguagePage" component={AddLanguagePage} />
           <Stack.Screen name="AddTypeJobPage" component={AddTypeJobPage} />
           <Stack.Screen name="WellDonePage" component={WellDonePage} />
-          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="HomePage" options={{ animationEnabled: false }} component={HomePage} />
           <Stack.Screen name="ProfilPage" component={ProfilPage} />
-          <Stack.Screen name="CalendarPage" component={CalendarPage} />
-          <Stack.Screen name="ConversationPage" component={ConversationPage} />
+          <Stack.Screen name="CalendarPage" options={{ animationEnabled: false }} component={CalendarPage} />
+          <Stack.Screen name="ConversationPage" options={{ animationEnabled: false }} component={ConversationPage} />
           <Stack.Screen name="ChatPage" component={ChatPage} />
           <Stack.Screen name="AddEducationFromProfilePage" component={AddEducationFromProfilePage} />
           <Stack.Screen name="AddLanguageFromProfilePage" component={AddLanguageFromProfilePage} />
