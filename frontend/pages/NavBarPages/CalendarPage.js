@@ -93,31 +93,30 @@ export default function CallendarPage(props) {
     let newDateNumber = newDate.getDate()
 
     if(day == 0){
-      setDayWeek("Sunday")
+      setDayWeek("SUN")
     } else if(day === 1){
-      setDayWeek("Monday")
+      setDayWeek("MON")
     } else if(day === 2){
-      setDayWeek("Tuesday")
+      setDayWeek("TUE")
     } else if(day === 3){
-      setDayWeek("Wednesday")
+      setDayWeek("WED")
     } else if(day === 4){
-      setDayWeek("Thursday")
+      setDayWeek("THU")
     } else if(day === 5){
-      setDayWeek("Friday")
+      setDayWeek("FRI")
     } else if(day === 6){
-      setDayWeek("Saturday")
+      setDayWeek("SAT")
     }
 
     setDate(newDateNumber)
   }, [isFocused]);
 
-
   let markedDay = {};
 
   eventList.map((item) => {
         var dateOfToday = new Date(); 
-        var datFromBDD = new Date(item.date)
-        if(datFromBDD > dateOfToday){
+        var datFromBDD = new Date(item.endTime)
+        if(datFromBDD >= dateOfToday){
           markedDay[item.date.slice(0, -14)] = {
           selected: true,
           selectedColor: "#7791DE",
@@ -139,7 +138,7 @@ export default function CallendarPage(props) {
 
       const list = eventList.map((event, i) => {
         var aDate = new Date(); 
-        var datFromBDD = new Date(event.date)
+        var datFromBDD = new Date(event.endTime)
         
         if(datFromBDD > aDate){
           
@@ -295,7 +294,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   dayWeek: {
-    fontSize: 6.5,
+    fontSize: 12,
     fontWeight: "900",
     color: "#7791DE",
     fontFamily: 'PoppinsSemiBold',
@@ -304,9 +303,9 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 20,
-    fontWeight: "900",
     fontFamily: 'PoppinsBold',
     color: "#7791DE",
-    textAlign:'center'
+    textAlign:'center',
+    marginTop:-5,
   },
 });
